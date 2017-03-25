@@ -4,13 +4,17 @@ class BoxesController < ApplicationController
 
   # GET /boxes
   def index
-    @boxes = Box.all
+    @boxes = Box.where(owner: current_user)
     render json: @boxes, include: [:owner, { rooms: :foods }]
   end
 
   # GET /boxes/1
   def show
-    render json: @box, include: [:owner, { rooms: :foods }]
+    if @box.is_owned_by(current_user)
+      render json: @box, include: [:owner, { rooms: :foods }]
+    else
+      forbidden
+    end
   end
 
   # POST /boxes
@@ -26,16 +30,24 @@ class BoxesController < ApplicationController
 
   # PATCH/PUT /boxes/1
   def update
-    if @box.update(box_params)
-      render json: @box
+    if @box.is_owned_by(current_user)
+      if @box.update(box_params)
+        render json: @box
+      else
+        render json: @box.errors, status: :unprocessable_entity
+      end
     else
-      render json: @box.errors, status: :unprocessable_entity
+      forbidden
     end
   end
 
   # DELETE /boxes/1
   def destroy
-    @box.destroy
+    if @box.is_owned_by(current_user)
+      @box.destroy
+    else
+      forbidden
+    end
   end
 
   private
