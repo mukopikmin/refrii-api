@@ -59,6 +59,6 @@ class BoxesController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def box_params
-    params.fetch(:box, {})
+    params.permit(:name, :notice, :owner_id)
   end
 end

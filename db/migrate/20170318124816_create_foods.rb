@@ -8,7 +8,7 @@ class CreateFoods < ActiveRecord::Migration[5.0]
       t.boolean :removed, null: false, default: false
 
       t.references :room, null: false
-      t.references :unit, null: false
+      t.references :unit
 
       t.timestamps
     end

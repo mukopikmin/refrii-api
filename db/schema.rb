@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20170326013536) do
     t.date     "expiration_date"
     t.boolean  "removed",         default: false, null: false
     t.integer  "room_id",                         null: false
-    t.integer  "unit_id",                         null: false
+    t.integer  "unit_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.index ["room_id"], name: "index_foods_on_room_id"
