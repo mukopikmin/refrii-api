@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :units
   resources :foods
   resources :rooms
   resources :boxes
