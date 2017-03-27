@@ -4,7 +4,7 @@ class BoxesController < ApplicationController
 
   # GET /boxes
   def index
-    @boxes = Box.where(owner: current_user)
+    @boxes = Box.where(owner: current_user, removed: false)
     render json: @boxes, include: [:owner, { rooms: :foods }]
   end
 
@@ -44,7 +44,7 @@ class BoxesController < ApplicationController
   # DELETE /boxes/1
   def destroy
     if @box.is_owned_by(current_user)
-      @box.destroy
+      @box.removed = true
     else
       forbidden
     end
@@ -59,6 +59,7 @@ class BoxesController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def box_params
+    params[:owner_id] = current_user.id
     params.permit(:name, :notice, :owner_id)
   end
 end
