@@ -3,39 +3,54 @@ class RoomsController < ApplicationController
 
   # GET /rooms
   def index
-    @rooms = Room.all
+    @rooms = Room.joins(:box).where(removed: false, boxes: { owner: current_user})
 
     render json: @rooms
   end
 
   # GET /rooms/1
   def show
-    render json: @room
+    if @room.box.is_owned_by(current_user)
+      render json: @room
+    else
+      forbidden
+    end
   end
 
   # POST /rooms
   def create
     @room = Room.new(room_params)
-
-    if @room.save
-      render json: @room, status: :created, location: @room
+    if @room.box.is_owned_by(current_user)
+      if @room.save
+        render json: @room, status: :created, location: @room
+      else
+        render json: @room.errors, status: :unprocessable_entity
+      end
     else
-      render json: @room.errors, status: :unprocessable_entity
+      forbidden
     end
   end
 
   # PATCH/PUT /rooms/1
   def update
-    if @room.update(room_params)
-      render json: @room
+    if @room.box.is_owned_by(current_user)
+      if @room.update(room_params)
+        render json: @room
+      else
+        render json: @room.errors, status: :unprocessable_entity
+      end
     else
-      render json: @room.errors, status: :unprocessable_entity
+      forbidden
     end
   end
 
   # DELETE /rooms/1
   def destroy
-    @room.destroy
+    if @room.box.is_owned_by(current_user)
+      @room.removed = true
+    else
+      forbidden
+    end
   end
 
   private
