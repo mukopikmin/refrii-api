@@ -3,14 +3,18 @@ class UnitsController < ApplicationController
 
   # GET /units
   def index
-    @units = Unit.all
+    @units = Unit.where(user: current_user)
 
     render json: @units
   end
 
   # GET /units/1
   def show
-    render json: @unit
+    if @unit.is_owned_by(current_user)
+      render json: @unit
+    else
+      forbidden
+    end
   end
 
   # POST /units
@@ -26,16 +30,24 @@ class UnitsController < ApplicationController
 
   # PATCH/PUT /units/1
   def update
-    if @unit.update(unit_params)
-      render json: @unit
+    if @unit.is_owned_by(current_user)
+      if @unit.update(unit_params)
+        render json: @unit
+      else
+        render json: @unit.errors, status: :unprocessable_entity
+      end
     else
-      render json: @unit.errors, status: :unprocessable_entity
+      forbidden
     end
   end
 
   # DELETE /units/1
   def destroy
-    @unit.destroy
+    if @unit.is_owned_by(current_user)
+      @unit.removed = true
+    else
+      forbidden
+    end
   end
 
   private
@@ -46,6 +58,7 @@ class UnitsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def unit_params
+      params[:user_id] = current_user.id
       params.permit(:label, :user_id)
     end
 end

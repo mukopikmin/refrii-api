@@ -1,5 +1,5 @@
 class UnitSerializer < ActiveModel::Serializer
-  attributes :id
+  attributes :id, :label
 
   belongs_to :user
   has_many :foods
