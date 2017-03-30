@@ -28,22 +28,12 @@ ActiveRecord::Schema.define(version: 20170326013536) do
     t.float    "amount"
     t.date     "expiration_date"
     t.boolean  "removed",         default: false, null: false
-    t.integer  "room_id",                         null: false
+    t.integer  "box_id",                          null: false
     t.integer  "unit_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.index ["room_id"], name: "index_foods_on_room_id"
+    t.index ["box_id"], name: "index_foods_on_box_id"
     t.index ["unit_id"], name: "index_foods_on_unit_id"
-  end
-
-  create_table "rooms", force: :cascade do |t|
-    t.string   "name",                       null: false
-    t.text     "notice"
-    t.boolean  "removed",    default: false, null: false
-    t.integer  "box_id",                     null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.index ["box_id"], name: "index_rooms_on_box_id"
   end
 
   create_table "units", force: :cascade do |t|

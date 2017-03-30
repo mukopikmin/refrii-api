@@ -5,13 +5,13 @@ class BoxesController < ApplicationController
   # GET /boxes
   def index
     @boxes = Box.where(owner: current_user, removed: false)
-    render json: @boxes, include: [:owner, { rooms: :foods }]
+    render json: @boxes
   end
 
   # GET /boxes/1
   def show
     if @box.is_owned_by(current_user)
-      render json: @box, include: [:owner, { rooms: :foods }]
+      render json: @box
     else
       forbidden
     end

@@ -27,12 +27,6 @@ end
              owner: User.find(rand(User.first.id .. User.last.id)))
 end
 
-40.times do
-  Room.create(name: FFaker::Book.genre,
-              notice: FFaker::Lorem.phrase,
-              box: Box.find(rand(Box.first.id .. Box.last.id)))
-end
-
 User.all.each do |user|
   %w(g pieces packs).each do |label|
     Unit.create(label: label,
@@ -41,11 +35,11 @@ User.all.each do |user|
 end
 
 100.times do
-  room = Room.find(rand(Room.first.id .. Room.last.id))
+  box = Box.find(rand(Box.first.id .. Box.last.id))
   Food.create(name: FFaker::Food.fruit,
               notice: FFaker::BaconIpsum.phrase,
               amount: Random.rand(100.0),
               expiration_date: Random.rand(Time.zone.tomorrow..Time.zone.tomorrow.next_year),
-              room: room,
-              unit: Unit.find(rand(room.box.owner.units.first.id .. room.box.owner.units.last.id)))
+              box: box,
+              unit: Unit.find(rand(box.owner.units.first.id .. box.owner.units.last.id)))
 end

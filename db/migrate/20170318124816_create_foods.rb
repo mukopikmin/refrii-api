@@ -7,7 +7,7 @@ class CreateFoods < ActiveRecord::Migration[5.0]
       t.date :expiration_date
       t.boolean :removed, null: false, default: false
 
-      t.references :room, null: false
+      t.references :box, null: false
       t.references :unit
 
       t.timestamps

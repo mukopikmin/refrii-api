@@ -1,7 +1,7 @@
 class FoodSerializer < ActiveModel::Serializer
   attributes :id, :name, :amount, :unit, :expiration_date, :created_at, :updated_at
 
-  belongs_to :room
+  belongs_to :box
   belongs_to :unit
 
   def unit

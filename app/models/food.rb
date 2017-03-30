@@ -1,4 +1,4 @@
 class Food < ApplicationRecord
-  belongs_to :room
+  belongs_to :box
   belongs_to :unit
 end

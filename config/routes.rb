@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   resources :units
   resources :foods
-  resources :rooms
   resources :boxes
   resources :users
   post 'user_token' => 'user_token#create'
