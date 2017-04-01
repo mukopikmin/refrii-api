@@ -1,9 +1,10 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
+  before_action :authenticate_user, only: [:index, :show, :update, :destroy]
 
   # GET /users
   def index
-    @users = User.all
+    @users = User.where(removed: false)
     render json: @users
   end
 
@@ -14,7 +15,6 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    p user_params
     @user = User.new(user_params)
 
     if @user.save
@@ -35,7 +35,8 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
-    @user.destroy
+    @user.removed = true
+    @user.save
   end
 
   def verify

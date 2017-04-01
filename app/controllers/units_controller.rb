@@ -1,9 +1,10 @@
 class UnitsController < ApplicationController
   before_action :set_unit, only: [:show, :update, :destroy]
+  before_action :authenticate_user
 
   # GET /units
   def index
-    @units = Unit.where(user: current_user)
+    @units = Unit.where(user: current_user, removed: false)
 
     render json: @units
   end
@@ -45,6 +46,7 @@ class UnitsController < ApplicationController
   def destroy
     if @unit.is_owned_by(current_user)
       @unit.removed = true
+      @unit.save
     else
       forbidden
     end

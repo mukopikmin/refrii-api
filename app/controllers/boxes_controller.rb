@@ -1,5 +1,6 @@
 class BoxesController < ApplicationController
   before_action :set_box, only: [:show, :update, :destroy]
+  before_action :authenticate_user
 
   # GET /boxes
   def index
@@ -44,6 +45,7 @@ class BoxesController < ApplicationController
   def destroy
     if @box.is_owned_by(current_user)
       @box.removed = true
+      @box.save
     else
       forbidden
     end

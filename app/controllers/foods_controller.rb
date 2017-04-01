@@ -1,16 +1,20 @@
 class FoodsController < ApplicationController
   before_action :set_food, only: [:show, :update, :destroy]
+  before_action :authenticate_user
 
   # GET /foods
   def index
-    @foods = Food.all
-
+    @foods = Food.all(removed: false)
     render json: @foods
   end
 
   # GET /foods/1
   def show
-    render json: @food
+    if @food.box.is_owned_by(current_user)
+      render json: @food
+    else
+      forbidden
+    end
   end
 
   # POST /foods
@@ -26,16 +30,25 @@ class FoodsController < ApplicationController
 
   # PATCH/PUT /foods/1
   def update
-    if @food.update(food_params)
-      render json: @food
+    if @food.box.is_owned_by(current_user)
+      if @food.update(food_params)
+        render json: @food
+      else
+        render json: @food.errors, status: :unprocessable_entity
+      end
     else
-      render json: @food.errors, status: :unprocessable_entity
+      forbidden
     end
   end
 
   # DELETE /foods/1
   def destroy
-    @food.destroy
+    if @food.box.is_owned_by(current_user)
+      @food.removed = true
+      @food.save
+    else
+      forbidden
+    end
   end
 
   private
