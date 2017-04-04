@@ -4,8 +4,19 @@ class BoxesController < ApplicationController
 
   # GET /boxes
   def index
-    # @boxes = Box.not_removed.owned_by(current_user)
     @boxes = Box.all_with_invited(current_user)
+    render json: @boxes
+  end
+
+  # GET /boxes/owns
+  def owned
+    @boxes = Box.owned_by(current_user)
+    render json: @boxes
+  end
+
+  # GET /boxes/invited
+  def invited
+    @boxes = Box.inviting(current_user)
     render json: @boxes
   end
 

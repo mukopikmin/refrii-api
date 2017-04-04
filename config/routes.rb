@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'boxes/owned' => 'boxes#owned'
+  get 'boxes/invited' => 'boxes#invited'
   resources :units
   resources :foods
   resources :boxes
