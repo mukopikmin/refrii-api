@@ -3,4 +3,11 @@ class User < ApplicationRecord
 
   has_many :boxes, class_name: Box, foreign_key: 'owner_id'
   has_many :units
+  has_many :invitations
+
+  def invited_boxes
+    self.invitations.map do |invitation|
+      invitation.box
+    end
+  end
 end

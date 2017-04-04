@@ -3,4 +3,5 @@ class UserSerializer < ActiveModel::Serializer
 
   has_many :boxes
   has_many :units
+  has_many :invitations
 end

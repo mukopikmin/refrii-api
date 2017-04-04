@@ -1,10 +1,11 @@
 class BoxesController < ApplicationController
-  before_action :set_box, only: [:show, :update, :destroy]
+  before_action :set_box, only: [:show, :update, :destroy, :invite, :deinvite]
   before_action :authenticate_user
 
   # GET /boxes
   def index
-    @boxes = Box.where(owner: current_user, removed: false)
+    # @boxes = Box.not_removed.owned_by(current_user)
+    @boxes = Box.all_with_invited(current_user)
     render json: @boxes
   end
 
@@ -51,6 +52,33 @@ class BoxesController < ApplicationController
     end
   end
 
+  # POST /boxes/1/invite
+  def invite
+    @invitation = Invitation.new(invitatation_params)
+    if Invitation.exists?(user: current_user, box: @box)
+      bad_request
+    elsif @box.is_owned_by(current_user)
+      if @invitation.save
+        render json: @invitation
+      else
+        render json: @invitation.errors, status: :unprocessable_entity
+      end
+    else
+      forbidden
+    end
+  end
+
+  # DELETE /boxes/1/deinvite
+  def deinvite
+    @invitation = Invitation.find_by(user: current_user, box: @box)
+    if @invitation.nil?
+      not_modified
+    else
+      @invitation.destroy
+      @invitation.save
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -62,5 +90,10 @@ class BoxesController < ApplicationController
   def box_params
     params[:owner_id] = current_user.id
     params.permit(:name, :notice, :owner_id)
+  end
+
+  def invitatation_params
+    params[:box_id] = params[:id]
+    params.permit(:box_id, :user_id)
   end
 end
