@@ -9,7 +9,7 @@ class BoxesController < ApplicationController
   end
 
   # GET /boxes/owns
-  def owned
+  def owns
     @boxes = Box.owned_by(current_user)
     render json: @boxes
   end
