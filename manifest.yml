@@ -1,0 +1,8 @@
+applications:
+- name: elephant-box-api
+  instances: 1
+  memory: 256M
+  disk_quota: 1024M
+  routes:
+  - route: elephant-box-api.mybluemix.net
+  stack: cflinuxfs2
