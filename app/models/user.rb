@@ -5,6 +5,8 @@ class User < ApplicationRecord
   has_many :units
   has_many :invitations
 
+  scope :find_by_email, -> (email) { find_by(email: email) }
+
   def invited_boxes
     self.invitations.map do |invitation|
       invitation.box

@@ -66,7 +66,7 @@ class BoxesController < ApplicationController
   # POST /boxes/1/invite
   def invite
     @invitation = Invitation.new(invitatation_params)
-    if Invitation.exists?(user: current_user, box: @box)
+    if Invitation.exists?(invitatation_params.to_h)
       bad_request
     elsif @box.is_owned_by(current_user)
       if @invitation.save

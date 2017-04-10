@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :users do
     collection do
       get :verify
+      get :search
     end
   end
   post 'user_token' => 'user_token#create'
