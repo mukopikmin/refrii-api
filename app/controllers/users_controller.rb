@@ -42,8 +42,7 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
-    @user.removed = true
-    @user.save
+    @user.destroy
   end
 
   def verify

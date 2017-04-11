@@ -4,7 +4,7 @@ class UnitsController < ApplicationController
 
   # GET /units
   def index
-    @units = Unit.where(user: current_user, removed: false)
+    @units = Unit.owned_by(current_user)
 
     render json: @units
   end
@@ -45,8 +45,7 @@ class UnitsController < ApplicationController
   # DELETE /units/1
   def destroy
     if @unit.is_owned_by(current_user)
-      @unit.removed = true
-      @unit.save
+      @unit.destroy
     else
       forbidden
     end

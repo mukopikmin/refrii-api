@@ -86,7 +86,6 @@ class BoxesController < ApplicationController
       not_modified
     else
       @invitation.destroy
-      @invitation.save
     end
   end
 

@@ -3,7 +3,6 @@ class Box < ApplicationRecord
   has_many :foods
   has_many :invitations
 
-  scope :available, -> { where(removed: false )}
   scope :owned_by, -> (user) { where(owner: user) }
   scope :inviting, -> (user) { joins(:invitations).where(invitations: { user: user }) }
 
@@ -13,6 +12,6 @@ class Box < ApplicationRecord
 
   def self.all_with_invited(user)
     # TODO: should be single query
-    self.available.owned_by(user) + self.available.inviting(user)
+    self.owned_by(user) + self.inviting(user)
   end
 end

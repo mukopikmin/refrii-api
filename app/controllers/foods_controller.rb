@@ -44,8 +44,7 @@ class FoodsController < ApplicationController
   # DELETE /foods/1
   def destroy
     if @food.box.is_owned_by(current_user)
-      @food.removed = true
-      @food.save
+      @food.destroy
     else
       forbidden
     end
