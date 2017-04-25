@@ -1,7 +1,5 @@
 source 'https://rubygems.org'
 
-ruby '~> 2.3.0'
-
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
@@ -43,6 +41,7 @@ group :test do
   gem 'database_cleaner', '~> 1.5.3'
   gem 'rspec-rails', '~> 3.5.2'
   gem 'factory_girl_rails', '~> 4.8.0'
+  gem 'rails-controller-testing', '~> 1.0.1'
 end
 
 group :production do

@@ -6,3 +6,4 @@ applications:
   routes:
   - route: elephant-box-api.mybluemix.net
   stack: cflinuxfs2
+  buildpack: https://github.com/cloudfoundry/ruby-buildpack

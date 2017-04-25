@@ -56,8 +56,7 @@ class BoxesController < ApplicationController
   # DELETE /boxes/1
   def destroy
     if @box.is_owned_by(current_user)
-      @box.removed = true
-      @box.save
+      @box.destroy
     else
       forbidden
     end

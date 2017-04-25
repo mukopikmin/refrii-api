@@ -4,8 +4,14 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    @users = User.where(removed: false)
+    @users = User.all
     render json: @users
+  end
+
+  # GET /users/verify
+  def verify
+    @user = current_user
+    render json: @user, include: []
   end
 
   # GET /users/1
@@ -43,10 +49,6 @@ class UsersController < ApplicationController
   # DELETE /users/1
   def destroy
     @user.destroy
-  end
-
-  def verify
-    render json: current_user, include: []
   end
 
   private

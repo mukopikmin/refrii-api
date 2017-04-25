@@ -4,7 +4,7 @@ class FoodsController < ApplicationController
 
   # GET /foods
   def index
-    @foods = Food.all(removed: false)
+    @foods = Food.all
     render json: @foods
   end
 
@@ -51,13 +51,14 @@ class FoodsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_food
-      @food = Food.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def food_params
-      params.permit(:name, :notice, :amount, :expiration_date, :box_id, :unit_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_food
+    @food = Food.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def food_params
+    params.permit(:name, :notice, :amount, :expiration_date, :box_id, :unit_id)
+  end
 end

@@ -7,16 +7,16 @@ RSpec.describe BoxesController, type: :routing do
       expect(:get => "/boxes").to route_to("boxes#index")
     end
 
-    it "routes to #new" do
-      expect(:get => "/boxes/new").to route_to("boxes#new")
+    it "routes to #owns" do
+      expect(:get => "/boxes/owns").to route_to("boxes#owns")
+    end
+
+    it "routes to #invited" do
+      expect(:get => "/boxes/invited").to route_to("boxes#invited")
     end
 
     it "routes to #show" do
       expect(:get => "/boxes/1").to route_to("boxes#show", :id => "1")
-    end
-
-    it "routes to #edit" do
-      expect(:get => "/boxes/1/edit").to route_to("boxes#edit", :id => "1")
     end
 
     it "routes to #create" do
@@ -35,5 +35,12 @@ RSpec.describe BoxesController, type: :routing do
       expect(:delete => "/boxes/1").to route_to("boxes#destroy", :id => "1")
     end
 
+    it "routes to #invite" do
+      expect(:post => "/boxes/1/invite").to route_to("boxes#invite", :id => "1")
+    end
+
+    it "routes to #deinvite" do
+      expect(:delete => "/boxes/1/deinvite").to route_to("boxes#deinvite", :id => "1")
+    end
   end
 end
