@@ -24,7 +24,7 @@ end
 20.times do
   Box.create(name: FFaker::Book.title,
              notice: FFaker::Lorem.paragraph,
-             owner: User.find(rand(User.first.id .. User.last.id)))
+             user: User.find(rand(User.first.id .. User.last.id)))
 end
 
 User.all.each do |user|
@@ -41,5 +41,5 @@ end
               amount: Random.rand(100.0),
               expiration_date: Random.rand(Time.zone.tomorrow..Time.zone.tomorrow.next_year),
               box: box,
-              unit: Unit.find(rand(box.owner.units.first.id .. box.owner.units.last.id)))
+              unit: Unit.find(rand(box.user.units.first.id .. box.user.units.last.id)))
 end

@@ -17,16 +17,11 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
+require 'simplecov'
+SimpleCov.start "rails"
+
 require 'factory_girl_rails'
 require 'database_cleaner'
-require 'simplecov'
-# require "codeclimate-test-reporter"
-
-# SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-#   SimpleCov::Formatter::HTMLFormatter,
-#   CodeClimate::TestReporter::Formatter
-# ]
-SimpleCov.start "rails"
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate

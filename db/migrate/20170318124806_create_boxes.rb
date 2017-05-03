@@ -4,7 +4,7 @@ class CreateBoxes < ActiveRecord::Migration[5.0]
       t.string :name, null: false
       t.text :notice
 
-      t.references :owner, null: false
+      t.references :user, null: false
 
       t.timestamps
     end
