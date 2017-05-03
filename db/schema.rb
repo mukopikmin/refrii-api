@@ -44,10 +44,11 @@ ActiveRecord::Schema.define(version: 20170403112643) do
   end
 
   create_table "units", force: :cascade do |t|
-    t.string   "label",      null: false
-    t.integer  "user_id",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "label",                    null: false
+    t.float    "step",       default: 1.0, null: false
+    t.integer  "user_id",                  null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.index ["user_id"], name: "index_units_on_user_id"
   end
 

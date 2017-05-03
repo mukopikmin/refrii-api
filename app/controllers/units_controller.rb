@@ -60,6 +60,6 @@ class UnitsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def unit_params
       params[:user_id] = current_user.id
-      params.permit(:label, :user_id)
+      params.permit(:label, :step, :user_id)
     end
 end

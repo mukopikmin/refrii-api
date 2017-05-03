@@ -23,7 +23,7 @@ class BoxesController < ApplicationController
   # GET /boxes/1
   def show
     if @box.is_owned_by(current_user)
-      render json: @box
+      render json: @box, include: { foods: :unit }
     else
       forbidden
     end

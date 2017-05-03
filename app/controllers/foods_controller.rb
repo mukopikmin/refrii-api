@@ -4,7 +4,7 @@ class FoodsController < ApplicationController
 
   # GET /foods
   def index
-    @foods = Food.all
+    @foods = Food.all_with_invited(current_user)
     render json: @foods
   end
 
