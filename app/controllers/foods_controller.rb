@@ -10,7 +10,7 @@ class FoodsController < ApplicationController
 
   # GET /foods/1
   def show
-    if @food.box.is_owned_by(current_user)
+    if @food.is_owned_by(current_user)
       render json: @food
     else
       forbidden
@@ -30,7 +30,7 @@ class FoodsController < ApplicationController
 
   # PATCH/PUT /foods/1
   def update
-    if @food.box.is_owned_by(current_user)
+    if @food.is_owned_by(current_user)
       if @food.update(food_params)
         render json: @food
       else
@@ -43,7 +43,7 @@ class FoodsController < ApplicationController
 
   # DELETE /foods/1
   def destroy
-    if @food.box.is_owned_by(current_user)
+    if @food.is_owned_by(current_user)
       @food.destroy
     else
       forbidden
