@@ -9,7 +9,7 @@ RSpec.describe FoodsController, type: :controller do
   describe 'GET #index' do
     before(:each) do
       user = create(:user)
-      box = create(:box, owner: user)
+      box = create(:box, user: user)
       unit = create(:unit, user: user)
       @food = create(:food, box: box, unit: unit)
       request.headers['Authorization'] = "Bearer #{token(user)}"
@@ -24,7 +24,7 @@ RSpec.describe FoodsController, type: :controller do
   describe 'GET #show' do
     before(:each) do
       user = create(:user)
-      box = create(:box, owner: user)
+      box = create(:box, user: user)
       unit = create(:unit, user: user)
       @food = create(:food, box: box, unit: unit)
       request.headers['Authorization'] = "Bearer #{token(user)}"
@@ -39,7 +39,7 @@ RSpec.describe FoodsController, type: :controller do
   describe 'POST #create' do
     before(:each) do
       user = create(:user)
-      @box = create(:box, owner: user)
+      @box = create(:box, user: user)
       @unit = create(:unit, user: user)
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
@@ -70,7 +70,7 @@ RSpec.describe FoodsController, type: :controller do
   describe 'PUT #update' do
     before(:each) do
       user = create(:user)
-      box = create(:box, owner: user)
+      box = create(:box, user: user)
       unit = create(:unit, user: user)
       @food = create(:food, box: box, unit: unit)
       request.headers['Authorization'] = "Bearer #{token(user)}"
@@ -99,7 +99,7 @@ RSpec.describe FoodsController, type: :controller do
   describe 'DELETE #destroy' do
     before(:each) do
       user = create(:user)
-      box = create(:box, owner: user)
+      box = create(:box, user: user)
       unit = create(:unit, user: user)
       @food = create(:food, box: box, unit: unit)
       request.headers['Authorization'] = "Bearer #{token(user)}"

@@ -43,6 +43,7 @@ group :test do
   gem 'factory_girl_rails', '~> 4.8.0'
   gem 'rails-controller-testing', '~> 1.0.1'
   gem 'codeclimate-test-reporter', '~> 1.0.8', require: false
+  gem 'brakeman', '~> 3.6.1', require: false
 end
 
 group :production do

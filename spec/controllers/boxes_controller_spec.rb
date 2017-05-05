@@ -7,7 +7,7 @@ RSpec.describe BoxesController, type: :controller do
 
   describe 'GET #index' do
     let!(:user) { create(:user) }
-    let!(:box) { create(:box, owner: user) }
+    let!(:box) { create(:box, user: user) }
 
     before(:each) do
       request.headers['Authorization'] = "Bearer #{token(user)}"
@@ -21,7 +21,7 @@ RSpec.describe BoxesController, type: :controller do
 
   describe 'GET #show' do
     let!(:user) { create(:user) }
-    let!(:box) { create(:box, owner: user) }
+    let!(:box) { create(:box, user: user) }
 
     before(:each) do
       request.headers['Authorization'] = "Bearer #{token(user)}"
@@ -65,7 +65,7 @@ RSpec.describe BoxesController, type: :controller do
 
   describe 'PUT #update' do
     let!(:user) { create(:user) }
-    let!(:box) { create(:box, owner: user) }
+    let!(:box) { create(:box, user: user) }
 
     before(:each) do
       request.headers['Authorization'] = "Bearer #{token(user)}"
@@ -94,7 +94,7 @@ RSpec.describe BoxesController, type: :controller do
 
   describe 'DELETE #destroy' do
     let!(:user) { create(:user) }
-    let!(:box) { create(:box, owner: user) }
+    let!(:box) { create(:box, user: user) }
 
     before(:each) do
       request.headers['Authorization'] = "Bearer #{token(user)}"

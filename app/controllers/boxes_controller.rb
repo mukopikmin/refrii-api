@@ -23,7 +23,7 @@ class BoxesController < ApplicationController
   # GET /boxes/1
   def show
     if @box.is_owned_by(current_user)
-      render json: @box, include: { foods: :unit }
+      render json: @box, include: [:user, { foods: :unit }]
     else
       forbidden
     end
@@ -97,8 +97,8 @@ class BoxesController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def box_params
-    params[:owner_id] = current_user.id
-    params.permit(:name, :notice, :owner_id)
+    params[:user_id] = current_user.id
+    params.permit(:name, :notice, :user_id)
   end
 
   def invitatation_params

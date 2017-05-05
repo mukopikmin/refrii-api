@@ -45,6 +45,7 @@ GEM
       tzinfo (~> 1.1)
     arel (7.1.4)
     bcrypt (3.1.11)
+    brakeman (3.6.1)
     builder (3.2.3)
     byebug (9.0.6)
     case_transform (0.2)
@@ -179,6 +180,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers (~> 0.10.5)
   bcrypt (~> 3.1.7)
+  brakeman (~> 3.6.1)
   byebug
   codeclimate-test-reporter (~> 1.0.8)
   database_cleaner (~> 1.5.3)
