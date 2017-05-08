@@ -26,7 +26,6 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'sqlite3'
-  gem 'ffaker', '~> 2.5.0'
 end
 
 group :development do
@@ -53,7 +52,6 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'active_model_serializers', '~> 0.10.5'
-
 gem 'knock', '~> 2.1.1'
-
 gem 'dotenv-rails', '~> 2.2.0'
+gem 'ffaker', '~> 2.5.0'

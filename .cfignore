@@ -1,6 +1,0 @@
-.bundle
-.git
-log
-tmp
-vendor/bundle
-coverage

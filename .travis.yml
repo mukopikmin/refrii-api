@@ -1,11 +1,11 @@
 language: ruby
 rvm:
-- 2.3.0
+  - 2.3.0
 addons:
   code_climate:
-    repo_token: 8f00eb98f1ca61c656980903320f295dc5ef90ec20e9cb32a84c094d1e5d9ea2
+    repo_token: 0bef4d157d44f20ce4fef62d2618e8e0b3bbc2d4c7ae9c862e1a83f461d3e64b
 after_success:
-- bundle exec codeclimate-test-reporter
+  - bundle exec codeclimate-test-reporter
 notifications:
   slack:
     secure: 9Tq3TPu2i6lUB9FW1phl8CfI9KS8yyH/QVyt5zlVFwcL0GP5prG//2Fx6S4HyLcy+oeHjkuDWUziHfFOQmfqKrTknlvVcf5xL4gJADeNXJ+HqqKz5na9VOXruLbiSQsBpXMlygmCgywktmqKXo8LYDaosbOPzSHBXT3qz4qCMhLy/B/U40zca2kE6vxUA/ISk+aTNjTqqERVlBpMl3IKzUKWxN/oHhfVwvYcPZb8Kpyya09q4GPuMOJB+R0hltxAa1cras5wRYfEtjNIkbXFELgCOAZKAiK0688uKXrcfM5UjjhC55OcE0dtllE0G/sBkikZ9Zt1UTqxDWY6HjrXyw1aCpt4g8mjvWKiza7AnkaJpBDFD4Xxnbm1G9+jbjdzxhAEN2Uz/po5SqSXYqjJbF5Bpe2SEJltXnKY6iwJ1sO0OedhWn4TI2+fhEhuGeIkYeHNTAgbvv/l1YlLOyTMJ8YlXsFvL9l2Zq2v0CB7V85ceIa59coDfth50zW7m1PSjiEaUQ2I/cyggTv4N+uBzclijkaFxTSx+xqC2lWLU0+JL82FtqU+X6hrxsNFEFFb3DOj5WHwOUaQDjskrrbxrp0/xDl2vWni1I+KGRdSb8oVg71kGCg6YS1d7p0qC9G8RYUNBodYn15CiC3DHWpP0Vjlb6Vi1q2EBqscldeGKXU=
