@@ -1,4 +1,4 @@
-# Elephant Box API
+# Refrii API
 
 [![Build Status](https://travis-ci.org/mukopikmin/refrii-api.svg?branch=master)](https://travis-ci.org/mukopikmin/refrii-api)
 [![Code Climate](https://codeclimate.com/github/mukopikmin/refrii-api/badges/gpa.svg)](https://codeclimate.com/github/mukopikmin/refrii-api)
