@@ -13,30 +13,30 @@
 ActiveRecord::Schema.define(version: 20170403112643) do
 
   create_table "boxes", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.text     "notice"
-    t.integer  "user_id",    null: false
+    t.string "name", null: false
+    t.text "notice"
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_boxes_on_user_id"
   end
 
   create_table "foods", force: :cascade do |t|
-    t.string   "name",            null: false
-    t.text     "notice"
-    t.float    "amount"
-    t.date     "expiration_date"
-    t.integer  "box_id",          null: false
-    t.integer  "unit_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.string "name", null: false
+    t.text "notice"
+    t.float "amount"
+    t.date "expiration_date"
+    t.integer "box_id", null: false
+    t.integer "unit_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["box_id"], name: "index_foods_on_box_id"
     t.index ["unit_id"], name: "index_foods_on_unit_id"
   end
 
   create_table "invitations", force: :cascade do |t|
-    t.integer  "box_id",     null: false
-    t.integer  "user_id",    null: false
+    t.integer "box_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["box_id"], name: "index_invitations_on_box_id"
@@ -44,22 +44,22 @@ ActiveRecord::Schema.define(version: 20170403112643) do
   end
 
   create_table "units", force: :cascade do |t|
-    t.string   "label",                    null: false
-    t.float    "step",       default: 1.0, null: false
-    t.integer  "user_id",                  null: false
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.string "label", null: false
+    t.float "step", default: 1.0, null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_units_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "name",                            null: false
-    t.string   "email",                           null: false
-    t.string   "password_digest",                 null: false
-    t.boolean  "admin",           default: false, null: false
-    t.boolean  "disabled",        default: false, null: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.string "name", null: false
+    t.string "email", null: false
+    t.string "password_digest", null: false
+    t.boolean "admin", default: false, null: false
+    t.boolean "disabled", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

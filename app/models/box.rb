@@ -10,4 +10,12 @@ class Box < ApplicationRecord
   def is_owned_by(user)
     user.boxes.include?(self) || user.invited_boxes.include?(self)
   end
+
+  def is_inviting(user)
+    self.invitations.map(&:user).include?(user)
+  end
+
+  def is_accesable(user)
+    self.is_owned_by(user) || self.is_inviting(user)
+  end
 end

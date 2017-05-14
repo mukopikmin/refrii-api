@@ -19,6 +19,10 @@ RSpec.describe BoxesController, type: :routing do
       expect(:get => "/boxes/1").to route_to("boxes#show", :id => "1")
     end
 
+    it "routes to #units" do
+      expect(:get => "/boxes/1/units").to route_to("boxes#units", :id => "1")
+    end
+
     it "routes to #create" do
       expect(:post => "/boxes").to route_to("boxes#create")
     end

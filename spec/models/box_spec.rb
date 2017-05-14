@@ -43,4 +43,38 @@ RSpec.describe Box, type: :model do
       it { is_expected.to be(true) }
     end
   end
+
+  describe '#is_inviting' do
+    context 'with box owned by user' do
+      subject(:inviting) { box1.is_inviting(user1) }
+      it { is_expected.to be(false) }
+    end
+
+    context 'with box not owned by user' do
+      subject(:inviting) { box2.is_inviting(user1) }
+      it { is_expected.to be(false) }
+    end
+
+    context 'with box inviting user' do
+      subject(:inviting) { box1.is_inviting(user2) }
+      it { is_expected.to be(true) }
+    end
+  end
+
+  describe '#is_accesable' do
+    context 'with box owned by user' do
+      subject(:accesable) { box1.is_accesable(user1) }
+      it { is_expected.to be(true) }
+    end
+
+    context 'with box not owned by user' do
+      subject(:accesable) { box2.is_accesable(user1) }
+      it { is_expected.to be(false) }
+    end
+
+    context 'with box inviting user' do
+      subject(:accesable) { box1.is_accesable(user2) }
+      it { is_expected.to be(true) }
+    end
+  end
 end

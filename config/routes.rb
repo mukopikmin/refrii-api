@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     end
 
     member do
+      get :units
       post :invite
       delete :deinvite
     end

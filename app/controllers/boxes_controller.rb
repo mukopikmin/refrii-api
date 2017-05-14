@@ -1,5 +1,5 @@
 class BoxesController < ApplicationController
-  before_action :set_box, only: [:show, :update, :destroy, :invite, :deinvite]
+  before_action :set_box, only: [:show, :units, :update, :destroy, :invite, :deinvite]
   before_action :authenticate_user
 
   # GET /boxes
@@ -24,6 +24,16 @@ class BoxesController < ApplicationController
   def show
     if @box.is_owned_by(current_user)
       render json: @box, include: [:user, { foods: :unit }]
+    else
+      forbidden
+    end
+  end
+
+  # GET /boxes/1/units
+  def units
+    @units = @box.user.units
+    if @box.is_accesable(current_user)
+      render json: @units
     else
       forbidden
     end

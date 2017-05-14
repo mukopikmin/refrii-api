@@ -6,19 +6,19 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-User.create(name: 'Test User',
-            email: 'test@test.com',
-            admin: true,
-            password: 'password',
-            password_confirmation: 'password')
+# User.create(name: 'Test User',
+#             email: 'test@test.com',
+#             admin: true,
+#             password: 'password',
+#             password_confirmation: 'password')
 
-10.times do
-  password = FFaker::Internet.password
+10.times do |i|
+  # password = FFaker::Internet.password
   User.create(name: FFaker::Name.name,
-              email: FFaker::Internet.email,
+              email: "test#{i}@test.com",
               admin: false,
-              password: password,
-              password_confirmation: password)
+              password: 'password',
+              password_confirmation: 'password')
 end
 
 20.times do
