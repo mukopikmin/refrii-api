@@ -19,6 +19,39 @@ RSpec.describe BoxesController, type: :controller do
     end
   end
 
+  describe 'GET #owns' do
+    let(:user1) { create(:user) }
+    let(:user2) { create(:user) }
+    let!(:box1) { create(:box, user: user1) }
+    let!(:box2) { create(:box, user: user2) }
+
+    before(:each) do
+      request.headers['Authorization'] = "Bearer #{token(user1)}"
+    end
+
+    it 'assigns own boxes as @boxes' do
+      get :owns
+      expect(assigns(:boxes)).to eq([box1])
+    end
+  end
+
+  describe 'GET #invited' do
+    let(:user1) { create(:user) }
+    let(:user2) { create(:user) }
+    let(:box1) { create(:box, user: user1) }
+    let(:box2) { create(:box, user: user2) }
+    let!(:invitation) { Invitation.create(box: box1, user: user2) }
+
+    before(:each) do
+      request.headers['Authorization'] = "Bearer #{token(user2)}"
+    end
+
+    it 'assigns all boxes as @boxes' do
+      get :invited
+      expect(assigns(:boxes)).to eq([box1])
+    end
+  end
+
   describe 'GET #show' do
     let!(:user) { create(:user) }
     let!(:box) { create(:box, user: user) }
@@ -50,7 +83,7 @@ RSpec.describe BoxesController, type: :controller do
     end
 
     context 'with invited boxes' do
-      
+
     end
   end
 
@@ -77,9 +110,9 @@ RSpec.describe BoxesController, type: :controller do
 
     context 'with invalid params' do
       it 'assigns a newly created but unsaved box as @box' do
-        expect do
-          post :create, params: attributes_for(:no_name_box)
-        end.to raise_error(ActiveRecord::StatementInvalid)
+        post :create, params: attributes_for(:no_name_box)
+        expect(assigns(:box)).to be_a(Box)
+        expect(assigns(:box)).not_to be_persisted
       end
     end
   end
@@ -107,8 +140,8 @@ RSpec.describe BoxesController, type: :controller do
 
     xcontext 'with invalid params' do
       it 'assigns the box as @box' do
-        put :update, params: { id: box.to_param }.merge!(attributes_for(:another_box))
-        expect(assigns(:box)).to eq(box)
+        put :update, params: { id: box.to_param }.merge!(attributes_for(:no_name_box))
+        expect(assigns(:box)).to eq([box])
       end
     end
   end

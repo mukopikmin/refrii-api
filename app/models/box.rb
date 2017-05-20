@@ -1,4 +1,7 @@
 class Box < ApplicationRecord
+  validates :name, presence: true, length: { minimum: 2 }
+  validates :user, presence: true
+
   belongs_to :user
   has_many :foods
   has_many :invitations

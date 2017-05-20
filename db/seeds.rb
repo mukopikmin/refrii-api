@@ -38,7 +38,7 @@ end
   box = Box.find(rand(Box.first.id .. Box.last.id))
   Food.create(name: FFaker::Food.fruit,
               notice: FFaker::BaconIpsum.phrase,
-              amount: Random.rand(100.0),
+              amount: Random.rand(100.0).round(1),
               expiration_date: Random.rand(Time.zone.tomorrow..Time.zone.tomorrow.next_year),
               box: box,
               unit: Unit.find(rand(box.user.units.first.id .. box.user.units.last.id)))

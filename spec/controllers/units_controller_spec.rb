@@ -33,9 +33,10 @@ RSpec.describe UnitsController, type: :controller do
   end
 
   describe "POST #create" do
+    let(:user) { create(:user)}
+
     before(:each) do
-      @user = create(:user)
-      request.headers['Authorization'] = "Bearer #{token(@user)}"
+      request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
     context "with valid params" do
@@ -53,44 +54,46 @@ RSpec.describe UnitsController, type: :controller do
     end
 
     context "without label" do
-      it "raises error" do
-        expect {
-          post :create, params: attributes_for(:no_label_unit)
-        }.to raise_error(ActiveRecord::StatementInvalid)
+      it 'assigns a newly created but unsaved unit as @unit' do
+        post :create, params: attributes_for(:no_label_unit)
+        expect(assigns(:unit)).to be_a(Unit)
+        expect(assigns(:unit)).not_to be_persisted
       end
     end
   end
 
   describe "PUT #update" do
+    let(:unit) { create(:unit, :with_user)}
+
     before(:each) do
-      @unit = create(:unit, :with_user)
-      request.headers['Authorization'] = "Bearer #{token(@unit.user)}"
+      request.headers['Authorization'] = "Bearer #{token(unit.user)}"
     end
 
     context "with valid params" do
       it "assigns the requested unit as @unit" do
-        put :update, params: {id: @unit.to_param}.merge!(attributes_for(:updated_unit))
-        expect(assigns(:unit)).to eq(@unit)
+        put :update, params: {id: unit.to_param}.merge!(attributes_for(:updated_unit))
+        expect(assigns(:unit)).to eq(unit)
       end
     end
 
     xcontext "without label" do
       it "assigns the unit as @unit" do
-        put :update, params: {id: @unit.to_param}.merge!(attributes_for(:no_label_unit))
-        expect(assigns(:unit)).to eq(@unit)
+        put :update, params: {id: unit.to_param}.merge!(attributes_for(:no_label_unit))
+        expect(assigns(:unit)).to eq(unit)
       end
     end
   end
 
   describe "DELETE #destroy" do
+    let(:unit) { create(:unit, :with_user)}
+
     before(:each) do
-      @unit = create(:unit, :with_user)
-      request.headers['Authorization'] = "Bearer #{token(@unit.user)}"
+      request.headers['Authorization'] = "Bearer #{token(unit.user)}"
     end
 
     it "destroys the requested unit" do
       expect {
-        delete :destroy, params: {id: @unit.to_param}
+        delete :destroy, params: {id: unit.to_param}
       }.to change(Unit, :count).by(-1)
     end
   end
