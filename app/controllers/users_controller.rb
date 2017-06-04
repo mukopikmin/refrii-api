@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-  before_action :authenticate_user, only: [:index, :show, :update, :destroy]
+  before_action :authenticate_user, only: [:index, :show, :search, :update, :destroy]
 
   # GET /users
   def index
@@ -11,7 +11,11 @@ class UsersController < ApplicationController
   # GET /users/verify
   def verify
     @user = current_user
-    render json: @user, include: []
+    if current_user.nil?
+      not_found
+    else
+      render json: @user, include: []
+    end
   end
 
   # GET /users/1
@@ -23,7 +27,12 @@ class UsersController < ApplicationController
   def search
     email = params[:email]
     @user = User.find_by_email(email)
-    render json: @user
+
+    if @user.nil?
+      not_found
+    else
+      render json: @user
+    end
   end
 
   # POST /users
@@ -47,9 +56,9 @@ class UsersController < ApplicationController
   end
 
   # DELETE /users/1
-  def destroy
-    @user.destroy
-  end
+  # def destroy
+  #   @user.destroy
+  # end
 
   private
 

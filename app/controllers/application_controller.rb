@@ -16,4 +16,8 @@ class ApplicationController < ActionController::API
   def not_modified
     render json: ['Not modified'], status: :not_modified
   end
+
+  def not_found
+    render json: ['Not found'], status: :not_found
+  end
 end

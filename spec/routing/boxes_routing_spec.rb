@@ -44,7 +44,7 @@ RSpec.describe BoxesController, type: :routing do
     end
 
     it "routes to #deinvite" do
-      expect(:delete => "/boxes/1/deinvite").to route_to("boxes#deinvite", :id => "1")
+      expect(:delete => "/boxes/1/invite").to route_to("boxes#deinvite", :id => "1")
     end
   end
 end

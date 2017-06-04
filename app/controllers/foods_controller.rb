@@ -21,10 +21,14 @@ class FoodsController < ApplicationController
   def create
     @food = Food.new(food_params)
 
-    if @food.save
-      render json: @food, status: :created, location: @food
+    if @food.is_owned_by(current_user)
+      if @food.save
+        render json: @food, status: :created, location: @food
+      else
+        render json: @food.errors, status: :unprocessable_entity
+      end
     else
-      render json: @food.errors, status: :unprocessable_entity
+      forbidden
     end
   end
 

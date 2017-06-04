@@ -75,11 +75,12 @@ class BoxesController < ApplicationController
   # POST /boxes/1/invite
   def invite
     @invitation = Invitation.new(invitatation_params)
+
     if Invitation.exists?(invitatation_params.to_h)
       bad_request
     elsif @box.is_owned_by(current_user)
       if @invitation.save
-        render json: @invitation
+        render json: @invitation, status: :created
       else
         render json: @invitation.errors, status: :unprocessable_entity
       end
@@ -88,7 +89,7 @@ class BoxesController < ApplicationController
     end
   end
 
-  # DELETE /boxes/1/deinvite
+  # DELETE /boxes/1/invite
   def deinvite
     @invitation = Invitation.find_by(user: current_user, box: @box)
     if @invitation.nil?

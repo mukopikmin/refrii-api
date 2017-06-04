@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     member do
       get :units
       post :invite
-      delete :deinvite
+      delete 'invite' => :deinvite
     end
   end
   resources :users do
