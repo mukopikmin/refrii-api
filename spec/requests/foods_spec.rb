@@ -41,7 +41,7 @@ RSpec.describe "Foods", type: :request do
     end
 
     context 'with authentication' do
-      context 'with own box' do
+      context 'with food in own box' do
         before(:each) do
           token = Knock::AuthToken.new(payload: { sub: user1.id }).token
           get food_path(food1), headers: { authorization: "Bearer #{token}" }
@@ -52,14 +52,14 @@ RSpec.describe "Foods", type: :request do
         end
       end
 
-      context 'with other\'s box' do
+      context 'with food in other\'s box' do
         before(:each) do
           token = Knock::AuthToken.new(payload: { sub: user1.id }).token
           get food_path(food2), headers: { authorization: "Bearer #{token}" }
         end
 
-        it "returns 403" do
-          expect(response).to have_http_status(:forbidden)
+        it "returns 404" do
+          expect(response).to have_http_status(:not_found)
         end
       end
     end
@@ -76,7 +76,7 @@ RSpec.describe "Foods", type: :request do
     end
 
     context 'with authentication' do
-      context 'with own box' do
+      context 'with food in own box' do
         let(:params) { attributes_for(:food).merge!(box_id: box1.to_param, unit_id: unit1.to_param) }
 
         before(:each) do
@@ -89,7 +89,7 @@ RSpec.describe "Foods", type: :request do
         end
       end
 
-      context 'with other\'s box' do
+      context 'with food in other\'s box' do
         let(:params) { attributes_for(:food).merge!(box_id: box2.to_param, unit_id: unit2.to_param) }
 
         before(:each) do
@@ -97,8 +97,8 @@ RSpec.describe "Foods", type: :request do
           post foods_path, params: params, headers: { authorization: "Bearer #{token}" }
         end
 
-        it "returns 403" do
-          expect(response).to have_http_status(:forbidden)
+        it "returns 400" do
+          expect(response).to have_http_status(:bad_request)
         end
       end
     end
@@ -116,7 +116,7 @@ RSpec.describe "Foods", type: :request do
     end
 
     context 'with authentication' do
-      context 'with own box' do
+      context 'with food in own box' do
         before(:each) do
           token = Knock::AuthToken.new(payload: { sub: user1.id }).token
           put food_path(food1), params: params, headers: { authorization: "Bearer #{token}" }
@@ -127,14 +127,14 @@ RSpec.describe "Foods", type: :request do
         end
       end
 
-      context 'with other\'s box' do
+      context 'with food in other\'s box' do
         before(:each) do
           token = Knock::AuthToken.new(payload: { sub: user1.id }).token
           put food_path(food2), params: params, headers: { authorization: "Bearer #{token}" }
         end
 
-        it "returns 403" do
-          expect(response).to have_http_status(:forbidden)
+        it "returns 400" do
+          expect(response).to have_http_status(:bad_request)
         end
       end
     end
@@ -150,7 +150,7 @@ RSpec.describe "Foods", type: :request do
     end
 
     context 'with authentication' do
-      context 'with own box' do
+      context 'with food in own box' do
         before(:each) do
           token = Knock::AuthToken.new(payload: { sub: user1.id }).token
           delete food_path(food1), headers: { authorization: "Bearer #{token}" }
@@ -161,14 +161,14 @@ RSpec.describe "Foods", type: :request do
         end
       end
 
-      context 'with other\'s box' do
+      context 'with food in other\'s box' do
         before(:each) do
           token = Knock::AuthToken.new(payload: { sub: user1.id }).token
           delete food_path(food2), headers: { authorization: "Bearer #{token}" }
         end
 
-        it "returns 403" do
-          expect(response).to have_http_status(:forbidden)
+        it "returns 400" do
+          expect(response).to have_http_status(:bad_request)
         end
       end
     end

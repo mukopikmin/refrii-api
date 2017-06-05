@@ -100,8 +100,8 @@ RSpec.describe "Boxes", type: :request do
           get box_path(box2), headers: { authorization: "Bearer #{token}" }
         end
 
-        it "returns 403" do
-          expect(response).to have_http_status(:forbidden)
+        it "returns 404" do
+          expect(response).to have_http_status(:not_found)
         end
       end
     end
@@ -134,8 +134,8 @@ RSpec.describe "Boxes", type: :request do
           get units_box_path(box2), headers: { authorization: "Bearer #{token}" }
         end
 
-        it "returns 403" do
-          expect(response).to have_http_status(:forbidden)
+        it "returns 404" do
+          expect(response).to have_http_status(:not_found)
         end
       end
     end
@@ -193,8 +193,8 @@ RSpec.describe "Boxes", type: :request do
           put box_path(box2), params: params, headers: { authorization: "Bearer #{token}" }
         end
 
-        it "returns 403" do
-          expect(response).to have_http_status(:forbidden)
+        it "returns 400" do
+          expect(response).to have_http_status(:bad_request)
         end
       end
     end
@@ -227,8 +227,8 @@ RSpec.describe "Boxes", type: :request do
           delete box_path(box2), headers: { authorization: "Bearer #{token}" }
         end
 
-        it "returns 403" do
-          expect(response).to have_http_status(:forbidden)
+        it "returns 400" do
+          expect(response).to have_http_status(:bad_request)
         end
       end
     end
@@ -263,8 +263,8 @@ RSpec.describe "Boxes", type: :request do
           post invite_box_path(box2), params: params, headers: { authorization: "Bearer #{token}" }
         end
 
-        it "returns 403" do
-          expect(response).to have_http_status(:forbidden)
+        it "returns 400" do
+          expect(response).to have_http_status(:bad_request)
         end
       end
     end
@@ -299,8 +299,8 @@ RSpec.describe "Boxes", type: :request do
           delete invite_box_path(box2), params: params, headers: { authorization: "Bearer #{token}" }
         end
 
-        it "returns 304" do
-          expect(response).to have_http_status(:not_modified)
+        it "returns 400" do
+          expect(response).to have_http_status(:bad_request)
         end
       end
     end

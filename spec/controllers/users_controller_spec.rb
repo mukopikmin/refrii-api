@@ -87,23 +87,8 @@ RSpec.describe UsersController, type: :controller do
     xcontext 'with existing email' do
       it 'aises error' do
         put :update, params: { id: user.to_param }.merge!(attributes_for(:another_user))
-        # expect(assigns(:user)).to eq(1)
         expect(assigns(:user)).to be_persisted
       end
-    end
-  end
-
-  xdescribe 'DELETE #destroy' do
-    let(:user) { create(:user) }
-
-    before(:each) do
-      request.headers['Authorization'] = "Bearer #{token(user)}"
-    end
-
-    it 'destroys the requested user' do
-      expect do
-        delete :destroy, params: { id: user.to_param }
-      end.to change(User, :count).by(-1)
     end
   end
 end

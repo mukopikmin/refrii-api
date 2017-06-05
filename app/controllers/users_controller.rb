@@ -55,11 +55,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # DELETE /users/1
-  # def destroy
-  #   @user.destroy
-  # end
-
   private
 
   # Use callbacks to share common setup or constraints between actions.

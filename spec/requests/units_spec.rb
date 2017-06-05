@@ -54,8 +54,8 @@ RSpec.describe "Units", type: :request do
           get unit_path(unit2), headers: { authorization: "Bearer #{token}" }
         end
 
-        it "returns 403" do
-          expect(response).to have_http_status(:forbidden)
+        it "returns 404" do
+          expect(response).to have_http_status(:not_found)
         end
       end
     end
@@ -114,8 +114,8 @@ RSpec.describe "Units", type: :request do
           put unit_path(unit2), params: params, headers: { authorization: "Bearer #{token}" }
         end
 
-        it "returns 403" do
-          expect(response).to have_http_status(:forbidden)
+        it "returns 400" do
+          expect(response).to have_http_status(:bad_request)
         end
       end
     end
@@ -148,8 +148,8 @@ RSpec.describe "Units", type: :request do
           delete unit_path(unit2), headers: { authorization: "Bearer #{token}" }
         end
 
-        it "returns 403" do
-          expect(response).to have_http_status(:forbidden)
+        it "returns 400" do
+          expect(response).to have_http_status(:bad_request)
         end
       end
     end
