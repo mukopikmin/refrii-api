@@ -25,7 +25,7 @@ class BoxesController < ApplicationController
     if @box.is_owned_by(current_user)
       render json: @box, include: [:user, { foods: :unit }]
     else
-      forbidden
+      not_found
     end
   end
 
@@ -35,7 +35,7 @@ class BoxesController < ApplicationController
     if @box.is_accesable(current_user)
       render json: @units
     else
-      forbidden
+      not_found
     end
   end
 
@@ -59,7 +59,7 @@ class BoxesController < ApplicationController
         render json: @box.errors, status: :unprocessable_entity
       end
     else
-      forbidden
+      bad_request
     end
   end
 
@@ -68,7 +68,7 @@ class BoxesController < ApplicationController
     if @box.is_owned_by(current_user)
       @box.destroy
     else
-      forbidden
+      bad_request
     end
   end
 
@@ -85,7 +85,7 @@ class BoxesController < ApplicationController
         render json: @invitation.errors, status: :unprocessable_entity
       end
     else
-      forbidden
+      bad_request
     end
   end
 
@@ -93,7 +93,7 @@ class BoxesController < ApplicationController
   def deinvite
     @invitation = Invitation.find_by(user: current_user, box: @box)
     if @invitation.nil?
-      not_modified
+      bad_request
     else
       @invitation.destroy
     end

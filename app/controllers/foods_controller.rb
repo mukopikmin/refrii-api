@@ -13,7 +13,7 @@ class FoodsController < ApplicationController
     if @food.is_owned_by(current_user)
       render json: @food
     else
-      forbidden
+      not_found
     end
   end
 
@@ -28,7 +28,7 @@ class FoodsController < ApplicationController
         render json: @food.errors, status: :unprocessable_entity
       end
     else
-      forbidden
+      bad_request
     end
   end
 
@@ -41,7 +41,7 @@ class FoodsController < ApplicationController
         render json: @food.errors, status: :unprocessable_entity
       end
     else
-      forbidden
+      bad_request
     end
   end
 
@@ -50,7 +50,7 @@ class FoodsController < ApplicationController
     if @food.is_owned_by(current_user)
       @food.destroy
     else
-      forbidden
+      bad_request
     end
   end
 

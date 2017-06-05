@@ -14,7 +14,7 @@ class UnitsController < ApplicationController
     if @unit.is_owned_by(current_user)
       render json: @unit
     else
-      forbidden
+      not_found
     end
   end
 
@@ -38,7 +38,7 @@ class UnitsController < ApplicationController
         render json: @unit.errors, status: :unprocessable_entity
       end
     else
-      forbidden
+      bad_request
     end
   end
 
@@ -47,7 +47,7 @@ class UnitsController < ApplicationController
     if @unit.is_owned_by(current_user)
       @unit.destroy
     else
-      forbidden
+      bad_request
     end
   end
 
