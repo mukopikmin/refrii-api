@@ -1,6 +1,5 @@
 class UnitsController < ApplicationController
   before_action :set_unit, only: [:show, :update, :destroy]
-  before_action :authenticate_user
 
   # GET /units
   def index

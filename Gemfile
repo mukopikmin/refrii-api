@@ -47,6 +47,9 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'active_model_serializers', '~> 0.10.5'
-gem 'knock', '~> 2.1.1'
 gem 'dotenv-rails', '~> 2.2.0'
 gem 'ffaker', '~> 2.5.0'
+
+gem 'devise', '~> 4.3.0'
+gem 'omniauth', '~> 1.6.1'
+gem 'omniauth-google-oauth2', '~> 0.5.0'
