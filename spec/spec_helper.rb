@@ -22,6 +22,7 @@ SimpleCov.start "rails"
 
 require 'factory_girl_rails'
 require 'database_cleaner'
+require 'omniauth'
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
@@ -67,6 +68,8 @@ RSpec.configure do |config|
   config.after(:each) do
     DatabaseCleaner.clean
   end
+
+  OmniAuth.config.test_mode = true
 
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
