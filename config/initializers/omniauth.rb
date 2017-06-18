@@ -4,10 +4,5 @@ Rails.application.config.middleware.use OmniAuth::Builder do
            ENV['GOOGLE_CLIENT_SECRET'],
            name: 'google',
            redirect_uri: ENV['GOOGLE_CALLBACK_URL'],
-           :provider_ignores_state => true,
-           client_options: {
-             ssl: {
-               ca_file: '/usr/lib/ssl/certs/ca-certificates.crt'
-             }
-           }
+           :provider_ignores_state => true
 end
