@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "Users", type: :request do
+  def token(user)
+    JsonWebToken.payload(user)[:jwt]
+  end
+
   let(:user1) { create(:user) }
 
   describe 'GET /users' do
@@ -14,8 +18,7 @@ RSpec.describe "Users", type: :request do
 
     context 'with authentication' do
       before(:each) do
-        token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-        get users_path, headers: { authorization: "Bearer #{token}" }
+        get users_path, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
       it "returns 200" do
@@ -28,15 +31,14 @@ RSpec.describe "Users", type: :request do
     context 'without authorization' do
       before(:each) { get verify_users_path }
 
-      it "returns 404" do
-        expect(response).to have_http_status(:not_found)
+      it "returns 401" do
+        expect(response).to have_http_status(:unauthorized)
       end
     end
 
     context 'with authentication' do
       before(:each) do
-        token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-        get verify_users_path, headers: { authorization: "Bearer #{token}" }
+        get verify_users_path, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
       it "returns 200" do
@@ -62,8 +64,7 @@ RSpec.describe "Users", type: :request do
 
     context 'with authentication' do
       before(:each) do
-        token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-        get search_users_path, params: params, headers: { authorization: "Bearer #{token}" }
+        get search_users_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
       it "returns 200" do
@@ -83,8 +84,7 @@ RSpec.describe "Users", type: :request do
 
     context 'with authentication' do
       before(:each) do
-        token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-        get user_path(user1), headers: { authorization: "Bearer #{token}" }
+        get user_path(user1), headers: { authorization: "Bearer #{token(user1)}" }
       end
 
       it "returns 200" do
@@ -97,8 +97,7 @@ RSpec.describe "Users", type: :request do
     let(:params) { attributes_for(:user).merge!(user_id: user1.to_param) }
 
     before(:each) do
-      token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-      post users_path, params: params, headers: { authorization: "Bearer #{token}" }
+      post users_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
     end
 
     it "returns 201" do
@@ -119,8 +118,7 @@ RSpec.describe "Users", type: :request do
 
     context 'with authentication' do
       before(:each) do
-        token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-        put user_path(user1), params: params, headers: { authorization: "Bearer #{token}" }
+        put user_path(user1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
       it "returns 201" do

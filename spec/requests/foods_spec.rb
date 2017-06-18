@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "Foods", type: :request do
+  def token(user)
+    JsonWebToken.payload(user)[:jwt]
+  end
+
   let(:user1) { create(:user) }
   let(:user2) { create(:user) }
   let(:box1) { create(:box, user: user1) }
@@ -21,8 +25,7 @@ RSpec.describe "Foods", type: :request do
 
     context 'with authentication' do
       before(:each) do
-        token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-        get foods_path, headers: { authorization: "Bearer #{token}" }
+        get foods_path, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
       it "returns 200" do
@@ -43,8 +46,7 @@ RSpec.describe "Foods", type: :request do
     context 'with authentication' do
       context 'with food in own box' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          get food_path(food1), headers: { authorization: "Bearer #{token}" }
+          get food_path(food1), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 200" do
@@ -54,8 +56,7 @@ RSpec.describe "Foods", type: :request do
 
       context 'with food in other\'s box' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          get food_path(food2), headers: { authorization: "Bearer #{token}" }
+          get food_path(food2), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 404" do
@@ -80,8 +81,7 @@ RSpec.describe "Foods", type: :request do
         let(:params) { attributes_for(:food).merge!(box_id: box1.to_param, unit_id: unit1.to_param) }
 
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          post foods_path, params: params, headers: { authorization: "Bearer #{token}" }
+          post foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 201" do
@@ -93,8 +93,7 @@ RSpec.describe "Foods", type: :request do
         let(:params) { attributes_for(:food).merge!(box_id: box2.to_param, unit_id: unit2.to_param) }
 
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          post foods_path, params: params, headers: { authorization: "Bearer #{token}" }
+          post foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do
@@ -118,8 +117,7 @@ RSpec.describe "Foods", type: :request do
     context 'with authentication' do
       context 'with food in own box' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          put food_path(food1), params: params, headers: { authorization: "Bearer #{token}" }
+          put food_path(food1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 201" do
@@ -129,8 +127,7 @@ RSpec.describe "Foods", type: :request do
 
       context 'with food in other\'s box' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          put food_path(food2), params: params, headers: { authorization: "Bearer #{token}" }
+          put food_path(food2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do
@@ -152,8 +149,7 @@ RSpec.describe "Foods", type: :request do
     context 'with authentication' do
       context 'with food in own box' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          delete food_path(food1), headers: { authorization: "Bearer #{token}" }
+          delete food_path(food1), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 201" do
@@ -163,8 +159,7 @@ RSpec.describe "Foods", type: :request do
 
       context 'with food in other\'s box' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          delete food_path(food2), headers: { authorization: "Bearer #{token}" }
+          delete food_path(food2), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
   def token(user)
-    Knock::AuthToken.new(payload: { sub: user.id }).token
+    JsonWebToken.payload(user)[:jwt]
   end
 
   describe 'GET #index' do

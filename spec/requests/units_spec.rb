@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "Units", type: :request do
+  def token(user)
+    JsonWebToken.payload(user)[:jwt]
+  end
+
   let(:user1) { create(:user) }
   let(:user2) { create(:user) }
   let(:unit1) { create(:unit, user: user1) }
@@ -17,8 +21,7 @@ RSpec.describe "Units", type: :request do
 
     context 'with authentication' do
       before(:each) do
-        token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-        get units_path, headers: { authorization: "Bearer #{token}" }
+        get units_path, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
       it "returns 200" do
@@ -39,8 +42,7 @@ RSpec.describe "Units", type: :request do
     context 'with authentication' do
       context 'with own unit' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          get unit_path(unit1), headers: { authorization: "Bearer #{token}" }
+          get unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 200" do
@@ -50,8 +52,7 @@ RSpec.describe "Units", type: :request do
 
       context 'with other\'s unit' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          get unit_path(unit2), headers: { authorization: "Bearer #{token}" }
+          get unit_path(unit2), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 404" do
@@ -75,8 +76,7 @@ RSpec.describe "Units", type: :request do
       let(:params) { attributes_for(:unit).merge!(unit_id: unit1.to_param) }
 
       before(:each) do
-        token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-        post units_path, params: params, headers: { authorization: "Bearer #{token}" }
+        post units_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
       it "returns 201" do
@@ -99,8 +99,7 @@ RSpec.describe "Units", type: :request do
     context 'with authentication' do
       context 'with own unit' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          put unit_path(unit1), params: params, headers: { authorization: "Bearer #{token}" }
+          put unit_path(unit1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 201" do
@@ -110,8 +109,7 @@ RSpec.describe "Units", type: :request do
 
       context 'with other\'s unit' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          put unit_path(unit2), params: params, headers: { authorization: "Bearer #{token}" }
+          put unit_path(unit2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do
@@ -133,8 +131,7 @@ RSpec.describe "Units", type: :request do
     context 'with authentication' do
       context 'with own unit' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          delete unit_path(unit1), headers: { authorization: "Bearer #{token}" }
+          delete unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 201" do
@@ -144,8 +141,7 @@ RSpec.describe "Units", type: :request do
 
       context 'with other\'s unit' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          delete unit_path(unit2), headers: { authorization: "Bearer #{token}" }
+          delete unit_path(unit2), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do

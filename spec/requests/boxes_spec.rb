@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "Boxes", type: :request do
+  def token(user)
+    JsonWebToken.payload(user)[:jwt]
+  end
+
   let(:user1) { create(:user) }
   let(:user2) { create(:user) }
   let(:box1) { create(:box, user: user1) }
@@ -21,8 +25,7 @@ RSpec.describe "Boxes", type: :request do
 
     context 'with authentication' do
       before(:each) do
-        token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-        get boxes_path, headers: { authorization: "Bearer #{token}" }
+        get boxes_path, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
       it "returns 200" do
@@ -42,8 +45,7 @@ RSpec.describe "Boxes", type: :request do
 
     context 'with authentication' do
       before(:each) do
-        token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-        get owns_boxes_path, headers: { authorization: "Bearer #{token}" }
+        get owns_boxes_path, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
       it "returns 200" do
@@ -63,8 +65,7 @@ RSpec.describe "Boxes", type: :request do
 
     context 'with authentication' do
       before(:each) do
-        token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-        get invited_boxes_path, headers: { authorization: "Bearer #{token}" }
+        get invited_boxes_path, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
       it "returns 200" do
@@ -85,8 +86,7 @@ RSpec.describe "Boxes", type: :request do
     context 'with authentication' do
       context 'with own box' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          get box_path(box1), headers: { authorization: "Bearer #{token}" }
+          get box_path(box1), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 200" do
@@ -96,8 +96,7 @@ RSpec.describe "Boxes", type: :request do
 
       context 'with other\'s box' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          get box_path(box2), headers: { authorization: "Bearer #{token}" }
+          get box_path(box2), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 404" do
@@ -119,8 +118,7 @@ RSpec.describe "Boxes", type: :request do
     context 'with authentication' do
       context 'with own box' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          get units_box_path(box1), headers: { authorization: "Bearer #{token}" }
+          get units_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 200" do
@@ -130,8 +128,7 @@ RSpec.describe "Boxes", type: :request do
 
       context 'with other\'s box' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          get units_box_path(box2), headers: { authorization: "Bearer #{token}" }
+          get units_box_path(box2), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 404" do
@@ -154,8 +151,7 @@ RSpec.describe "Boxes", type: :request do
 
     context 'with authentication' do
       before(:each) do
-        token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-        post boxes_path, params: params, headers: { authorization: "Bearer #{token}" }
+        post boxes_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
       it "returns 201" do
@@ -178,8 +174,7 @@ RSpec.describe "Boxes", type: :request do
     context 'with authentication' do
       context 'with own box' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          put box_path(box1), params: params, headers: { authorization: "Bearer #{token}" }
+          put box_path(box1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 200" do
@@ -189,8 +184,7 @@ RSpec.describe "Boxes", type: :request do
 
       context 'with other\'s box' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          put box_path(box2), params: params, headers: { authorization: "Bearer #{token}" }
+          put box_path(box2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do
@@ -212,8 +206,7 @@ RSpec.describe "Boxes", type: :request do
     context 'with authentication' do
       context 'with own box' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          delete box_path(box1), headers: { authorization: "Bearer #{token}" }
+          delete box_path(box1), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 204" do
@@ -223,8 +216,7 @@ RSpec.describe "Boxes", type: :request do
 
       context 'with other\'s box' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          delete box_path(box2), headers: { authorization: "Bearer #{token}" }
+          delete box_path(box2), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do
@@ -248,8 +240,7 @@ RSpec.describe "Boxes", type: :request do
     context 'with authentication' do
       context 'with own box' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          post invite_box_path(box1), params: params, headers: { authorization: "Bearer #{token}" }
+          post invite_box_path(box1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 201" do
@@ -259,8 +250,7 @@ RSpec.describe "Boxes", type: :request do
 
       context 'with other\'s box' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          post invite_box_path(box2), params: params, headers: { authorization: "Bearer #{token}" }
+          post invite_box_path(box2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do
@@ -284,8 +274,7 @@ RSpec.describe "Boxes", type: :request do
     context 'with authentication' do
       context 'with own box' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          delete invite_box_path(box3), params: params, headers: { authorization: "Bearer #{token}" }
+          delete invite_box_path(box3), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 204" do
@@ -295,8 +284,7 @@ RSpec.describe "Boxes", type: :request do
 
       context 'with other\'s box' do
         before(:each) do
-          token = Knock::AuthToken.new(payload: { sub: user1.id }).token
-          delete invite_box_path(box2), params: params, headers: { authorization: "Bearer #{token}" }
+          delete invite_box_path(box2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do

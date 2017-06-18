@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-  before_action :authenticate_request!
+  before_action :authenticate_request!, only: [:index, :verify, :show, :search, :update]
 
   # GET /users
   def index
