@@ -11,6 +11,16 @@ class AuthenticationController < ApplicationController
     end
   end
 
+  def google
+    user = User.find_for_google(request.env['omniauth.auth'])
+
+    if user.persisted?
+      render json: payload(user)
+    else
+      render json: { errors: ['Invalid Username/Password'] }, status: :unauthorized
+    end
+  end
+
   private
 
   def payload(user)

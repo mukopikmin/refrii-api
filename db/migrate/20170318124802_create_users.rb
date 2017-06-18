@@ -3,9 +3,10 @@ class CreateUsers < ActiveRecord::Migration[5.0]
     create_table :users do |t|
       t.string :name, null: false
       t.string :email, null: false, unique: true
-      t.string :password_digest, null: false
+      t.string :password_digest
       t.boolean :admin, null: false, default: false
       t.boolean :disabled, null: false, default: false
+      t.string :provider, default: 'local'
 
       t.timestamps
     end

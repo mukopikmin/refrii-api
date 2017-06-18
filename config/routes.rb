@@ -21,4 +21,5 @@ Rails.application.routes.draw do
   end
 
   post 'auth/local', to: 'authentication#local'
+  get 'auth/google/callback', to: 'authentication#google'
 end

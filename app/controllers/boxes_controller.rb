@@ -1,5 +1,6 @@
 class BoxesController < ApplicationController
   before_action :set_box, only: [:show, :units, :update, :destroy, :invite, :deinvite]
+  before_action :authenticate_request!
 
   # GET /boxes
   def index
