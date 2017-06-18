@@ -20,20 +20,4 @@ class AuthenticationController < ApplicationController
       render json: { errors: ['Invalid Username/Password'] }, status: :unauthorized
     end
   end
-
-  # private
-  #
-  # def payload(user)
-  #   return nil unless user && user.id
-  #   {
-  #     jwt: JsonWebToken.encode(user_id: user.id,
-  #                              expires_at: 3.days.since),
-  #     user: {
-  #       id: user.id,
-  #       email: user.email,
-  #       name: user.name,
-  #       expires_at: 3.days.since
-  #     }
-  #   }
-  # end
 end

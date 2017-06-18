@@ -10,10 +10,10 @@ class ApplicationController < ActionController::API
     end
     @current_user = User.find(auth_token[:user_id])
   rescue JWT::VerificationError, JWT::DecodeError
-    render json: { errors: ['Not Authenticated'] }, status: :unauthorized
+    unauthorized
   end
 
-  private
+  protected
 
   def http_token
     @http_token ||= if request.headers['Authorization'].present?
@@ -29,8 +29,8 @@ class ApplicationController < ActionController::API
     http_token && auth_token && auth_token[:user_id].to_i
   end
 
-  def unauthorized_entity(entity_name)
-    render json: ['Unauthorized'], status: :unauthorized
+  def unauthorized
+    render json: { errors: ['Not Authenticated'] }, status: :unauthorized
   end
 
   def forbidden
