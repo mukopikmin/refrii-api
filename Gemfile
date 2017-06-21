@@ -31,8 +31,8 @@ group :development do
 end
 
 group :test do
-  gem 'database_cleaner', '~> 1.5.3'
-  gem 'rspec-rails', '~> 3.5.2'
+  gem 'database_cleaner', '~> 1.6.1'
+  gem 'rspec-rails', '~> 3.6.0'
   gem 'factory_girl_rails', '~> 4.8.0'
   gem 'rails-controller-testing', '~> 1.0.1'
   gem 'codeclimate-test-reporter', '~> 1.0.8', require: false
@@ -40,7 +40,7 @@ group :test do
 end
 
 group :production do
-  gem 'pg', '~> 0.20.0'
+  gem 'pg', '~> 0.21.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
