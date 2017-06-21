@@ -15,9 +15,7 @@ class User < ApplicationRecord
   end
 
   def invited_boxes
-    self.invitations.map do |invitation|
-      invitation.box
-    end
+    self.invitations.map(&:box)
   end
 
   def self.find_for_database_authentication(conditions)
@@ -25,14 +23,16 @@ class User < ApplicationRecord
   end
 
   def self.find_for_google(auth)
-    user = self.new(name: auth[:info][:name],
-                    email: auth[:info][:email],
-                    password_digest: 'blank',
-                    provider: 'google')
-    unless self.exists?(email: auth[:info][:email])
+    email = auth[:info][:email]
+    user = nil
+    unless self.exists?(email: email)
+      user = self.new(name: auth[:info][:name],
+                      email: email,
+                      password_digest: 'blank',
+                      provider: 'google')
       user.save!
     else
-      user = self.where(email: auth[:info][:email]).first
+      user = self.where(email: email).first
     end
     user
   end
