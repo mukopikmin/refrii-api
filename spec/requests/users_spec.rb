@@ -6,6 +6,7 @@ RSpec.describe "Users", type: :request do
   end
 
   let(:user1) { create(:user) }
+  let(:user2) { create(:user) }
 
   describe 'GET /users' do
     context 'without authentication' do
@@ -94,19 +95,52 @@ RSpec.describe "Users", type: :request do
   end
 
   describe 'POST /users' do
-    let(:params) { attributes_for(:user).merge!(user_id: user1.to_param) }
+    context 'with valid params' do
+      let(:params) { attributes_for(:user) }
 
-    before(:each) do
-      post users_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
+      before(:each) do
+        post users_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
+      end
+
+      it "returns 201" do
+        expect(response).to have_http_status(:created)
+      end
     end
 
-    it "returns 201" do
-      expect(response).to have_http_status(:created)
+    context 'with no email user' do
+      let(:params) { attributes_for(:no_email_user) }
+
+      before(:each) do
+        post users_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
+      end
+
+      it "returns 400" do
+        expect(response).to have_http_status(:bad_request)
+      end
+    end
+
+    context 'with no name user' do
+      let(:params) { attributes_for(:no_name_user) }
+
+      before(:each) do
+        post users_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
+      end
+
+      it "returns 400" do
+        expect(response).to have_http_status(:bad_request)
+      end
     end
   end
 
   describe 'PUT /users/:id' do
     let(:params) { attributes_for(:user) }
+    let(:inused_params) do
+      _params = params.dup
+      _params[:email] = user2.email
+      _params
+    end
+    let(:no_email_user) { attributes_for(:no_email_user) }
+    let(:no_name_user) { attributes_for(:no_name_user) }
 
     context 'without authentication' do
       before(:each) { put user_path(user1), params: params }
@@ -117,12 +151,44 @@ RSpec.describe "Users", type: :request do
     end
 
     context 'with authentication' do
-      before(:each) do
-        put user_path(user1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
+      context 'with valid params' do
+        before(:each) do
+          put user_path(user1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
+        end
+
+        it "returns 201" do
+          expect(response).to have_http_status(:ok)
+        end
       end
 
-      it "returns 201" do
-        expect(response).to have_http_status(:ok)
+      context 'with already used email' do
+        before(:each) do
+          put user_path(user1), params: inused_params, headers: { authorization: "Bearer #{token(user1)}" }
+        end
+
+        it "returns 400" do
+          expect(response).to have_http_status(:bad_request)
+        end
+      end
+
+      context 'with no email user' do
+        before(:each) do
+          put user_path(user1), params: no_email_user, headers: { authorization: "Bearer #{token(user1)}" }
+        end
+
+        it "returns 400" do
+          expect(response).to have_http_status(:bad_request)
+        end
+      end
+
+      context 'with no name user' do
+        before(:each) do
+          put user_path(user1), params: no_name_user, headers: { authorization: "Bearer #{token(user1)}" }
+        end
+
+        it "returns 400" do
+          expect(response).to have_http_status(:bad_request)
+        end
       end
     end
   end

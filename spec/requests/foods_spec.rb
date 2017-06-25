@@ -100,11 +100,24 @@ RSpec.describe "Foods", type: :request do
           expect(response).to have_http_status(:bad_request)
         end
       end
+
+      context 'with no name food' do
+        let(:params) { attributes_for(:no_name_food).merge!(box_id: box1.to_param, unit_id: unit1.to_param) }
+
+        before(:each) do
+          post foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
+        end
+
+        it "returns 400" do
+          expect(response).to have_http_status(:bad_request)
+        end
+      end
     end
   end
 
   describe 'PUT /foods/:id' do
     let(:params) { attributes_for(:food) }
+    let(:no_name_params) { attributes_for(:no_name_food) }
 
     context 'without authentication' do
       before(:each) { put food_path(food1), params: params }
@@ -128,6 +141,16 @@ RSpec.describe "Foods", type: :request do
       context 'with food in other\'s box' do
         before(:each) do
           put food_path(food2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
+        end
+
+        it "returns 400" do
+          expect(response).to have_http_status(:bad_request)
+        end
+      end
+
+      context 'with no name food' do
+        before(:each) do
+          put food_path(food1), params: no_name_params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do

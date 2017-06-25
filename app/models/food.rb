@@ -1,5 +1,5 @@
 class Food < ApplicationRecord
-  validates :name, length: { minimum: 0 }
+  validates :name, length: { minimum: 1 }
   validates :amount, numericality: { greater_than_or_equal_to: 0 }
   validates :box, presence: true
   validates :unit, presence: true

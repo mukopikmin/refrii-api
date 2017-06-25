@@ -2,13 +2,13 @@ class JsonWebToken
   def self.payload(user)
     return nil unless user && user.id
     {
-      jwt: self.encode(user_id: user.id,
-                               expires_at: 3.days.since),
+      jwt: self.encode(user_id: user.id, expires_at: 7.days.since),
       user: {
         id: user.id,
         email: user.email,
         name: user.name,
-        expires_at: 3.days.since
+        provider: user.provider,
+        expires_at: 7.days.since
       }
     }
   end

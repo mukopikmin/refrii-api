@@ -25,18 +25,14 @@ class UnitsController < ApplicationController
     if @unit.save
       render json: @unit, status: :created, location: @unit
     else
-      render json: @unit.errors, status: :unprocessable_entity
+      bad_request
     end
   end
 
   # PATCH/PUT /units/1
   def update
-    if @unit.is_owned_by(current_user)
-      if @unit.update(unit_params)
-        render json: @unit
-      else
-        render json: @unit.errors, status: :unprocessable_entity
-      end
+    if @unit.is_owned_by(current_user) && @unit.update(unit_params)
+      render json: @unit
     else
       bad_request
     end

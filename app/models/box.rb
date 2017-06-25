@@ -1,5 +1,5 @@
 class Box < ApplicationRecord
-  validates :name, presence: true, length: { minimum: 2 }
+  validates :name, presence: true, length: { minimum: 1 }
   validates :user, presence: true
 
   belongs_to :user

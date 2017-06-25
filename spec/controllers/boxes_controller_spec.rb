@@ -125,24 +125,15 @@ RSpec.describe BoxesController, type: :controller do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
-    context 'with valid params' do
-      it 'updates the requested box' do
-        put :update, params: { id: box.to_param }.merge!(attributes_for(:another_box))
-        box.reload
-        expect(box.name).to eq(attributes_for(:another_box)[:name])
-      end
-
-      it 'assigns the requested box as @box' do
-        put :update, params: { id: box.to_param }.merge!(attributes_for(:another_box))
-        expect(assigns(:box)).to eq(box)
-      end
+    it 'updates the requested box' do
+      put :update, params: { id: box.to_param }.merge!(attributes_for(:another_box))
+      box.reload
+      expect(box.name).to eq(attributes_for(:another_box)[:name])
     end
 
-    xcontext 'with invalid params' do
-      it 'assigns the box as @box' do
-        put :update, params: { id: box.to_param }.merge!(attributes_for(:no_name_box))
-        expect(assigns(:box)).to eq([box])
-      end
+    it 'assigns the requested box as @box' do
+      put :update, params: { id: box.to_param }.merge!(attributes_for(:another_box))
+      expect(assigns(:box)).to eq(box)
     end
   end
 

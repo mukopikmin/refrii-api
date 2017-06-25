@@ -8,6 +8,7 @@ FactoryGirl.define do
   end
 
   factory :no_label_unit, class: Unit do
+    label ''
   end
 
   trait :with_user do

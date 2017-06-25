@@ -1,6 +1,6 @@
 class Unit < ApplicationRecord
-  validates :label, presence: true
-  validates :step, numericality: { greater_than: 0 }
+  validates :label, presence: true, length: { minimum: 1 }
+  validates :step, presence: true, numericality: { greater_than: 0 }
   validates :user, presence: true
 
   belongs_to :user

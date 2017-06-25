@@ -76,19 +76,10 @@ RSpec.describe UsersController, type: :controller do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
-    context 'with valid params' do
-      it 'assigns the requested user as @user' do
-        put :update, params: { id: user.to_param }.merge!(attributes_for(:updated_user))
-        user.reload
-        expect(assigns(:user).email).to eq(build(:updated_user).email)
-      end
-    end
-
-    xcontext 'with existing email' do
-      it 'aises error' do
-        put :update, params: { id: user.to_param }.merge!(attributes_for(:another_user))
-        expect(assigns(:user)).to be_persisted
-      end
+    it 'assigns the requested user as @user' do
+      put :update, params: { id: user.to_param }.merge!(attributes_for(:updated_user))
+      user.reload
+      expect(assigns(:user).email).to eq(build(:updated_user).email)
     end
   end
 end

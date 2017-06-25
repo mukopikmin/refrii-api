@@ -15,6 +15,16 @@ FactoryGirl.define do
 
   factory :no_email_user, class: User do
     name 'no mail user'
+    email ''
+    password 'secret'
+    password_confirmation 'secret'
+    admin false
+    disabled false
+  end
+
+  factory :no_name_user, class: User do
+    name ''
+    email 'noname@test.com'
     password 'secret'
     password_confirmation 'secret'
     admin false

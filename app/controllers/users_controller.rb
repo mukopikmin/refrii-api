@@ -42,16 +42,16 @@ class UsersController < ApplicationController
     if @user.save
       render json: @user, status: :created, location: @user
     else
-      render json: @user.errors, status: :unprocessable_entity
+      bad_request
     end
   end
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)
+    if !User.exists?(email: user_params[:email])&& @user.update(user_params)
       render json: @user
     else
-      render json: @user.errors, status: :unprocessable_entity
+      bad_request
     end
   end
 

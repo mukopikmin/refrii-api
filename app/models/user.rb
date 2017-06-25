@@ -1,6 +1,9 @@
 class User < ApplicationRecord
   has_secure_password
 
+  validates :name, presence: true, length: { minimum: 1 }
+  validates :email, presence: true, length: { minimum: 1 }
+  validates :password_confirmation, presence: true, if: :local_user?
   validates :email,
             presence: true,
             uniqueness: true,
@@ -14,25 +17,29 @@ class User < ApplicationRecord
     BCrypt::Password.new(password_digest) == unencrypted_password && self
   end
 
+  def local_user?
+    provider == 'local'
+  end
+
   def invited_boxes
-    self.invitations.map(&:box)
+    invitations.map(&:box)
   end
 
   def self.find_for_database_authentication(conditions)
-    self.where(conditions).first
+    where(conditions).first
   end
 
   def self.find_for_google(auth)
     email = auth[:info][:email]
     user = nil
-    unless self.exists?(email: email)
-      user = self.new(name: auth[:info][:name],
-                      email: email,
-                      password_digest: 'blank',
-                      provider: 'google')
-      user.save!
+    if exists?(email: email)
+      user = where(email: email).first
     else
-      user = self.where(email: email).first
+      user = new(name: auth[:info][:name],
+                 email: email,
+                 password_digest: 'no password',
+                 provider: 'google')
+      user.save!
     end
     user
   end

@@ -46,18 +46,14 @@ class BoxesController < ApplicationController
     if @box.save
       render json: @box, status: :created, location: @box
     else
-      render json: @box.errors, status: :unprocessable_entity
+      bad_request
     end
   end
 
   # PATCH/PUT /boxes/1
   def update
-    if @box.is_owned_by(current_user)
-      if @box.update(box_params)
-        render json: @box
-      else
-        render json: @box.errors, status: :unprocessable_entity
-      end
+    if @box.is_owned_by(current_user) && @box.update(box_params)
+      render json: @box
     else
       bad_request
     end
@@ -76,14 +72,8 @@ class BoxesController < ApplicationController
   def invite
     @invitation = Invitation.new(invitatation_params)
 
-    if Invitation.exists?(invitatation_params.to_h)
-      bad_request
-    elsif @box.is_owned_by(current_user)
-      if @invitation.save
-        render json: @invitation, status: :created
-      else
-        render json: @invitation.errors, status: :unprocessable_entity
-      end
+    if !Invitation.exists?(invitatation_params.to_h) && @box.is_owned_by(current_user) && @invitation.save
+      render json: @invitation, status: :created
     else
       bad_request
     end

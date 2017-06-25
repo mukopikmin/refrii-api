@@ -79,23 +79,13 @@ RSpec.describe FoodsController, type: :controller do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
-    context 'with valid params' do
-      let(:new_attributes) do
-        attributes_for(:another_food)
-      end
-
-      it 'assigns the requested food as @food' do
-        put :update, params: { id: food.to_param }.merge!(new_attributes)
-        expect(assigns(:food)).to eq(food)
-      end
+    let(:new_attributes) do
+      attributes_for(:another_food)
     end
 
-    xcontext 'with invalid params' do
-      it 'assigns the food as @food' do
-        food = Food.create! valid_attributes
-        put :update, params: { id: food.to_param, food: invalid_attributes }, session: valid_session
-        expect(assigns(:food)).to eq(food)
-      end
+    it 'assigns the requested food as @food' do
+      put :update, params: { id: food.to_param }.merge!(new_attributes)
+      expect(assigns(:food)).to eq(food)
     end
   end
 
