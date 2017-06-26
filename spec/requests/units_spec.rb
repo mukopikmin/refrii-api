@@ -96,14 +96,26 @@ RSpec.describe "Units", type: :request do
           expect(response).to have_http_status(:bad_request)
         end
       end
+
+      context 'with existing label unit' do
+        let(:params) { attributes_for(:unit).merge!(user_id: user1.id) }
+        let!(:unit) { Unit.create(params) }
+
+        before(:each) do
+          post units_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
+        end
+
+        it "returns 400" do
+          expect(response).to have_http_status(:bad_request)
+        end
+      end
     end
   end
 
   describe 'PUT /units/:id' do
-    let(:params) { attributes_for(:unit) }
-    let(:no_label_unit) { attributes_for(:no_label_unit) }
-
     context 'without authentication' do
+      let(:params) { attributes_for(:unit) }
+
       before(:each) { put unit_path(unit1), params: params }
 
       it "returns 401" do
@@ -113,16 +125,20 @@ RSpec.describe "Units", type: :request do
 
     context 'with authentication' do
       context 'with own unit' do
+        let(:params) { attributes_for(:unit) }
+
         before(:each) do
           put unit_path(unit1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 201" do
+        it "returns 200" do
           expect(response).to have_http_status(:ok)
         end
       end
 
       context 'with other\'s unit' do
+        let(:params) { attributes_for(:unit) }
+
         before(:each) do
           put unit_path(unit2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
@@ -133,8 +149,23 @@ RSpec.describe "Units", type: :request do
       end
 
       context 'with no label unit' do
+        let(:params) { attributes_for(:no_label_unit) }
+
         before(:each) do
-          put unit_path(unit2), params: no_label_unit, headers: { authorization: "Bearer #{token(user1)}" }
+          put unit_path(unit2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
+        end
+
+        it "returns 400" do
+          expect(response).to have_http_status(:bad_request)
+        end
+      end
+
+      context 'with existing label unit' do
+        let(:params) { attributes_for(:unit).merge!(user_id: user1.id) }
+        let!(:unit) { Unit.create(params) }
+
+        before(:each) do
+          put unit_path(unit1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do

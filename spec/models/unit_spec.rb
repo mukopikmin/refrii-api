@@ -15,13 +15,13 @@ RSpec.describe Unit, type: :model do
 
   describe '#is_owned_by' do
     context 'with unit owned' do
-      subject(:owns) { unit1.is_owned_by(user1) }
-      it { is_expected.to be(true) }
+      subject { unit1.is_owned_by(user1) }
+      it { is_expected.to be_truthy }
     end
 
     context 'with unit not owned' do
-      subject(:owns) { unit1.is_owned_by(user2) }
-      it { is_expected.to eq(false) }
+      subject { unit1.is_owned_by(user2) }
+      it { is_expected.to be_falsey }
     end
   end
 end

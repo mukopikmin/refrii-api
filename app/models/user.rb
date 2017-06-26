@@ -25,6 +25,10 @@ class User < ApplicationRecord
     invitations.map(&:box)
   end
 
+  def has_unit_labeled_with(label)
+    units.map(&:label).include?(label)
+  end
+
   def self.find_for_database_authentication(conditions)
     where(conditions).first
   end

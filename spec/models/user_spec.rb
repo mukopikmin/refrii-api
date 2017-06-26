@@ -34,6 +34,22 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe '#has_unit_labeled_with' do
+    let!(:user1) { create(:user) }
+    let!(:user2) { create(:user) }
+    let!(:unit1) { create(:unit, user: user1) }
+
+    context 'if have same labeled unit' do
+      subject { user1.has_unit_labeled_with(unit1.label) }
+      it {is_expected.to be_truthy}
+    end
+
+    context 'if do not have same labeled unit' do
+      subject { user2.has_unit_labeled_with(unit1.label) }
+      it {is_expected.to be_falsey}
+    end
+  end
+
   describe '.find_for_database_authentication' do
     let(:user) { create(:user) }
 

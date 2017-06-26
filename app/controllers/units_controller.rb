@@ -11,7 +11,7 @@ class UnitsController < ApplicationController
 
   # GET /units/1
   def show
-    if @unit.is_owned_by(current_user)
+    if owner_of_unit?
       render json: @unit
     else
       not_found
@@ -22,7 +22,7 @@ class UnitsController < ApplicationController
   def create
     @unit = Unit.new(unit_params)
 
-    if @unit.save
+    if no_duplicate_unit? && @unit.save
       render json: @unit, status: :created, location: @unit
     else
       bad_request
@@ -31,7 +31,7 @@ class UnitsController < ApplicationController
 
   # PATCH/PUT /units/1
   def update
-    if @unit.is_owned_by(current_user) && @unit.update(unit_params)
+    if updatable?
       render json: @unit
     else
       bad_request
@@ -40,7 +40,7 @@ class UnitsController < ApplicationController
 
   # DELETE /units/1
   def destroy
-    if @unit.is_owned_by(current_user)
+    if owner_of_unit?
       @unit.destroy
     else
       bad_request
@@ -57,5 +57,17 @@ class UnitsController < ApplicationController
     def unit_params
       params[:user_id] = current_user.id
       params.permit(:label, :step, :user_id)
+    end
+
+    def owner_of_unit?
+      @unit.is_owned_by(current_user)
+    end
+
+    def no_duplicate_unit?
+      !current_user.has_unit_labeled_with(unit_params[:label])
+    end
+
+    def updatable?
+      owner_of_unit? && no_duplicate_unit? && @unit.update(unit_params)
     end
 end
