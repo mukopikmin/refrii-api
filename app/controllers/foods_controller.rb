@@ -10,10 +10,10 @@ class FoodsController < ApplicationController
 
   # GET /foods/1
   def show
-    if @food.is_owned_by(current_user)
-      render json: @food
-    else
+    if !accessible?
       not_found
+    else
+      render json: @food
     end
   end
 
@@ -21,7 +21,9 @@ class FoodsController < ApplicationController
   def create
     @food = Food.new(food_params)
 
-    if @food.is_owned_by(current_user) && @food.save
+    if !accessible?
+      bad_request('Could not create food in specified box.')
+    elsif @food.save
       render json: @food, status: :created, location: @food
     else
       bad_request
@@ -30,7 +32,9 @@ class FoodsController < ApplicationController
 
   # PATCH/PUT /foods/1
   def update
-    if @food.is_owned_by(current_user) && @food.update(food_params)
+    if !accessible?
+      bad_request('Could not update specified food.')
+    elsif @food.update(food_params)
       render json: @food
     else
       bad_request
@@ -39,10 +43,10 @@ class FoodsController < ApplicationController
 
   # DELETE /foods/1
   def destroy
-    if @food.is_owned_by(current_user)
-      @food.destroy
+    if !accessible?
+      bad_request('Could not remove specified food.')
     else
-      bad_request
+      @food.destroy
     end
   end
 
@@ -56,5 +60,9 @@ class FoodsController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def food_params
     params.permit(:name, :notice, :amount, :expiration_date, :box_id, :unit_id)
+  end
+
+  def accessible?
+    @food.box.is_accessible_for(current_user)
   end
 end

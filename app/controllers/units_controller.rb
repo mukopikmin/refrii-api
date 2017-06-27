@@ -14,7 +14,7 @@ class UnitsController < ApplicationController
     if owner_of_unit?
       render json: @unit
     else
-      not_found
+      not_found('You do not have dpecified unit.')
     end
   end
 
@@ -22,16 +22,22 @@ class UnitsController < ApplicationController
   def create
     @unit = Unit.new(unit_params)
 
-    if no_duplicate_unit? && @unit.save
+    if duplicate_unit?
+      bad_request('Specified label of unit already exists.')
+    elsif @unit.save
       render json: @unit, status: :created, location: @unit
     else
-      bad_request
+      bad_request('Could not persite the unit.')
     end
   end
 
   # PATCH/PUT /units/1
   def update
-    if updatable?
+    if !owner_of_unit?
+      bad_request('You can not update this unit.')
+    elsif duplicate_unit?
+      bad_request('Specified label of unit already exists.')
+    elsif @unit.update(unit_params)
       render json: @unit
     else
       bad_request
@@ -40,10 +46,10 @@ class UnitsController < ApplicationController
 
   # DELETE /units/1
   def destroy
-    if owner_of_unit?
-      @unit.destroy
+    if !owner_of_unit?
+      bad_request('You can not destroy this unit.')
     else
-      bad_request
+      @unit.destroy
     end
   end
 
@@ -63,11 +69,7 @@ class UnitsController < ApplicationController
       @unit.is_owned_by(current_user)
     end
 
-    def no_duplicate_unit?
-      !current_user.has_unit_labeled_with(unit_params[:label])
-    end
-
-    def updatable?
-      owner_of_unit? && no_duplicate_unit? && @unit.update(unit_params)
+    def duplicate_unit?
+      current_user.has_unit_labeled_with(unit_params[:label])
     end
 end

@@ -37,11 +37,6 @@ RSpec.describe Box, type: :model do
       subject(:owns) { box2.is_owned_by(user1) }
       it { is_expected.to be(false) }
     end
-
-    context 'with box inviting user' do
-      subject(:owns) { box1.is_owned_by(user2) }
-      it { is_expected.to be(true) }
-    end
   end
 
   describe '#is_inviting' do
@@ -61,19 +56,19 @@ RSpec.describe Box, type: :model do
     end
   end
 
-  describe '#is_accesable' do
+  describe '#is_accessible_for' do
     context 'with box owned by user' do
-      subject(:accesable) { box1.is_accesable(user1) }
+      subject(:accesable) { box1.is_accessible_for(user1) }
       it { is_expected.to be(true) }
     end
 
     context 'with box not owned by user' do
-      subject(:accesable) { box2.is_accesable(user1) }
+      subject(:accesable) { box2.is_accessible_for(user1) }
       it { is_expected.to be(false) }
     end
 
     context 'with box inviting user' do
-      subject(:accesable) { box1.is_accesable(user2) }
+      subject(:accesable) { box1.is_accessible_for(user2) }
       it { is_expected.to be(true) }
     end
   end

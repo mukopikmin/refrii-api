@@ -1,6 +1,7 @@
 class BoxesController < ApplicationController
-  before_action :set_box, only: [:show, :units, :update, :destroy, :invite, :deinvite]
   before_action :authenticate_request!
+  before_action :set_box, only: [:show, :units, :update, :destroy, :invite, :deinvite]
+  before_action :set_invitation, only: [:deinvite]
 
   # GET /boxes
   def index
@@ -22,20 +23,21 @@ class BoxesController < ApplicationController
 
   # GET /boxes/1
   def show
-    if @box.is_owned_by(current_user)
-      render json: @box, include: [:user, { foods: :unit }]
+    if !owner_of_box?
+      not_found('Specified box does not exist.')
     else
-      not_found
+      render json: @box, include: [:user, { foods: :unit }]
     end
   end
 
   # GET /boxes/1/units
   def units
     @units = @box.user.units
-    if @box.is_accesable(current_user)
-      render json: @units
+
+    if !accessible?
+      not_found('Specified box does not exist.')
     else
-      not_found
+      render json: @units
     end
   end
 
@@ -52,7 +54,9 @@ class BoxesController < ApplicationController
 
   # PATCH/PUT /boxes/1
   def update
-    if @box.is_owned_by(current_user) && @box.update(box_params)
+    if !owner_of_box?
+      bad_request('You can not update the box.')
+    elsif @box.update(box_params)
       render json: @box
     else
       bad_request
@@ -61,10 +65,10 @@ class BoxesController < ApplicationController
 
   # DELETE /boxes/1
   def destroy
-    if @box.is_owned_by(current_user)
-      @box.destroy
+    if !owner_of_box?
+      bad_request('You can not destroy the box.')
     else
-      bad_request
+      @box.destroy
     end
   end
 
@@ -72,7 +76,11 @@ class BoxesController < ApplicationController
   def invite
     @invitation = Invitation.new(invitatation_params)
 
-    if !Invitation.exists?(invitatation_params.to_h) && @box.is_owned_by(current_user) && @invitation.save
+    if invited?
+      bad_request('The invitation already exists.')
+    elsif !owner_of_box?
+      bad_request('You can not invite to the box.')
+    elsif @invitation.save
       render json: @invitation, status: :created
     else
       bad_request
@@ -81,9 +89,8 @@ class BoxesController < ApplicationController
 
   # DELETE /boxes/1/invite
   def deinvite
-    @invitation = Invitation.find_by(user: current_user, box: @box)
     if @invitation.nil?
-      bad_request
+      bad_request('Specified invitation does not exist.')
     else
       @invitation.destroy
     end
@@ -102,8 +109,24 @@ class BoxesController < ApplicationController
     params.permit(:name, :notice, :user_id)
   end
 
+  def set_invitation
+    @invitation = Invitation.find_by(user: current_user, box: @box)
+  end
+
   def invitatation_params
     params[:box_id] = params[:id]
     params.permit(:box_id, :user_id)
+  end
+
+  def accessible?
+    @box.is_accessible_for(current_user)
+  end
+
+  def owner_of_box?
+    @box.is_owned_by(current_user)
+  end
+
+  def invited?
+    Invitation.exists?(invitatation_params.to_h)
   end
 end

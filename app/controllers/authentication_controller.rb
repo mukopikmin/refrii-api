@@ -7,7 +7,7 @@ class AuthenticationController < ApplicationController
     if @user.valid_password?(params[:password])
       render json: JsonWebToken.payload(@user)
     else
-      render json: { errors: ['Invalid Username/Password'] }, status: :unauthorized
+      unauthorized('Invalid username or password is given.')
     end
   end
 
@@ -18,7 +18,7 @@ class AuthenticationController < ApplicationController
     if @user.persisted?
       render json: JsonWebToken.payload(@user)
     else
-      render json: { errors: ['Invalid Username/Password'] }, status: :unauthorized
+      unauthorized('Invalid username or password is given.')
     end
   end
 

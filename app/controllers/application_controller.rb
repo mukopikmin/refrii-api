@@ -33,27 +33,27 @@ class ApplicationController < ActionController::API
     Time.zone.parse(auth_token[:expires_at]) > Time.zone.now
   end
 
-  def unauthorized
-    render json: { errors: ['Not Authenticated'] }, status: :unauthorized
+  def unauthorized(message=nil)
+    error = {
+      error: 'Not authenticated',
+      message: message || 'This action needs authorization.'
+    }
+    render json: error, status: :unauthorized
   end
 
-  # def forbidden
-  #   render json: ['Forbidden'], status: :forbidden
-  # end
-
-  # def not_modified
-  #   render json: ['Not modified'], status: :not_modified
-  # end
-
-  def not_found
-    render json: ['Not found'], status: :not_found
+  def not_found(message=nil)
+    error = {
+      error: 'Not found',
+      message: message || 'Resource not found.'
+    }
+    render json: error, status: :not_found
   end
 
-  def bad_request
-    render json: ['Bad request'], status: :bad_request
+  def bad_request(message=nil)
+    error = {
+      error: 'Bad request',
+      message: message || 'Unexpected error has occured.'
+    }
+    render json: error, status: :bad_request
   end
-
-  # def unprocessable_entity
-  #   render json: ['Unprocessable entity'], status: :unprocessable_entity
-  # end
 end

@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   # GET /users/verify
   def verify
     @user = current_user
-    if current_user.nil?
+    if @user.nil?
       not_found
     else
       render json: @user, include: []
@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     @user = User.find_by_email(email)
 
     if @user.nil?
-      not_found
+      not_found("Uesr #{email} does not exist.")
     else
       render json: @user
     end
@@ -48,7 +48,9 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if !User.exists?(email: user_params[:email])&& @user.update(user_params)
+    if current_user.nil?
+      bad_request('Illegal email address is given.')
+    elsif @user.update(user_params)
       render json: @user
     else
       bad_request
