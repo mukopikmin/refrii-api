@@ -8,6 +8,8 @@ class CreateFoods < ActiveRecord::Migration[5.0]
 
       t.references :box, null: false
       t.references :unit
+      t.references :created_user
+      t.references :updated_user
 
       t.timestamps
     end

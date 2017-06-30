@@ -9,7 +9,12 @@ RSpec.describe FoodsController, type: :controller do
     let(:user) { create(:user) }
     let(:box) { create(:box, user: user) }
     let(:unit) { create(:unit, user: user) }
-    let!(:food) { create(:food, box: box, unit: unit) }
+    let!(:food) do
+      create(:food, box: box,
+                    unit: unit,
+                    created_user: box.user,
+                    updated_user: box.user)
+    end
 
     before(:each) do
       request.headers['Authorization'] = "Bearer #{token(user)}"
@@ -25,7 +30,12 @@ RSpec.describe FoodsController, type: :controller do
     let(:user) { create(:user) }
     let(:box) { create(:box, user: user) }
     let(:unit) { create(:unit, user: user) }
-    let(:food) { create(:food, box: box, unit: unit) }
+    let(:food) do
+      create(:food, box: box,
+                    unit: unit,
+                    created_user: box.user,
+                    updated_user: box.user)
+    end
 
     before(:each) do
       request.headers['Authorization'] = "Bearer #{token(user)}"
@@ -73,7 +83,12 @@ RSpec.describe FoodsController, type: :controller do
     let(:user) { create(:user) }
     let(:box) { create(:box, user: user) }
     let(:unit) { create(:unit, user: user) }
-    let(:food) { create(:food, box: box, unit: unit) }
+    let(:food) do
+      create(:food, box: box,
+                    unit: unit,
+                    created_user: box.user,
+                    updated_user: box.user)
+    end
 
     before(:each) do
       request.headers['Authorization'] = "Bearer #{token(user)}"
@@ -93,7 +108,12 @@ RSpec.describe FoodsController, type: :controller do
     let(:user) { create(:user) }
     let(:box) { create(:box, user: user) }
     let(:unit) { create(:unit, user: user) }
-    let!(:food) { create(:food, box: box, unit: unit) }
+    let!(:food) do
+      create(:food, box: box,
+                    unit: unit,
+                    created_user: box.user,
+                    updated_user: box.user)
+    end
 
     before(:each) do
       request.headers['Authorization'] = "Bearer #{token(user)}"

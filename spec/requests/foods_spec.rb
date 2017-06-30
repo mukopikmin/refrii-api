@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Foods", type: :request do
+RSpec.describe 'Foods', type: :request do
   def token(user)
     JsonWebToken.payload(user)[:jwt]
   end
@@ -11,14 +11,24 @@ RSpec.describe "Foods", type: :request do
   let(:box2) { create(:box, user: user2) }
   let(:unit1) { create(:unit, user: user1) }
   let(:unit2) { create(:unit, user: user2) }
-  let(:food1) { create(:food, box: box1, unit: unit1) }
-  let(:food2) { create(:food, box: box2, unit: unit2) }
+  let(:food1) do
+    create(:food, box: box1,
+                  unit: unit1,
+                  created_user: box1.user,
+                  updated_user: box1.user)
+  end
+  let(:food2) do
+    create(:food, box: box2,
+                  unit: unit2,
+                  created_user: box2.user,
+                  updated_user: box2.user)
+  end
 
   describe 'GET /foods' do
     context 'without authentication' do
       before(:each) { get foods_path }
 
-      it "returns 401" do
+      it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
       end
     end
@@ -28,17 +38,17 @@ RSpec.describe "Foods", type: :request do
         get foods_path, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
-      it "returns 200" do
+      it 'returns 200' do
         expect(response).to have_http_status(:ok)
       end
     end
   end
 
-  describe 'GET /food/:id' do
+  describe 'GET /foods/:id' do
     context 'without authentication' do
       before(:each) { get food_path(food1) }
 
-      it "returns 401" do
+      it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
       end
     end
@@ -49,7 +59,7 @@ RSpec.describe "Foods", type: :request do
           get food_path(food1), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 200" do
+        it 'returns 200' do
           expect(response).to have_http_status(:ok)
         end
       end
@@ -59,7 +69,7 @@ RSpec.describe "Foods", type: :request do
           get food_path(food2), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 404" do
+        it 'returns 404' do
           expect(response).to have_http_status(:not_found)
         end
       end
@@ -71,7 +81,7 @@ RSpec.describe "Foods", type: :request do
       let(:params) { attributes_for(:food).merge!(box_id: box1.to_param, unit_id: unit1.to_param) }
       before(:each) { post foods_path, params: params }
 
-      it "returns 401" do
+      it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
       end
     end
@@ -84,7 +94,7 @@ RSpec.describe "Foods", type: :request do
           post foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 201" do
+        it 'returns 201' do
           expect(response).to have_http_status(:created)
         end
       end
@@ -96,7 +106,7 @@ RSpec.describe "Foods", type: :request do
           post foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 400" do
+        it 'returns 400' do
           expect(response).to have_http_status(:bad_request)
         end
       end
@@ -108,7 +118,7 @@ RSpec.describe "Foods", type: :request do
           post foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 400" do
+        it 'returns 400' do
           expect(response).to have_http_status(:bad_request)
         end
       end
@@ -122,7 +132,7 @@ RSpec.describe "Foods", type: :request do
     context 'without authentication' do
       before(:each) { put food_path(food1), params: params }
 
-      it "returns 401" do
+      it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
       end
     end
@@ -133,7 +143,7 @@ RSpec.describe "Foods", type: :request do
           put food_path(food1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 201" do
+        it 'returns 201' do
           expect(response).to have_http_status(:ok)
         end
       end
@@ -143,7 +153,7 @@ RSpec.describe "Foods", type: :request do
           put food_path(food2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 400" do
+        it 'returns 400' do
           expect(response).to have_http_status(:bad_request)
         end
       end
@@ -153,7 +163,7 @@ RSpec.describe "Foods", type: :request do
           put food_path(food1), params: no_name_params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 400" do
+        it 'returns 400' do
           expect(response).to have_http_status(:bad_request)
         end
       end
@@ -164,7 +174,7 @@ RSpec.describe "Foods", type: :request do
     context 'without authentication' do
       before(:each) { delete food_path(food1) }
 
-      it "returns 401" do
+      it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
       end
     end
@@ -175,7 +185,7 @@ RSpec.describe "Foods", type: :request do
           delete food_path(food1), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 201" do
+        it 'returns 201' do
           expect(response).to have_http_status(:no_content)
         end
       end
@@ -185,7 +195,7 @@ RSpec.describe "Foods", type: :request do
           delete food_path(food2), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 400" do
+        it 'returns 400' do
           expect(response).to have_http_status(:bad_request)
         end
       end

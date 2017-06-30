@@ -28,10 +28,14 @@ ActiveRecord::Schema.define(version: 20170403112643) do
     t.date "expiration_date"
     t.integer "box_id", null: false
     t.integer "unit_id"
+    t.integer "created_user_id"
+    t.integer "updated_user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["box_id"], name: "index_foods_on_box_id"
+    t.index ["created_user_id"], name: "index_foods_on_created_user_id"
     t.index ["unit_id"], name: "index_foods_on_unit_id"
+    t.index ["updated_user_id"], name: "index_foods_on_updated_user_id"
   end
 
   create_table "invitations", force: :cascade do |t|

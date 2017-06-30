@@ -12,6 +12,8 @@ class User < ApplicationRecord
   has_many :boxes
   has_many :units
   has_many :invitations
+  has_many :created_foods, class_name: 'Food', foreign_key: 'created_user_id'
+  has_many :updated_foods, class_name: 'Food', foreign_key: 'updated_user_id'
 
   def valid_password?(unencrypted_password)
     BCrypt::Password.new(password_digest) == unencrypted_password && self

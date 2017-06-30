@@ -6,6 +6,8 @@ class Food < ApplicationRecord
 
   belongs_to :box
   belongs_to :unit
+  belongs_to :created_user, class_name: 'User'
+  belongs_to :updated_user, class_name: 'User'
 
   scope :owned_by, -> (user) { joins(:box).where(boxes: { user: user }) }
   scope :inviting, -> (user) { joins(box: :invitations).where(box: { invitations: { user: user } }) }

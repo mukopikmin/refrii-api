@@ -20,6 +20,7 @@ class FoodsController < ApplicationController
   # POST /foods
   def create
     @food = Food.new(food_params)
+    @food.created_user = current_user
 
     if !accessible?
       bad_request('Could not create food in specified box.')
@@ -59,7 +60,8 @@ class FoodsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def food_params
-    params.permit(:name, :notice, :amount, :expiration_date, :box_id, :unit_id)
+    params[:updated_user_id] = current_user.id
+    params.permit(:name, :notice, :amount, :expiration_date, :box_id, :unit_id, :updated_user_id)
   end
 
   def accessible?

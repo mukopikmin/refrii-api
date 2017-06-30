@@ -23,7 +23,7 @@ class BoxesController < ApplicationController
 
   # GET /boxes/1
   def show
-    if !owner_of_box?
+    if !accessible?
       not_found('Specified box does not exist.')
     else
       render json: @box, include: [:user, { foods: :unit }]
