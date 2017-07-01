@@ -245,6 +245,16 @@ RSpec.describe 'Boxes', type: :request do
           expect(response).to have_http_status(:bad_request)
         end
       end
+
+      context 'with invited box' do
+        before(:each) do
+          delete box_path(box3), headers: { authorization: "Bearer #{token(user1)}" }
+        end
+
+        it 'returns 400' do
+          expect(response).to have_http_status(:bad_request)
+        end
+      end
     end
   end
 

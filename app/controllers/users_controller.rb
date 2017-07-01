@@ -3,10 +3,10 @@ class UsersController < ApplicationController
   before_action :authenticate_request!, only: [:index, :verify, :show, :search, :update]
 
   # GET /users
-  def index
-    @users = User.all
-    render json: @users
-  end
+  # def index
+  #   @users = User.all
+  #   render json: @users
+  # end
 
   # GET /users/verify
   def verify
@@ -19,9 +19,9 @@ class UsersController < ApplicationController
   end
 
   # GET /users/1
-  def show
-    render json: @user
-  end
+  # def show
+  #   render json: @user
+  # end
 
   # GET /users/search
   def search
@@ -48,8 +48,8 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if current_user.nil?
-      bad_request('Illegal email address is given.')
+    if !updatable?
+      forbidden('You can only update self.')
     elsif @user.update(user_params)
       render json: @user
     else
@@ -67,5 +67,9 @@ class UsersController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def user_params
     params.permit(:name, :email, :password, :password_confirmation)
+  end
+
+  def updatable?
+    @user.id == current_user.id
   end
 end
