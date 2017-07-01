@@ -56,4 +56,12 @@ class ApplicationController < ActionController::API
     }
     render json: error, status: :bad_request
   end
+
+  def forbidden(message=nil)
+    error = {
+      error: 'forbidden',
+      message: message || 'Not allowed.'
+    }
+    render json: error, status: :forbidden
+  end
 end
