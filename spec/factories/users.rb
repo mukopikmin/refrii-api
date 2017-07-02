@@ -5,6 +5,7 @@ FactoryGirl.define do
     password 'secret'
     password_confirmation 'secret'
     disabled false
+    admin false
 
     factory :another_user, class: User do
       name 'another user'
@@ -14,6 +15,10 @@ FactoryGirl.define do
     factory :updated_user, class: User do
       email 'new-email@test.com'
     end
+
+    factory :admin_user, class: User do
+      admin true
+    end
   end
 
   factory :no_email_user, class: User do
@@ -22,6 +27,7 @@ FactoryGirl.define do
     password 'secret'
     password_confirmation 'secret'
     disabled false
+    admin false
   end
 
   factory :no_name_user, class: User do
@@ -30,5 +36,6 @@ FactoryGirl.define do
     password 'secret'
     password_confirmation 'secret'
     disabled false
+    admin false
   end
 end

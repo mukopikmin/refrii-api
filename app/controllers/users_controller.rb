@@ -3,10 +3,14 @@ class UsersController < ApplicationController
   before_action :authenticate_request!, only: [:index, :verify, :show, :search, :update]
 
   # GET /users
-  # def index
-  #   @users = User.all
-  #   render json: @users
-  # end
+  def index
+    if current_user.admin
+      @users = User.all
+      render json: @users
+    else
+      forbidden('Only administrator of this service is allowed.')
+    end
+  end
 
   # GET /users/verify
   def verify
@@ -19,9 +23,13 @@ class UsersController < ApplicationController
   end
 
   # GET /users/1
-  # def show
-  #   render json: @user
-  # end
+  def show
+    if !accessible?
+      forbidden('Access not allowed.')
+    else
+      render json: @user
+    end
+  end
 
   # GET /users/search
   def search
@@ -48,7 +56,7 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if !updatable?
+    if !accessible?
       forbidden('You can only update self.')
     elsif @user.update(user_params)
       render json: @user
@@ -69,7 +77,7 @@ class UsersController < ApplicationController
     params.permit(:name, :email, :password, :password_confirmation)
   end
 
-  def updatable?
+  def accessible?
     @user.id == current_user.id
   end
 end

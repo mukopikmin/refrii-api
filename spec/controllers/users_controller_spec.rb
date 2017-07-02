@@ -5,18 +5,18 @@ RSpec.describe UsersController, type: :controller do
     JsonWebToken.payload(user)[:jwt]
   end
 
-  # describe 'GET #index' do
-  #   before(:each) do
-  #     request.headers['Authorization'] = "Bearer #{token(user)}"
-  #   end
-  #
-  #   let(:user) { create(:user) }
-  #
-  #   it 'assigns all users as @users' do
-  #     get :index
-  #     expect(assigns(:users)).to eq([user])
-  #   end
-  # end
+  describe 'GET #index' do
+    let(:admin) { create(:admin_user) }
+
+    before(:each) do
+      request.headers['Authorization'] = "Bearer #{token(admin)}"
+    end
+
+    it 'assigns all users as @users' do
+      get :index
+      expect(assigns(:users)).to eq([admin])
+    end
+  end
 
   describe 'GET #verify' do
     before(:each) do
@@ -31,18 +31,18 @@ RSpec.describe UsersController, type: :controller do
     end
   end
 
-  # describe 'GET #show' do
-  #   let(:user) { create(:user) }
-  #
-  #   before(:each) do
-  #     request.headers['Authorization'] = "Bearer #{token(user)}"
-  #   end
-  #
-  #   it 'assigns the requested user as @user' do
-  #     get :show, params: { id: user.to_param }
-  #     expect(assigns(:user)).to eq(user)
-  #   end
-  # end
+  describe 'GET #show' do
+    let(:user) { create(:user) }
+
+    before(:each) do
+      request.headers['Authorization'] = "Bearer #{token(user)}"
+    end
+
+    it 'assigns the requested user as @user' do
+      get :show, params: { id: user.to_param }
+      expect(assigns(:user)).to eq(user)
+    end
+  end
 
   describe 'POST #create' do
     context 'with valid params' do

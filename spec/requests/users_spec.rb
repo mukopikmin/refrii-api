@@ -8,25 +8,39 @@ RSpec.describe "Users", type: :request do
   let(:user1) { create(:user) }
   let(:user2) { create(:user) }
 
-  # describe 'GET /users' do
-  #   context 'without authentication' do
-  #     before(:each) { get users_path }
-  #
-  #     it "returns 401" do
-  #       expect(response).to have_http_status(:unauthorized)
-  #     end
-  #   end
-  #
-  #   context 'with authentication' do
-  #     before(:each) do
-  #       get users_path, headers: { authorization: "Bearer #{token(user1)}" }
-  #     end
-  #
-  #     it "returns 200" do
-  #       expect(response).to have_http_status(:ok)
-  #     end
-  #   end
-  # end
+  describe 'GET /users' do
+    context 'without authentication' do
+      before(:each) { get users_path }
+
+      it "returns 401" do
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context 'with authentication' do
+      context 'by admin user' do
+        let(:admin) { create(:admin_user) }
+
+        before(:each) do
+          get users_path, headers: { authorization: "Bearer #{token(admin)}" }
+        end
+
+        it "returns 200" do
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context 'by non-admin user' do
+        before(:each) do
+          get users_path, headers: { authorization: "Bearer #{token(user1)}" }
+        end
+
+        it "returns 403" do
+          expect(response).to have_http_status(:forbidden)
+        end
+      end
+    end
+  end
 
   describe 'GET /users/verify' do
     context 'without authorization' do
@@ -74,25 +88,25 @@ RSpec.describe "Users", type: :request do
     end
   end
 
-  # describe 'GET /users/:id' do
-  #   context 'without authentication' do
-  #     before(:each) { get user_path(user1) }
-  #
-  #     it "returns 401" do
-  #       expect(response).to have_http_status(:unauthorized)
-  #     end
-  #   end
-  #
-  #   context 'with authentication' do
-  #     before(:each) do
-  #       get user_path(user1), headers: { authorization: "Bearer #{token(user1)}" }
-  #     end
-  #
-  #     it "returns 200" do
-  #       expect(response).to have_http_status(:ok)
-  #     end
-  #   end
-  # end
+  describe 'GET /users/:id' do
+    context 'without authentication' do
+      before(:each) { get user_path(user1) }
+
+      it "returns 401" do
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context 'with authentication' do
+      before(:each) do
+        get user_path(user1), headers: { authorization: "Bearer #{token(user1)}" }
+      end
+
+      it "returns 200" do
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
 
   describe 'POST /users' do
     context 'with valid params' do
