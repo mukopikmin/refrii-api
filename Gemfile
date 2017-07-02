@@ -36,11 +36,12 @@ group :test do
   gem 'factory_girl_rails', '~> 4.8.0'
   gem 'rails-controller-testing', '~> 1.0.1'
   gem 'codeclimate-test-reporter', '~> 1.0.8', require: false
-  gem 'brakeman', '~> 3.6.1', require: false
+  gem 'brakeman', '~> 3.7.0', require: false
 end
 
 group :production do
   gem 'pg', '~> 0.21.0'
+  gem 'rails_12factor', '~> 0.0.3'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -48,7 +49,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'active_model_serializers', '~> 0.10.5'
 gem 'dotenv-rails', '~> 2.2.0'
-gem 'ffaker', '~> 2.5.0'
+gem 'ffaker', '~> 2.6.0'
 
 gem 'omniauth', '~> 1.6.1'
 gem 'omniauth-google-oauth2', '~> 0.5.0'
