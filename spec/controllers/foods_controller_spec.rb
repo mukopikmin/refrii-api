@@ -47,6 +47,22 @@ RSpec.describe FoodsController, type: :controller do
     end
   end
 
+  describe 'GET #image' do
+    let(:user) { create(:user) }
+    let(:box) { create(:box, user: user) }
+    let(:unit) { create(:unit, user: user) }
+    let(:food) { create(:food, :with_image, box: box, unit: unit, created_user: user, updated_user: user) }
+
+    before(:each) do
+      request.headers['Authorization'] = "Bearer #{token(user)}"
+    end
+
+    it 'assigns the requested food as @food' do
+      get :image, params: { id: food.to_param }
+      expect(assigns(:food)).to eq(food)
+    end
+  end
+
   describe 'POST #create' do
     let(:user) { create(:user) }
     let(:box) { create(:box, user: user) }

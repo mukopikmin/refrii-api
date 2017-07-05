@@ -76,6 +76,40 @@ RSpec.describe 'Foods', type: :request do
     end
   end
 
+  describe "GET /foods/:id/image" do
+    let(:user) { create(:user) }
+    let(:box) { create(:box, user: user) }
+    let(:unit) { create(:unit, user: user) }
+    let(:food) { create(:food, :with_image, box: box, unit: unit, created_user: user, updated_user: user) }
+    let(:no_image_food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user)  }
+
+    context 'without authentication' do
+      before(:each) { get image_food_path(food) }
+
+      it "returns 401" do
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context 'with authentication' do
+      context 'if image exists' do
+        before(:each) { get image_food_path(food), headers: { authorization: "Bearer #{token(user)}" } }
+
+        it "return 200" do
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context 'if no image exists' do
+        before(:each) { get image_food_path(no_image_food), headers: { authorization: "Bearer #{token(user)}" } }
+
+        it "return 404" do
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+  end
+
   describe 'POST /foods' do
     context 'without authentication' do
       let(:params) { attributes_for(:food).merge!(box_id: box1.to_param, unit_id: unit1.to_param) }

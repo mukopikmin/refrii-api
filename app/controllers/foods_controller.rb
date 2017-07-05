@@ -1,5 +1,5 @@
 class FoodsController < ApplicationController
-  before_action :set_food, only: [:show, :update, :destroy]
+  before_action :set_food, only: [:show, :image, :update, :destroy]
   before_action :authenticate_request!
 
   # GET /foods
@@ -28,6 +28,15 @@ class FoodsController < ApplicationController
       render json: @food, status: :created, location: @food
     else
       bad_request
+    end
+  end
+
+  # GET /foods/1/image
+  def image
+    if @food.has_image?
+      send_data @food.image_file, type: @food.image_content_type, disposition: 'inline'
+    else
+      not_found('Image does not exist.')
     end
   end
 
@@ -60,8 +69,14 @@ class FoodsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def food_params
+    image = params[:image]
+    unless image.nil?
+      params[:image_file] = image.read
+      params[:image_size] = params[:image_file].size
+      params[:image_content_type] = image.content_type
+    end
     params[:updated_user_id] = current_user.id
-    params.permit(:name, :notice, :amount, :expiration_date, :box_id, :unit_id, :updated_user_id)
+    params.permit(:name, :notice, :amount, :expiration_date, :box_id, :unit_id, :updated_user_id, :image_file, :image_size, :image_content_type)
   end
 
   def accessible?

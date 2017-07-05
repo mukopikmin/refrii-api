@@ -15,4 +15,12 @@ FactoryGirl.define do
     amount 10
     expiration_date '2017-01-01'
   end
+
+  trait :with_image do
+    file = File.new(File.join('spec', 'resources', 'eggs.jpg'), 'rb')
+
+    image_file file
+    image_size file.size
+    image_content_type 'image/jpg'
+  end
 end

@@ -6,7 +6,11 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :password_digest
       t.boolean :disabled, null: false, default: false
       t.boolean :admin, null: false, default: false
-      t.string :provider, default: 'local'
+      t.string :provider, null: false, default: 'local'
+
+      # t.integer :avatar_size
+      # t.string :avatar_content_type
+      # t.binary :avatar_file
 
       t.timestamps
     end

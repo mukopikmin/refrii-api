@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   resources :units
-  resources :foods
+  resources :foods do
+    member do
+      get :image
+    end
+  end
   resources :boxes do
     collection do
       get :owns

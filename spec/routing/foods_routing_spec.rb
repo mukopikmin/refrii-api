@@ -11,6 +11,10 @@ RSpec.describe FoodsController, type: :routing do
       expect(:get => "/foods/1").to route_to("foods#show", :id => "1")
     end
 
+    it "routes to #image" do
+      expect(:get => "/foods/1/image").to route_to("foods#image", :id => "1")
+    end
+
     it "routes to #create" do
       expect(:post => "/foods").to route_to("foods#create")
     end

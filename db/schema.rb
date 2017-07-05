@@ -26,6 +26,9 @@ ActiveRecord::Schema.define(version: 20170403112643) do
     t.text "notice"
     t.float "amount"
     t.date "expiration_date"
+    t.binary "image_file"
+    t.integer "image_size"
+    t.string "image_content_type"
     t.integer "box_id", null: false
     t.integer "unit_id"
     t.integer "created_user_id"
@@ -62,7 +65,7 @@ ActiveRecord::Schema.define(version: 20170403112643) do
     t.string "password_digest"
     t.boolean "disabled", default: false, null: false
     t.boolean "admin", default: false, null: false
-    t.string "provider", default: "local"
+    t.string "provider", default: "local", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
