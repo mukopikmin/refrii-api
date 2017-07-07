@@ -44,6 +44,19 @@ RSpec.describe UsersController, type: :controller do
     end
   end
 
+  describe 'GET #avatar' do
+    let(:user) {create(:user, :with_avatar)}
+
+    before(:each) do
+      request.headers['Authorization'] = "Bearer #{token(user)}"
+    end
+
+    it 'assigns the requested user as @user' do
+      get :avatar, params: { id: user.to_param }
+      expect(assigns(:user)).to eq(user)
+    end
+  end
+
   describe 'POST #create' do
     context 'with valid params' do
       it 'creates a new User' do

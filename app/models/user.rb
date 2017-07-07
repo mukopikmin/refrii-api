@@ -23,6 +23,10 @@ class User < ApplicationRecord
     provider == 'local'
   end
 
+  def has_avatar?
+    !(avatar_file.nil? || avatar_size.nil? || avatar_content_type.nil?)
+  end
+
   def invited_boxes
     invitations.map(&:box)
   end

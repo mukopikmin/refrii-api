@@ -19,6 +19,14 @@ FactoryGirl.define do
     factory :admin_user, class: User do
       admin true
     end
+
+    factory :local_user, class: User do
+      provider 'local'
+    end
+
+    factory :google_user, class: User do
+      provider 'google'
+    end
   end
 
   factory :no_email_user, class: User do
@@ -37,5 +45,13 @@ FactoryGirl.define do
     password_confirmation 'secret'
     disabled false
     admin false
+  end
+
+  trait 'with_avatar' do
+    file = File.new(File.join('spec', 'resources', 'avatar.jpg'), 'rb')
+
+    avatar_file file
+    avatar_size file.size
+    avatar_content_type 'image/jpg'
   end
 end

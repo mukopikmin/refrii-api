@@ -22,6 +22,10 @@ Rails.application.routes.draw do
       get :verify
       get :search
     end
+
+    member do
+      get :avatar
+    end
   end
 
   post 'auth/local', to: 'authentication#local'

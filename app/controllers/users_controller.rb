@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
-  before_action :authenticate_request!, only: [:index, :verify, :show, :search, :update]
+  before_action :set_user, only: [:show, :avatar, :update, :destroy]
+  before_action :authenticate_request!, only: [:index, :avatar, :verify, :show, :search, :update]
 
   # GET /users
   def index
@@ -28,6 +28,15 @@ class UsersController < ApplicationController
       forbidden('Access not allowed.')
     else
       render json: @user
+    end
+  end
+
+  # GET /users/1/avatar
+  def avatar
+    if !accessible?
+      forbidden('Access not allowed.')
+    else
+      send_data @user.avatar_file, type: @user.avatar_content_type, disposition: 'inline'
     end
   end
 
@@ -74,7 +83,13 @@ class UsersController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def user_params
-    params.permit(:name, :email, :password, :password_confirmation)
+    avatar = params[:avatar]
+    unless avatar.nil?
+      params[:avatar_file] = avatar.read
+      params[:avatar_size] = params[:avatar_file].size
+      params[:avatar_content_type] = avatar.content_type
+    end
+    params.permit(:name, :email, :password, :password_confirmation, :avatar_file, :avatar_size, :avatar_content_type)
   end
 
   def accessible?
