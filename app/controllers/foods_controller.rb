@@ -33,8 +33,17 @@ class FoodsController < ApplicationController
 
   # GET /foods/1/image
   def image
-    if @food.has_image?
-      send_data @food.image_file, type: @food.image_content_type, disposition: 'inline'
+    if @food.has_image? && accessible?
+      if requested_base64?
+        image = {
+          content_type: @food.image_content_type,
+          size: @food.image_size,
+          base64: Base64.strict_encode64(@food.image_file)
+        }
+        render json: image
+      else
+        send_data @food.image_file, type: @food.image_content_type, disposition: 'inline'
+      end
     else
       not_found('Image does not exist.')
     end
@@ -70,7 +79,7 @@ class FoodsController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def food_params
     image = params[:image]
-    unless image.nil?
+    if image_attached?(image)
       params[:image_file] = image.read
       params[:image_size] = params[:image_file].size
       params[:image_content_type] = image.content_type
@@ -81,5 +90,13 @@ class FoodsController < ApplicationController
 
   def accessible?
     @food.box.is_accessible_for(current_user)
+  end
+
+  def requested_base64?
+    params[:base64] == 'true'
+  end
+
+  def image_attached?(param)
+    !(param == 'null' || param == '' || param.nil?)
   end
 end

@@ -108,12 +108,51 @@ RSpec.describe "Users", type: :request do
     end
   end
 
+  describe "GET /users/:id/avatar" do
+    let(:user) { create(:user, :with_avatar) }
+    let(:no_avatar_user) { create(:user) }
+
+    context 'without authentication' do
+      before(:each) { get avatar_user_path(user) }
+
+      it "returns 401" do
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context 'with authentication' do
+      context 'if image exists' do
+        before(:each) { get avatar_user_path(user), headers: { authorization: "Bearer #{token(user)}" } }
+
+        it "return 200" do
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context 'if no image exists' do
+        before(:each) { get avatar_user_path(no_avatar_user), headers: { authorization: "Bearer #{token(user)}" } }
+
+        it "return 404" do
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context 'with base64 requested param' do
+        before(:each) { get avatar_user_path(user), headers: { authorization: "Bearer #{token(user)}" }, params: { base64: true } }
+
+        it 'return 200' do
+          expect(response).to have_http_status(:ok)
+        end
+      end
+    end
+  end
+
   describe 'POST /users' do
     context 'with valid params' do
       let(:params) { attributes_for(:user) }
 
       before(:each) do
-        post users_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
+        post users_path, params: params
       end
 
       it "returns 201" do
@@ -125,7 +164,7 @@ RSpec.describe "Users", type: :request do
       let(:params) { attributes_for(:no_email_user) }
 
       before(:each) do
-        post users_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
+        post users_path, params: params
       end
 
       it "returns 400" do
@@ -137,7 +176,7 @@ RSpec.describe "Users", type: :request do
       let(:params) { attributes_for(:no_name_user) }
 
       before(:each) do
-        post users_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
+        post users_path, params: params
       end
 
       it "returns 400" do

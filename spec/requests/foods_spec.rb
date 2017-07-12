@@ -107,6 +107,14 @@ RSpec.describe 'Foods', type: :request do
           expect(response).to have_http_status(:not_found)
         end
       end
+
+      context 'with base64 requested param' do
+        before(:each) { get image_food_path(food), headers: { authorization: "Bearer #{token(user)}" }, params: { base64: true } }
+
+        it 'return 200' do
+          expect(response).to have_http_status(:ok)
+        end
+      end
     end
   end
 

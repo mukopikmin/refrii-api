@@ -72,4 +72,25 @@ RSpec.describe Box, type: :model do
       it { is_expected.to be(true) }
     end
   end
+
+  # describe '#has_image?' do
+  #   let(:box) { create(:box, :with_image) }
+  #   let(:no_image_box) { create(:box) }
+  #
+  #   describe 'if image exists' do
+  #     subject { box.has_image? }
+  #
+  #     it 'returns true' do
+  #       is_expected.to be_truthy
+  #     end
+  #   end
+  #
+  #   describe 'if no image exists' do
+  #     subject { no_image_box.has_image? }
+  #
+  #     it 'returns false' do
+  #       is_expected.to be_falsey
+  #     end
+  #   end
+  # end
 end

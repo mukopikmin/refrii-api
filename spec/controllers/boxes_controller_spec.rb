@@ -66,6 +66,20 @@ RSpec.describe BoxesController, type: :controller do
     end
   end
 
+  describe 'GET #image' do
+    let(:user) { create(:user) }
+    let(:box) { create(:box, :with_image, user: user) }
+
+    before(:each) do
+      request.headers['Authorization'] = "Bearer #{token(user)}"
+    end
+
+    it 'assigns the requested food as @food' do
+      get :image, params: { id: box.to_param }
+      expect(assigns(:box)).to eq(box)
+    end
+  end
+
   describe 'GET #units' do
     let(:user) { create(:user) }
     let(:box) { create(:box, user: user) }

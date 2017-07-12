@@ -106,6 +106,46 @@ RSpec.describe 'Boxes', type: :request do
     end
   end
 
+  describe 'GET /boxes/:id/image' do
+    let(:user) { create(:user) }
+    let(:box) { create(:box, :with_image, user: user) }
+    let(:no_image_box) { create(:box, user: user) }
+
+    context 'without authentication' do
+      before(:each) { get image_box_path(box) }
+
+      it 'returns 401' do
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context 'with authentication' do
+      context 'if image exists' do
+        before(:each) { get image_box_path(box), headers: { authorization: "Bearer #{token(user)}" } }
+
+        it 'return 200' do
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context 'if no image exists' do
+        before(:each) { get image_box_path(no_image_box), headers: { authorization: "Bearer #{token(user)}" } }
+
+        it 'return 404' do
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context 'with base64 requested param' do
+        before(:each) { get image_box_path(box), headers: { authorization: "Bearer #{token(user)}" }, params: { base64: true } }
+
+        it 'return 200' do
+          expect(response).to have_http_status(:ok)
+        end
+      end
+    end
+  end
+
   describe 'GET /boxes/:id/units' do
     context 'without authentication' do
       before(:each) { get units_box_path(box1) }

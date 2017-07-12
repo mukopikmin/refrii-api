@@ -33,10 +33,19 @@ class UsersController < ApplicationController
 
   # GET /users/1/avatar
   def avatar
-    if !accessible?
-      forbidden('Access not allowed.')
+    if @user.has_avatar? && accessible?
+      if requested_base64?
+        avatar = {
+          content_type: @user.avatar_content_type,
+          size: @user.avatar_size,
+          base64: Base64.strict_encode64(@user.avatar_file)
+        }
+        render json: avatar
+      else
+        send_data @user.avatar_file, type: @user.avatar_content_type, disposition: 'inline'
+      end
     else
-      send_data @user.avatar_file, type: @user.avatar_content_type, disposition: 'inline'
+      not_found('Avatar does not exist.')
     end
   end
 
@@ -84,7 +93,7 @@ class UsersController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def user_params
     avatar = params[:avatar]
-    unless avatar.nil?
+    if avatar_attached?(avatar)
       params[:avatar_file] = avatar.read
       params[:avatar_size] = params[:avatar_file].size
       params[:avatar_content_type] = avatar.content_type
@@ -94,5 +103,13 @@ class UsersController < ApplicationController
 
   def accessible?
     @user.id == current_user.id
+  end
+
+  def requested_base64?
+    params[:base64] == 'true'
+  end
+
+  def avatar_attached?(param)
+    !(param == 'null' || param == '' || param.nil?)
   end
 end

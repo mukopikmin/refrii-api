@@ -15,6 +15,9 @@ ActiveRecord::Schema.define(version: 20170403112643) do
   create_table "boxes", force: :cascade do |t|
     t.string "name", null: false
     t.text "notice"
+    t.binary "image_file"
+    t.integer "image_size"
+    t.string "image_content_type"
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

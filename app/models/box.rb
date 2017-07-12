@@ -21,4 +21,8 @@ class Box < ApplicationRecord
   def is_accessible_for(user)
     is_owned_by(user) || is_inviting(user)
   end
+
+  def has_image?
+    !(image_file.nil? || image_size.nil? || image_content_type.nil?)
+  end
 end

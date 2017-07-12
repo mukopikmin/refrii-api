@@ -1,6 +1,6 @@
 class BoxesController < ApplicationController
   before_action :authenticate_request!
-  before_action :set_box, only: [:show, :units, :update, :destroy, :invite, :deinvite]
+  before_action :set_box, only: [:show, :image, :units, :update, :destroy, :invite, :deinvite]
   before_action :set_invitation, only: [:deinvite]
 
   # GET /boxes
@@ -27,6 +27,24 @@ class BoxesController < ApplicationController
       not_found('Specified box does not exist.')
     else
       render json: @box, include: [:user, { foods: :unit }]
+    end
+  end
+
+  # GET /boxes/1/image
+  def image
+    if @box.has_image? && accessible?
+      if requested_base64?
+        image = {
+          content_type: @box.image_content_type,
+          size: @box.image_size,
+          base64: Base64.strict_encode64(@box.image_file)
+        }
+        render json: image
+      else
+        send_data @box.image_file, type: @box.image_content_type, disposition: 'inline'
+      end
+    else
+      not_found('Image does not exist.')
     end
   end
 
@@ -105,8 +123,14 @@ class BoxesController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def box_params
+    image = params[:image]
+    if image_attached?(image)
+      params[:image_file] = image.read
+      params[:image_size] = params[:image_file].size
+      params[:image_content_type] = image.content_type
+    end
     params[:user_id] = current_user.id
-    params.permit(:name, :notice, :user_id)
+    params.permit(:name, :notice, :user_id, :image_file, :image_size, :image_content_type)
   end
 
   def set_invitation
@@ -128,5 +152,13 @@ class BoxesController < ApplicationController
 
   def invited?
     Invitation.exists?(invitatation_params.to_h)
+  end
+
+  def requested_base64?
+    params[:base64] == 'true'
+  end
+
+  def image_attached?(param)
+    !(param == 'null' || param == '' || param.nil?)
   end
 end

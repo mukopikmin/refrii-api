@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
     member do
       get :units
+      get :image
       post :invite
       delete 'invite' => :deinvite
     end
