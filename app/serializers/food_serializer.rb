@@ -1,5 +1,5 @@
 class FoodSerializer < ActiveModel::Serializer
-  attributes :id, :name, :notice, :amount, :expiration_date, :image_url,  :created_at, :updated_at
+  attributes :id, :name, :notice, :amount, :expiration_date, :image_url, :needs_adding, :created_at, :updated_at
 
   belongs_to :box
   belongs_to :unit
@@ -7,10 +7,6 @@ class FoodSerializer < ActiveModel::Serializer
   belongs_to :updated_user
 
   def image_url
-    if object.has_image?
-      "#{ENV['HOSTNAME']}/foods/#{object.id}/image"
-    else
-      nil
-    end
+    "#{ENV['HOSTNAME']}/foods/#{object.id}/image" if object.has_image?
   end
 end

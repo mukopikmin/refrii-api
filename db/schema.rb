@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170403112643) do
+ActiveRecord::Schema.define(version: 20170714110233) do
 
   create_table "boxes", force: :cascade do |t|
     t.string "name", null: false
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 20170403112643) do
     t.integer "updated_user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "needs_adding", default: false
     t.index ["box_id"], name: "index_foods_on_box_id"
     t.index ["created_user_id"], name: "index_foods_on_created_user_id"
     t.index ["unit_id"], name: "index_foods_on_unit_id"

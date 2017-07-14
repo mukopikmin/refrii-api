@@ -8,7 +8,7 @@ RSpec.describe Food, type: :model do
   let(:no_image_food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user) }
 
   describe '#has_image?' do
-    describe 'if image exists' do
+    context 'if image exists' do
       subject { food.has_image? }
 
       it 'returns true' do
@@ -16,7 +16,7 @@ RSpec.describe Food, type: :model do
       end
     end
 
-    describe 'if no image exists' do
+    context 'if no image exists' do
       subject { no_image_food.has_image? }
 
       it 'returns false' do

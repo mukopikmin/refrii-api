@@ -54,22 +54,23 @@ class UnitsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_unit
-      @unit = Unit.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def unit_params
-      params[:user_id] = current_user.id
-      params.permit(:label, :step, :user_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_unit
+    @unit = Unit.find(params[:id])
+  end
 
-    def owner_of_unit?
-      @unit.is_owned_by(current_user)
-    end
+  # Only allow a trusted parameter "white list" through.
+  def unit_params
+    params[:user_id] = current_user.id
+    params.permit(:label, :step, :user_id)
+  end
 
-    def duplicate_unit?
-      current_user.has_unit_labeled_with(unit_params[:label])
-    end
+  def owner_of_unit?
+    @unit.is_owned_by(current_user)
+  end
+
+  def duplicate_unit?
+    current_user.has_unit_labeled_with(unit_params[:label])
+  end
 end

@@ -8,7 +8,11 @@ FactoryGirl.define do
     factory :another_food, class: Food do
       name 'another food'
     end
-    
+
+    factory :few_left_food, class: Food do
+      needs_adding true
+    end
+
     trait :with_image do
       file = File.new(File.join('spec', 'resources', 'eggs.jpg'), 'rb')
 

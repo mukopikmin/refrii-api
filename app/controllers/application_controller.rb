@@ -13,11 +13,9 @@ class ApplicationController < ActionController::API
     unauthorized
   end
 
-  protected
-
   def http_token
     @http_token ||= if request.headers['Authorization'].present?
-      request.headers['Authorization'].split(' ').last
+                      request.headers['Authorization'].split(' ').last
     end
   end
 
@@ -33,7 +31,7 @@ class ApplicationController < ActionController::API
     Time.zone.parse(auth_token[:expires_at]) > Time.zone.now
   end
 
-  def unauthorized(message=nil)
+  def unauthorized(message = nil)
     error = {
       error: 'Not authenticated',
       message: message || 'This action needs authorization.'
@@ -41,7 +39,7 @@ class ApplicationController < ActionController::API
     render json: error, status: :unauthorized
   end
 
-  def not_found(message=nil)
+  def not_found(message = nil)
     error = {
       error: 'Not found',
       message: message || 'Resource not found.'
@@ -49,7 +47,7 @@ class ApplicationController < ActionController::API
     render json: error, status: :not_found
   end
 
-  def bad_request(message=nil)
+  def bad_request(message = nil)
     error = {
       error: 'Bad request',
       message: message || 'Unexpected error has occured.'
@@ -57,7 +55,7 @@ class ApplicationController < ActionController::API
     render json: error, status: :bad_request
   end
 
-  def forbidden(message=nil)
+  def forbidden(message = nil)
     error = {
       error: 'forbidden',
       message: message || 'Not allowed.'

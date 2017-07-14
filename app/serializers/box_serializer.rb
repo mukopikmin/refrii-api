@@ -10,10 +10,6 @@ class BoxSerializer < ActiveModel::Serializer
   end
 
   def image_url
-    if object.has_image?
-      "#{ENV['HOSTNAME']}/boxes/#{object.id}/image"
-    else
-      nil
-    end
+    "#{ENV['HOSTNAME']}/boxes/#{object.id}/image" if object.has_image?
   end
 end

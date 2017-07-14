@@ -6,10 +6,6 @@ class UserSerializer < ActiveModel::Serializer
   has_many :invitations
 
   def avatar_url
-    if object.has_avatar?
-      "#{ENV['HOSTNAME']}/users/#{object.id}/avatar"
-    else
-      nil
-    end
+    "#{ENV['HOSTNAME']}/users/#{object.id}/avatar" if object.has_avatar?
   end
 end

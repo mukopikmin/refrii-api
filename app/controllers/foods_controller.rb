@@ -85,7 +85,7 @@ class FoodsController < ApplicationController
       params[:image_content_type] = image.content_type
     end
     params[:updated_user_id] = current_user.id
-    params.permit(:name, :notice, :amount, :expiration_date, :box_id, :unit_id, :updated_user_id, :image_file, :image_size, :image_content_type)
+    params.permit(:name, :notice, :amount, :expiration_date, :needs_adding, :box_id, :unit_id, :updated_user_id, :image_file, :image_size, :image_content_type)
   end
 
   def accessible?
