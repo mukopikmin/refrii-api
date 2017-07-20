@@ -56,3 +56,6 @@ gem 'ffaker', '~> 2.6.0'
 
 gem 'omniauth', '~> 1.6.1'
 gem 'omniauth-google-oauth2', '~> 0.5.0'
+
+gem 'rmagick', '~> 2.16.0'
+gem 'config', '~> 1.4.0'

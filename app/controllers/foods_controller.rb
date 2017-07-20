@@ -80,7 +80,8 @@ class FoodsController < ApplicationController
   def food_params
     image = params[:image]
     if image_attached?(image)
-      params[:image_file] = image.read
+      original = Magick::Image.from_blob(image.read).first
+      params[:image_file] = original.resize_to_fit(Settings.rmagick.width, Settings.rmagick.height).to_blob
       params[:image_size] = params[:image_file].size
       params[:image_content_type] = image.content_type
     end

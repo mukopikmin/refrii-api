@@ -94,7 +94,8 @@ class UsersController < ApplicationController
   def user_params
     avatar = params[:avatar]
     if avatar_attached?(avatar)
-      params[:avatar_file] = avatar.read
+      original = Magick::Image.from_blob(avatar.read).first
+      params[:avatar_file] = original.resize_to_fit(Settings.rmagick.width, Settings.rmagick.height).to_blob
       params[:avatar_size] = params[:avatar_file].size
       params[:avatar_content_type] = avatar.content_type
     end
