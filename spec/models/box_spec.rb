@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe Box, type: :model do
   let!(:user1) { create(:user) }
   let!(:user2) { create(:user) }
-  let!(:box1) { create(:box, user: user1) }
-  let!(:box2) { create(:box, user: user2) }
+  let!(:box1) { create(:box, owner: user1) }
+  let!(:box2) { create(:box, owner: user2) }
 
   before(:each) do
     Invitation.create(box: box1, user: user2)

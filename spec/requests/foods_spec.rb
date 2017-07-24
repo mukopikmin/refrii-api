@@ -7,21 +7,21 @@ RSpec.describe 'Foods', type: :request do
 
   let(:user1) { create(:user) }
   let(:user2) { create(:user) }
-  let(:box1) { create(:box, user: user1) }
-  let(:box2) { create(:box, user: user2) }
+  let(:box1) { create(:box, owner: user1) }
+  let(:box2) { create(:box, owner: user2) }
   let(:unit1) { create(:unit, user: user1) }
   let(:unit2) { create(:unit, user: user2) }
   let(:food1) do
     create(:food, box: box1,
                   unit: unit1,
-                  created_user: box1.user,
-                  updated_user: box1.user)
+                  created_user: box1.owner,
+                  updated_user: box1.owner)
   end
   let(:food2) do
     create(:food, box: box2,
                   unit: unit2,
-                  created_user: box2.user,
-                  updated_user: box2.user)
+                  created_user: box2.owner,
+                  updated_user: box2.owner)
   end
 
   describe 'GET /foods' do
@@ -78,7 +78,7 @@ RSpec.describe 'Foods', type: :request do
 
   describe "GET /foods/:id/image" do
     let(:user) { create(:user) }
-    let(:box) { create(:box, user: user) }
+    let(:box) { create(:box, owner: user) }
     let(:unit) { create(:unit, user: user) }
     let(:food) { create(:food, :with_image, box: box, unit: unit, created_user: user, updated_user: user) }
     let(:no_image_food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user)  }

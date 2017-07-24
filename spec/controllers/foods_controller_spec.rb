@@ -7,13 +7,13 @@ RSpec.describe FoodsController, type: :controller do
 
   describe 'GET #index' do
     let(:user) { create(:user) }
-    let(:box) { create(:box, user: user) }
+    let(:box) { create(:box, owner: user) }
     let(:unit) { create(:unit, user: user) }
     let!(:food) do
       create(:food, box: box,
                     unit: unit,
-                    created_user: box.user,
-                    updated_user: box.user)
+                    created_user: box.owner,
+                    updated_user: box.owner)
     end
 
     before(:each) do
@@ -28,13 +28,13 @@ RSpec.describe FoodsController, type: :controller do
 
   describe 'GET #show' do
     let(:user) { create(:user) }
-    let(:box) { create(:box, user: user) }
+    let(:box) { create(:box, owner: user) }
     let(:unit) { create(:unit, user: user) }
     let(:food) do
       create(:food, box: box,
                     unit: unit,
-                    created_user: box.user,
-                    updated_user: box.user)
+                    created_user: box.owner,
+                    updated_user: box.owner)
     end
 
     before(:each) do
@@ -49,7 +49,7 @@ RSpec.describe FoodsController, type: :controller do
 
   describe 'GET #image' do
     let(:user) { create(:user) }
-    let(:box) { create(:box, user: user) }
+    let(:box) { create(:box, owner: user) }
     let(:unit) { create(:unit, user: user) }
     let(:food) { create(:food, :with_image, box: box, unit: unit, created_user: user, updated_user: user) }
 
@@ -65,7 +65,7 @@ RSpec.describe FoodsController, type: :controller do
 
   describe 'POST #create' do
     let(:user) { create(:user) }
-    let(:box) { create(:box, user: user) }
+    let(:box) { create(:box, owner: user) }
     let(:unit) { create(:unit, user: user) }
 
     before(:each) do
@@ -97,13 +97,13 @@ RSpec.describe FoodsController, type: :controller do
 
   describe 'PUT #update' do
     let(:user) { create(:user) }
-    let(:box) { create(:box, user: user) }
+    let(:box) { create(:box, owner: user) }
     let(:unit) { create(:unit, user: user) }
     let(:food) do
       create(:food, box: box,
                     unit: unit,
-                    created_user: box.user,
-                    updated_user: box.user)
+                    created_user: box.owner,
+                    updated_user: box.owner)
     end
 
     before(:each) do
@@ -122,13 +122,13 @@ RSpec.describe FoodsController, type: :controller do
 
   describe 'DELETE #destroy' do
     let(:user) { create(:user) }
-    let(:box) { create(:box, user: user) }
+    let(:box) { create(:box, owner: user) }
     let(:unit) { create(:unit, user: user) }
     let!(:food) do
       create(:food, box: box,
                     unit: unit,
-                    created_user: box.user,
-                    updated_user: box.user)
+                    created_user: box.owner,
+                    updated_user: box.owner)
     end
 
     before(:each) do

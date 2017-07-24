@@ -9,7 +9,7 @@ class User < ApplicationRecord
             uniqueness: true,
             format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
 
-  has_many :boxes
+  has_many :boxes, class_name: 'Box', foreign_key: 'owner_id'
   has_many :units
   has_many :invitations
   has_many :created_foods, class_name: 'Food', foreign_key: 'created_user_id'

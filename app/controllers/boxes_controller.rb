@@ -26,7 +26,7 @@ class BoxesController < ApplicationController
     if !accessible?
       not_found('Specified box does not exist.')
     else
-      render json: @box, include: [:user, { foods: :unit }]
+      render json: @box, include: [:owner, { foods: :unit }]
     end
   end
 
@@ -50,7 +50,7 @@ class BoxesController < ApplicationController
 
   # GET /boxes/1/units
   def units
-    @units = @box.user.units
+    @units = @box.owner.units
 
     if !accessible?
       not_found('Specified box does not exist.')
@@ -130,8 +130,8 @@ class BoxesController < ApplicationController
       params[:image_size] = params[:image_file].size
       params[:image_content_type] = image.content_type
     end
-    params[:user_id] = current_user.id
-    params.permit(:name, :notice, :user_id, :image_file, :image_size, :image_content_type)
+    params[:owner_id] = current_user.id
+    params.permit(:name, :notice, :owner_id, :image_file, :image_size, :image_content_type)
   end
 
   def set_invitation

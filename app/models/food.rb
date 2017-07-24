@@ -8,9 +8,8 @@ class Food < ApplicationRecord
   belongs_to :unit
   belongs_to :created_user, class_name: 'User'
   belongs_to :updated_user, class_name: 'User'
-  has_one :image, class_name: 'FoodImage'
 
-  scope :owned_by, -> (user) { joins(:box).where(boxes: { user: user }) }
+  scope :owned_by, -> (user) { joins(:box).where(boxes: { owner: user }) }
   scope :inviting, -> (user) { joins(box: :invitations).where(box: { invitations: { user: user } }) }
   scope :all_with_invited, -> (user) { owned_by(user) + inviting(user) }
 

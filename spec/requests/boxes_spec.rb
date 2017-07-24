@@ -7,9 +7,9 @@ RSpec.describe 'Boxes', type: :request do
 
   let(:user1) { create(:user) }
   let(:user2) { create(:user) }
-  let(:box1) { create(:box, user: user1) }
-  let(:box2) { create(:box, user: user2) }
-  let(:box3) { create(:box, user: user2) }
+  let(:box1) { create(:box, owner: user1) }
+  let(:box2) { create(:box, owner: user2) }
+  let(:box3) { create(:box, owner: user2) }
   let(:unit1) { create(:unit, box: box1, user: user1) }
   let(:unit1) { create(:unit, box: box2, user: user2) }
   let!(:invitation) { Invitation.create(box: box3, user: user1) }
@@ -108,8 +108,8 @@ RSpec.describe 'Boxes', type: :request do
 
   describe 'GET /boxes/:id/image' do
     let(:user) { create(:user) }
-    let(:box) { create(:box, :with_image, user: user) }
-    let(:no_image_box) { create(:box, user: user) }
+    let(:box) { create(:box, :with_image, owner: user) }
+    let(:no_image_box) { create(:box, owner: user) }
 
     context 'without authentication' do
       before(:each) { get image_box_path(box) }

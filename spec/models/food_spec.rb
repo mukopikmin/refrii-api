@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Food, type: :model do
   let(:user) { create(:user) }
-  let(:box) { create(:box, user: user) }
+  let(:box) { create(:box, owner: user) }
   let(:unit) { create(:unit, user: user) }
   let(:food) { create(:food, :with_image, box: box, unit: unit, created_user: user, updated_user: user) }
   let(:no_image_food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user) }

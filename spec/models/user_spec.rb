@@ -61,7 +61,7 @@ RSpec.describe User, type: :model do
   describe '#invited_boxes' do
     let(:user1) { create(:user) }
     let(:user2) { create(:user) }
-    let(:box) { create(:box, user: user1) }
+    let(:box) { create(:box, owner: user1) }
     let!(:invitation) { Invitation.create(user: user2, box: box) }
     subject { user2.invited_boxes }
 
