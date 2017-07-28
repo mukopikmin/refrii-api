@@ -62,4 +62,12 @@ class ApplicationController < ActionController::API
     }
     render json: error, status: :forbidden
   end
+
+  def internal_server_error(message=nil)
+    error = {
+      error: 'forbidden',
+      message: message || 'Internal server error occured.'
+    }
+    render json: error, status: :internal_server_error
+  end
 end

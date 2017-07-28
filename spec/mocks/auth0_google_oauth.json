@@ -1,0 +1,45 @@
+{
+  "provider": "auth0",
+  "uid": "google-oauth2|000000000000000000000",
+  "info": {
+    "name": "xxxxxxxxxxxx",
+    "nickname": "xxxxxxxxxx",
+    "email": "xxxxxxxxxx@gmail.com",
+    "image":
+    "https://lh4.googleusercontent.com/xxxxxxxxxxx.jpg"
+  },
+  "credentials": {
+    "token": "xxxxxxxxxxxxxxxxx",
+    "expires_at": 1501314076,
+    "expires": true,
+    "id_token":
+    "xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "token_type": "Bearer",
+    "refresh_token": null
+  },
+  "extra": {
+    "raw_info": {
+      "email": "xxxxxxxxxx@gmail.com",
+      "email_verified": true,
+      "name": "xxxxxxxxxxxx",
+      "given_name": "xxxxxx",
+      "family_name": "xxxxxx",
+      "picture":
+      "https://lh4.googleusercontent.com/xxxxxxxxxxx.jpg",
+      "gender": "male",
+      "locale": "ja",
+      "clientID": "xxxxxxxxxxxxxxx",
+      "updated_at": "2017-07-28T07:41:15.191Z",
+      "user_id": "google-oauth2|000000000000000000000",
+      "nickname": "xxxxxxxxxx",
+      "identities": [{
+        "provider": "google-oauth2",
+        "user_id": "000000000000000000000",
+        "connection": "google-oauth2",
+        "isSocial": true
+      }],
+      "created_at": "2017-07-26T13:37:04.850Z",
+      "sub": "google-oauth2|000000000000000000000"
+    }
+  }
+}

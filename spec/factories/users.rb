@@ -27,6 +27,10 @@ FactoryGirl.define do
     factory :google_user, class: User do
       provider 'google'
     end
+
+    factory :twitter_user, class: User do
+      provider 'twitter'
+    end
   end
 
   factory :no_email_user, class: User do

@@ -1,0 +1,52 @@
+{
+  "provider": "google",
+  "uid": "000000000000000000000",
+  "info": {
+    "name": "xxxxxxxxxxxxxxxx",
+    "email": "xxxxxxxxx@gmail.com",
+    "first_name": "xxxxxx",
+    "last_name": "xxxxxx",
+    "image":
+    "https://lh4.googleusercontent.com/xxxxxxxxx.jpg",
+    "urls": {
+      "google": "https://plus.google.com/000000000000000000000"
+    }
+  },
+  "credentials": {
+    "token":
+    "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "expires_at": 1501232830,
+    "expires": true
+  },
+  "extra": {
+    "id_token":
+    "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "id_info": {
+      "azp":
+      "xxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com",
+      "aud":
+      "xxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com",
+      "sub": "000000000000000000000",
+      "email": "xxxxxxxxx@gmail.com",
+      "email_verified": true,
+      "at_hash": "xxxxxxxxxxxxxxxxxxx",
+      "iss": "accounts.google.com",
+      "iat": 1111111111,
+      "exp": 1111111111
+    },
+    "raw_info": {
+      "kind": "plus#personOpenIdConnect",
+      "gender": "male",
+      "sub": "000000000000000000000",
+      "name": "xxxxxxxxxxxxxxxx",
+      "given_name": "xxxxxx",
+      "family_name": "xxxxxx",
+      "profile": "https://plus.google.com/000000000000000000000",
+      "picture":
+      "https://lh4.googleusercontent.com/xxxxxxxxx.jpg?sz=50",
+      "email": "xxxxxxxxx@gmail.com",
+      "email_verified": "true",
+      "locale": "ja"
+    }
+  }
+}

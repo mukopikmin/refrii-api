@@ -6,6 +6,30 @@ RSpec.describe Unit, type: :model do
   let!(:unit1) { create(:unit, user: user1) }
   let!(:unit2) { create(:unit, user: user2) }
 
+  describe '.new' do
+    label = 'labe;'
+    let!(:user1) { create(:user) }
+    let!(:user2) { create(:user) }
+
+    context 'with same label, different user' do
+      let!(:existing_unit) { create(:unit, label: label, user: user1) }
+      let(:unit) { build(:unit, label: label, user: user2) }
+
+      it 'returns true on save' do
+        expect(unit.save).to be_truthy
+      end
+    end
+
+    context 'with same label and user' do
+      let!(:existing_unit) { create(:unit, label: label, user: user1) }
+      let(:unit) { build(:unit, label: label, user: user1) }
+
+      it 'returns false on save' do
+        expect(unit.save).to be_falsey
+      end
+    end
+  end
+
   describe 'scope' do
     describe 'owned_by' do
       subject(:units) { Unit.owned_by(user1) }

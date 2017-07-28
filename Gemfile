@@ -59,3 +59,5 @@ gem 'omniauth-google-oauth2', '~> 0.5.0'
 
 gem 'rmagick', '~> 2.16.0'
 gem 'config', '~> 1.4.0'
+gem 'omniauth-auth0', '~> 2.0.0'
+gem 'omniauth-oauth2', '~> 1.4.0'

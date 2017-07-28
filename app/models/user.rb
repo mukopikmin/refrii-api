@@ -6,8 +6,8 @@ class User < ApplicationRecord
   validates :password_confirmation, presence: true, if: :local_user?
   validates :email,
             presence: true,
-            uniqueness: true,
             format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
+  validates_uniqueness_of :email, scope: :provider
 
   has_many :boxes, class_name: 'Box', foreign_key: 'owner_id'
   has_many :units
@@ -49,6 +49,22 @@ class User < ApplicationRecord
                  email: email,
                  password_digest: 'no password',
                  provider: 'google')
+      user.save!
+    end
+    user
+  end
+
+  def self.find_for_auth0(auth)
+    email = auth[:info][:email]
+    provider = "auth0/#{auth[:extra][:raw_info][:identities].first[:provider]}"
+    user = nil
+    if exists?(email: email, provider: provider)
+      user = where(email: email, provider: provider)
+    else
+      user = new(name: auth[:info][:name],
+                 email: email,
+                 password_digest: 'no password',
+                 provider: provider)
       user.save!
     end
     user

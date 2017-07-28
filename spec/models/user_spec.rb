@@ -1,6 +1,28 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  describe '.new' do
+    context 'with same email, different provider' do
+      email = 'test@test.com'
+      let!(:google_user) { create(:google_user, email: email) }
+      let(:user) { build(:twitter_user, email: email) }
+
+      it 'returns true on save' do
+        expect(user.save).to be_truthy
+      end
+    end
+
+    context 'with same email and provider' do
+      email = 'test@test.com'
+      let!(:google_user) { create(:google_user, email: email) }
+      let(:user) { build(:google_user, email: email) }
+
+      it 'returns false on save' do
+        expect(user.save).to be_falsey
+      end
+    end
+  end
+
   describe '#valid_password?' do
     let(:user) { create(:user) }
     let(:password) { attributes_for(:user)[:password] }
@@ -110,16 +132,27 @@ RSpec.describe User, type: :model do
 
   describe '.find_for_google' do
     let(:auth) do
-      {
-        info: {
-          name: 'test user',
-          email: 'test@test.com'
-        }
-      }
+      open(File.join('spec', 'mocks', 'google_oauth.json')) do |io|
+        JSON.parse(JSON.load(io).to_json, symbolize_names: true)
+      end
     end
     let(:user) { User.find_for_google(auth) }
 
-    it 'returns google authorized user' do
+    it 'returns database authorized user' do
+      expect(user).to be_a(User)
+      expect(user.provider).to eq('google')
+    end
+  end
+
+  describe '.find_for_auth0' do
+    let(:auth) do
+      open(File.join('spec', 'mocks', 'auth0_google_oauth.json')) do |io|
+        JSON.parse(JSON.load(io).to_json, symbolize_names: true)
+      end
+    end
+    let(:user) { User.find_for_google(auth) }
+
+    it 'returns auth0 authorized user' do
       expect(user).to be_a(User)
       expect(user.provider).to eq('google')
     end
