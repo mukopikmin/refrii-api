@@ -56,6 +56,6 @@ FactoryGirl.define do
 
     avatar_file file
     avatar_size file.size
-    avatar_content_type 'image/jpg'
+    avatar_content_type 'image/jpeg'
   end
 end

@@ -41,14 +41,19 @@ class User < ApplicationRecord
 
   def self.find_for_google(auth)
     email = auth[:info][:email]
+    provider = 'google'
     user = nil
-    if exists?(email: email)
-      user = where(email: email).first
+    if exists?(email: email, provider: provider)
+      user = where(email: email, provider: provider).first
     else
+      avatar = download_image(auth[:info][:image])
       user = new(name: auth[:info][:name],
                  email: email,
                  password_digest: 'no password',
-                 provider: 'google')
+                 provider: provider,
+                 avatar_file: avatar[:file],
+                 avatar_size: avatar[:size],
+                 avatar_content_type: avatar[:content_type])
       user.save!
     end
     user
@@ -59,14 +64,38 @@ class User < ApplicationRecord
     provider = "auth0/#{auth[:extra][:raw_info][:identities].first[:provider]}"
     user = nil
     if exists?(email: email, provider: provider)
-      user = where(email: email, provider: provider)
+      user = where(email: email, provider: provider).first
     else
+      avatar = download_image(auth[:info][:image])
       user = new(name: auth[:info][:name],
                  email: email,
                  password_digest: 'no password',
-                 provider: provider)
+                 provider: provider,
+                 avatar_file: avatar[:file],
+                 avatar_size: avatar[:size],
+                 avatar_content_type: avatar[:content_type])
       user.save!
     end
     user
   end
+
+  private
+
+  def self.download_image(url)
+    open(url) do |io|
+      Tempfile.open do |tempfile|
+        tempfile.binmode
+        tempfile.write(io.read)
+        {
+          file: tempfile.open.read,
+          size: tempfile.size,
+          content_type: io.content_type
+        }
+      end
+    end
+  end
+
+  # def self.avatar_valid?(params)
+  #   params[:file] && params[:size] && params[:content_type]
+  # end
 end

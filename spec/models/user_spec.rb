@@ -131,6 +131,16 @@ RSpec.describe User, type: :model do
   end
 
   describe '.find_for_google' do
+    before(:each) do
+      file = File.new(File.join('spec', 'resources', 'avatar.jpg'), 'rb')
+      params = {
+        file: file,
+        size: file.size,
+        content_type: 'image/jpeg'
+      }
+      allow(User).to receive(:download_image).and_return(params)
+    end
+
     let(:auth) do
       open(File.join('spec', 'mocks', 'google_oauth.json')) do |io|
         JSON.parse(JSON.load(io).to_json, symbolize_names: true)
@@ -145,6 +155,16 @@ RSpec.describe User, type: :model do
   end
 
   describe '.find_for_auth0' do
+    before(:each) do
+      file = File.new(File.join('spec', 'resources', 'avatar.jpg'), 'rb')
+      params = {
+        file: file,
+        size: file.size,
+        content_type: 'image/jpeg'
+      }
+      allow(User).to receive(:download_image).and_return(params)
+    end
+
     let(:auth) do
       open(File.join('spec', 'mocks', 'auth0_google_oauth.json')) do |io|
         JSON.parse(JSON.load(io).to_json, symbolize_names: true)
