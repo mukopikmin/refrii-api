@@ -2,7 +2,7 @@ class AuthenticationController < ApplicationController
 
   # POST /auth/local
   def local
-    @user = User.find_for_database_authentication(email: params[:email])
+    @user = User.find_for_database_authentication(email: params[:email], provider: 'local')
 
     if @user.valid_password?(params[:password])
       render json: JsonWebToken.payload(@user)

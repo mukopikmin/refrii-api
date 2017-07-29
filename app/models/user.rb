@@ -79,8 +79,6 @@ class User < ApplicationRecord
     user
   end
 
-  private
-
   def self.download_image(url)
     open(url) do |io|
       Tempfile.open do |tempfile|
@@ -94,8 +92,4 @@ class User < ApplicationRecord
       end
     end
   end
-
-  # def self.avatar_valid?(params)
-  #   params[:file] && params[:size] && params[:content_type]
-  # end
 end
