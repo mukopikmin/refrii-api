@@ -75,7 +75,6 @@ ActiveRecord::Schema.define(version: 20170728071842) do
     t.binary "avatar_file"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_users_on_email"
   end
 
 end

@@ -1,10 +1,10 @@
 class Box < ApplicationRecord
-  validates :name, presence: true, length: { minimum: 1 }
-  validates :owner, presence: true
-
   belongs_to :owner, class_name: 'User'
   has_many :foods
   has_many :invitations
+
+  validates_presence_of :name
+  validates_presence_of :owner
 
   scope :owned_by, ->(user) { where(owner: user) }
   scope :inviting, ->(user) { joins(:invitations).where(invitations: { user: user }) }

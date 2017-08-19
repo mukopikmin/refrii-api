@@ -1,19 +1,20 @@
+require 'open-uri'
+
 class User < ApplicationRecord
   has_secure_password
-
-  validates :name, presence: true, length: { minimum: 1 }
-  validates :email, presence: true, length: { minimum: 1 }
-  validates :password_confirmation, presence: true, if: :local_user?
-  validates :email,
-            presence: true,
-            format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
-  validates_uniqueness_of :email, scope: :provider
 
   has_many :boxes, class_name: 'Box', foreign_key: 'owner_id'
   has_many :units
   has_many :invitations
   has_many :created_foods, class_name: 'Food', foreign_key: 'created_user_id'
   has_many :updated_foods, class_name: 'Food', foreign_key: 'updated_user_id'
+
+  validates_presence_of :name
+  validates_presence_of :email
+  validates_presence_of :password_confirmation, if: :local_user?
+  validates :email, presence: true,
+                    format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
+  validates_uniqueness_of :email, scope: :provider
 
   def valid_password?(unencrypted_password)
     BCrypt::Password.new(password_digest) == unencrypted_password && self
@@ -49,8 +50,8 @@ class User < ApplicationRecord
       avatar = download_image(auth[:info][:image])
       user = new(name: auth[:info][:name],
                  email: email,
-                 password_digest: 'no password',
                  provider: provider,
+                 password_digest: 'no password',
                  avatar_file: avatar[:file],
                  avatar_size: avatar[:size],
                  avatar_content_type: avatar[:content_type])
@@ -69,8 +70,8 @@ class User < ApplicationRecord
       avatar = download_image(auth[:info][:image])
       user = new(name: auth[:info][:name],
                  email: email,
-                 password_digest: 'no password',
                  provider: provider,
+                 password_digest: 'no password',
                  avatar_file: avatar[:file],
                  avatar_size: avatar[:size],
                  avatar_content_type: avatar[:content_type])

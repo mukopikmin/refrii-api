@@ -85,12 +85,10 @@ class UsersController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_user
     @user = User.find(params[:id])
   end
 
-  # Only allow a trusted parameter "white list" through.
   def user_params
     avatar = params[:avatar]
     if avatar_attached?(avatar)
@@ -99,7 +97,13 @@ class UsersController < ApplicationController
       params[:avatar_size] = params[:avatar_file].size
       params[:avatar_content_type] = avatar.content_type
     end
-    params.permit(:name, :email, :password, :password_confirmation, :avatar_file, :avatar_size, :avatar_content_type)
+    params.permit(:name,
+                  :email,
+                  :password,
+                  :password_confirmation,
+                  :avatar_file,
+                  :avatar_size,
+                  :avatar_content_type)
   end
 
   def accessible?
