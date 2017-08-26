@@ -1,0 +1,10 @@
+{
+  "issued_to": "xxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com",
+  "audience": "xxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com",
+  "user_id": "000000000000000",
+  "scope": "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me",
+  "expires_in": 3333,
+  "email": "mockuser@test.com",
+  "verified_email": true,
+  "access_type": "online"
+}

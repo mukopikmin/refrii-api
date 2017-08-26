@@ -143,7 +143,7 @@ RSpec.describe User, type: :model do
 
     let(:auth) do
       open(File.join('spec', 'mocks', 'google_oauth.json')) do |io|
-        JSON.parse(JSON.load(io).to_json, symbolize_names: true)
+        Hashie::Mash.new(JSON.load(io))
       end
     end
     let(:user) { User.find_for_google(auth) }
@@ -151,6 +151,33 @@ RSpec.describe User, type: :model do
     it 'returns database authorized user' do
       expect(user).to be_a(User)
       expect(user.provider).to eq('google')
+    end
+  end
+
+  describe '.find_for_google_token' do
+    let(:mock_response) do
+      open(File.join('spec', 'mocks', 'tokeninfo.json')) do |io|
+        Hashie::Mash.new(JSON.load(io))
+      end
+    end
+    let!(:user) { create(:user, email: mock_response.email) }
+
+    context 'with valid token' do
+      let(:jwt) do
+        RestClient = double
+        response = double
+        response.stub(:code) { 200 }
+        response.stub(:body) { mock_response }
+        RestClient.stub(:get) { response }
+        User.find_for_google_token(JsonWebToken.payload(user))
+      end
+
+      it 'returns valid JWT' do
+        expect(jwt[:user][:id]).to eq(user.id)
+      end
+    end
+
+    context 'with invalid token' do
     end
   end
 
@@ -167,7 +194,7 @@ RSpec.describe User, type: :model do
 
     let(:auth) do
       open(File.join('spec', 'mocks', 'auth0_google_oauth.json')) do |io|
-        JSON.parse(JSON.load(io).to_json, symbolize_names: true)
+        Hashie::Mash.new(JSON.load(io))
       end
     end
     let(:user) { User.find_for_google(auth) }

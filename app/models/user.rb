@@ -41,14 +41,14 @@ class User < ApplicationRecord
   end
 
   def self.find_for_google(auth)
-    email = auth[:info][:email]
+    email = auth.info.email
     provider = 'google'
     user = nil
     if exists?(email: email, provider: provider)
       user = where(email: email, provider: provider).first
     else
-      avatar = download_image(auth[:info][:image])
-      user = new(name: auth[:info][:name],
+      avatar = download_image(auth.info.image)
+      user = new(name: auth.info.name,
                  email: email,
                  provider: provider,
                  password_digest: 'no password',
@@ -60,15 +60,34 @@ class User < ApplicationRecord
     user
   end
 
+  def self.find_for_google_token(token)
+    url = 'https://www.googleapis.com/oauth2/v1/tokeninfo'
+    options = {
+      params: {
+        access_token: token
+      },
+      headers: {
+        accept: :json
+      }
+    }
+    response = RestClient.get(url, options)
+    user = where(email: response.body[:email]).first
+    if user
+      JsonWebToken.payload(user)
+    else
+      nil
+    end
+  end
+
   def self.find_for_auth0(auth)
-    email = auth[:info][:email]
-    provider = "auth0/#{auth[:extra][:raw_info][:identities].first[:provider]}"
+    email = auth.info.email
+    provider = "auth0/#{auth.extra.raw_info.identities.first.provider}"
     user = nil
     if exists?(email: email, provider: provider)
       user = where(email: email, provider: provider).first
     else
-      avatar = download_image(auth[:info][:image])
-      user = new(name: auth[:info][:name],
+      avatar = download_image(auth.info.image)
+      user = new(name: auth.info.name,
                  email: email,
                  provider: provider,
                  password_digest: 'no password',
