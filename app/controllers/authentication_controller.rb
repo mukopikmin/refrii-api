@@ -22,6 +22,16 @@ class AuthenticationController < ApplicationController
     end
   end
 
+  # GET /auth/google/token
+  def google_token
+    begin
+      @user = User.find_for_google_token(params[:token])
+      render json: JsonWebToken.payload(@user)
+    rescue => e
+      bad_request('Invalid token is given.')
+    end
+  end
+
   # GET /auth/auth0/callback
   def auth0
     @user = User.find_for_auth0(request.env['omniauth.auth'])

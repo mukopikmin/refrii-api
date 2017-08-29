@@ -157,27 +157,50 @@ RSpec.describe User, type: :model do
   describe '.find_for_google_token' do
     let(:mock_response) do
       open(File.join('spec', 'mocks', 'tokeninfo.json')) do |io|
-        Hashie::Mash.new(JSON.load(io))
+        JSON.load(io).to_json
       end
     end
-    let!(:user) { create(:user, email: mock_response.email) }
+    let(:email) { JSON.parse(mock_response)['email'] }
+    let(:provider) { 'google' }
 
-    context 'with valid token' do
-      let(:jwt) do
-        RestClient = double
+    context 'with valid token, existing user' do
+      let(:user) { create(:user, email: email, provider: provider) }
+      let(:authorized_user) do
         response = double
-        response.stub(:code) { 200 }
-        response.stub(:body) { mock_response }
-        RestClient.stub(:get) { response }
+        allow(response).to receive(:code).and_return(200)
+        allow(response).to receive(:body).and_return(mock_response)
+        allow(RestClient).to receive(:get).and_return(response)
         User.find_for_google_token(JsonWebToken.payload(user))
       end
 
-      it 'returns valid JWT' do
-        expect(jwt[:user][:id]).to eq(user.id)
+      it 'returns existing user' do
+        expect(authorized_user.id).to eq(user.id)
+      end
+    end
+
+    context 'with valid token, non-existing user' do
+      let(:authorized_user) do
+        response = double
+        allow(response).to receive(:code).and_return(200)
+        allow(response).to receive(:body).and_return(mock_response)
+        allow(RestClient).to receive(:get).and_return(response)
+        User.find_for_google_token(JsonWebToken.payload(build(:user)))
+      end
+
+      it 'returns existing user' do
+        expect(authorized_user).to be_persisted
       end
     end
 
     context 'with invalid token' do
+      let(:user) { build(:user) }
+      before(:each) { allow(RestClient).to receive(:get).and_raise(RestClient::ExceptionWithResponse.new) }
+
+      it 'raises error' do
+        expect {
+          User.find_for_google_token(JsonWebToken.payload(user))
+        }.to raise_error(RestClient::ExceptionWithResponse)
+      end
     end
   end
 

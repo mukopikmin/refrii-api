@@ -34,6 +34,7 @@ Rails.application.routes.draw do
 
   post 'auth/local', to: 'authentication#local'
   get 'auth/google/callback', to: 'authentication#google'
+  get 'auth/google/token', to: 'authentication#google_token'
   get 'auth/auth0/callback', to: 'authentication#auth0'
   get 'auth/failure', to: 'authentication#failure'
 end

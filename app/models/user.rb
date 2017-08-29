@@ -70,13 +70,19 @@ class User < ApplicationRecord
         accept: :json
       }
     }
-    response = RestClient.get(url, options)
-    user = where(email: response.body[:email]).first
-    if user
-      JsonWebToken.payload(user)
+    response = Hashie::Mash.new(JSON.parse(RestClient.get(url, options).body))
+    email = response.email
+    provider = 'google'
+    if User.exists?(email: email, provider: provider)
+      user = where(email: email, provider: provider).first
     else
-      nil
+      user = new(name: email,
+                 email: email,
+                 provider: provider,
+                 password_digest: 'no password')
+      user.save!
     end
+    user
   end
 
   def self.find_for_auth0(auth)

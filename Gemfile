@@ -61,3 +61,6 @@ gem 'rmagick', '~> 2.16.0'
 gem 'config', '~> 1.4.0'
 gem 'omniauth-auth0', '~> 2.0.0'
 gem 'omniauth-oauth2', '~> 1.4.0'
+
+gem 'rest-client', '~> 2.0.2'
+gem 'hashie', '~> 3.5.6'
