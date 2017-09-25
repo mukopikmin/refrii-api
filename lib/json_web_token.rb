@@ -3,12 +3,12 @@ class JsonWebToken
     return nil unless user && user.id
     {
       jwt: self.encode(user_id: user.id, expires_at: 7.days.since),
+      expires_at: 7.days.since,
       user: {
         id: user.id,
         email: user.email,
         name: user.name,
-        provider: user.provider,
-        expires_at: 7.days.since
+        provider: user.provider
       }
     }
   end
