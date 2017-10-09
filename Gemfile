@@ -5,9 +5,9 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 5.1.0'
+gem 'rails', '~> 5.1.4'
 # Use Puma as the app server
-gem 'puma', '~> 3.0'
+gem 'puma', '~> 3.10'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 gem 'bcrypt', '~> 3.1.7'
@@ -15,7 +15,7 @@ gem 'bcrypt', '~> 3.1.7'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'rack-cors', '~> 0.4.1'
+gem 'rack-cors', '~> 1.0.1'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -52,13 +52,13 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'active_model_serializers', '~> 0.10.5'
 gem 'dotenv-rails', '~> 2.2.0'
-gem 'ffaker', '~> 2.6.0'
+gem 'ffaker', '~> 2.7.0'
 
-gem 'omniauth', '~> 1.6.1'
+gem 'omniauth', '~> 1.7.1'
 gem 'omniauth-google-oauth2', '~> 0.5.0'
 
 gem 'rmagick', '~> 2.16.0'
-gem 'config', '~> 1.4.0'
+gem 'config', '~> 1.5.0'
 gem 'omniauth-auth0', '~> 2.0.0'
 gem 'omniauth-oauth2', '~> 1.4.0'
 
