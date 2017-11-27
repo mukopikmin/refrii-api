@@ -48,4 +48,19 @@ RSpec.describe Unit, type: :model do
       it { is_expected.to be_falsey }
     end
   end
+
+  describe '#is_inuse?' do
+    context 'with units not referenced by foods' do
+      subject { unit1.is_inuse? }
+      it { is_expected.to be_falsey }
+    end
+
+    context 'with units referenced by foods' do
+      let(:box) { create(:box, owner: user1) }
+      let!(:food) { create(:food, unit: unit1, box: box, created_user: user1, updated_user: user1) }
+
+      subject { unit1.is_inuse? }
+      it { is_expected.to be_truthy }
+    end
+  end
 end

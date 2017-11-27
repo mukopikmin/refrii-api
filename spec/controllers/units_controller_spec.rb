@@ -81,10 +81,24 @@ RSpec.describe UnitsController, type: :controller do
       request.headers['Authorization'] = "Bearer #{token(unit.user)}"
     end
 
-    it 'destroys the requested unit' do
-      expect do
-        delete :destroy, params: { id: unit.to_param }
-      end.to change(Unit, :count).by(-1)
+    context 'with units not refernced by foods' do
+      it 'destroys the requested unit' do
+        expect do
+          delete :destroy, params: { id: unit.to_param }
+        end.to change(Unit, :count).by(-1)
+      end
+    end
+
+    context 'with units refernced by foods' do
+      let(:user) { create(:user) }
+      let(:box) { create(:box, owner: user) }
+      let!(:food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user) }
+
+      it 'not destroy the requested unit' do
+        expect do
+          delete :destroy, params: { id: unit.to_param }
+        end.to change(Unit, :count).by(0)
+      end
     end
   end
 end

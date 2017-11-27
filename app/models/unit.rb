@@ -13,4 +13,8 @@ class Unit < ApplicationRecord
   def is_owned_by(user)
     user.units.include?(self)
   end
+
+  def is_inuse?
+    foods.size > 0
+  end
 end

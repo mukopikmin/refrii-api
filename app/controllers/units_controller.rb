@@ -48,6 +48,8 @@ class UnitsController < ApplicationController
   def destroy
     if !owner_of_unit?
       bad_request('You can not destroy this unit.')
+    elsif @unit.is_inuse?
+      bad_request('Units referenced by foods can not destroy.')
     else
       @unit.destroy
     end

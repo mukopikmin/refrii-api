@@ -186,12 +186,27 @@ RSpec.describe "Units", type: :request do
 
     context 'with authentication' do
       context 'with own unit' do
-        before(:each) do
-          delete unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" }
+        context 'with unit not referenced by foods' do
+          before(:each) do
+            delete unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" }
+          end
+
+          it "returns 201" do
+            expect(response).to have_http_status(:no_content)
+          end
         end
 
-        it "returns 201" do
-          expect(response).to have_http_status(:no_content)
+        context 'with unit referenced by foods' do
+          let(:box) { create(:box, owner: user1) }
+          let!(:food) { create(:food, box: box, unit: unit1, created_user: user1, updated_user: user1) }
+
+          before(:each) do
+            delete unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" }
+          end
+          
+          it "returns 400" do
+            expect(response).to have_http_status(:bad_request)
+          end
         end
       end
 
