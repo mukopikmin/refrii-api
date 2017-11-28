@@ -1,8 +1,8 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :box do
     sequence(:name) { |n| "box #{n}" }
     notice 'this is box for test'
-    
+
     trait :with_image do
       file = File.new(File.join('spec', 'resources', 'eggs.jpg'), 'rb')
 

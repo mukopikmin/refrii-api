@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :food do
     name 'test food'
     notice 'this is test'
