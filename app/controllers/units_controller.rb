@@ -35,8 +35,6 @@ class UnitsController < ApplicationController
   def update
     if !owner_of_unit?
       bad_request('You can not update this unit.')
-    elsif duplicate_unit?
-      bad_request('Specified label of unit already exists.')
     elsif @unit.update(unit_params)
       render json: @unit
     else

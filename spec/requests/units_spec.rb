@@ -172,6 +172,18 @@ RSpec.describe "Units", type: :request do
           expect(response).to have_http_status(:bad_request)
         end
       end
+
+      context 'without renaming label of unit' do
+        let(:params) { attributes_for(:unit).merge!(user_id: user1.id) }
+
+        before(:each) do
+          put unit_path(unit1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
+        end
+
+        it "returns 200" do
+          expect(response).to have_http_status(:ok)
+        end
+      end
     end
   end
 
@@ -203,7 +215,7 @@ RSpec.describe "Units", type: :request do
           before(:each) do
             delete unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" }
           end
-          
+
           it "returns 400" do
             expect(response).to have_http_status(:bad_request)
           end
