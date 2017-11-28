@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root 'root#index'
+
   resources :units
 
   resources :foods do
