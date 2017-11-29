@@ -35,12 +35,7 @@ class FoodsController < ApplicationController
   def image
     if @food.has_image? && accessible?
       if requested_base64?
-        image = {
-          content_type: @food.image_content_type,
-          size: @food.image_size,
-          base64: Base64.strict_encode64(@food.image_file)
-        }
-        render json: image
+        render json: @food.base64_image
       else
         send_data @food.image_file, type: @food.image_content_type, disposition: 'inline'
       end
@@ -79,13 +74,16 @@ class FoodsController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def food_params
     image = params[:image]
+
     if image_attached?(image)
       original = Magick::Image.from_blob(image.read).first
       params[:image_file] = original.resize_to_fit(Settings.rmagick.width, Settings.rmagick.height).to_blob
       params[:image_size] = params[:image_file].size
       params[:image_content_type] = image.content_type
     end
+
     params[:updated_user_id] = current_user.id
+
     params.permit(:name, :notice, :amount, :expiration_date, :needs_adding, :box_id, :unit_id, :updated_user_id, :image_file, :image_size, :image_content_type)
   end
 

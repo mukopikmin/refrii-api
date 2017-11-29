@@ -34,12 +34,7 @@ class BoxesController < ApplicationController
   def image
     if @box.has_image? && accessible?
       if requested_base64?
-        image = {
-          content_type: @box.image_content_type,
-          size: @box.image_size,
-          base64: Base64.strict_encode64(@box.image_file)
-        }
-        render json: image
+        render json: @box.base64_image
       else
         send_data @box.image_file, type: @box.image_content_type, disposition: 'inline'
       end
@@ -124,13 +119,16 @@ class BoxesController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def box_params
     image = params[:image]
+
     if image_attached?(image)
       original = Magick::Image.from_blob(image.read).first
       params[:image_file] = original.resize_to_fit(Settings.rmagick.width, Settings.rmagick.height).to_blob
       params[:image_size] = params[:image_file].size
       params[:image_content_type] = image.content_type
     end
+
     params[:owner_id] = current_user.id
+
     params.permit(:name, :notice, :owner_id, :image_file, :image_size, :image_content_type)
   end
 

@@ -16,4 +16,16 @@ class Food < ApplicationRecord
   def has_image?
     !(image_file.nil? || image_size.nil? || image_content_type.nil?)
   end
+
+  def base64_image
+    if has_image?
+      {
+        content_type: image_content_type,
+        size: image_size,
+        base64: Base64.strict_encode64(image_file)
+      }
+    else
+      nil
+    end
+  end
 end

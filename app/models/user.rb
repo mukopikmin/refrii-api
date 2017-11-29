@@ -36,6 +36,18 @@ class User < ApplicationRecord
     units.map(&:label).include?(label)
   end
 
+  def base64_avatar
+    if has_avatar?
+      {
+        content_type: avatar_content_type,
+        size: avatar_size,
+        base64: Base64.strict_encode64(avatar_file)
+      }
+    else
+      nil
+    end
+  end
+
   def self.find_for_database_authentication(conditions)
     where(conditions).first
   end
@@ -85,25 +97,25 @@ class User < ApplicationRecord
     user
   end
 
-  def self.find_for_auth0(auth)
-    email = auth.info.email
-    provider = "auth0/#{auth.extra.raw_info.identities.first.provider}"
-    user = nil
-    if exists?(email: email, provider: provider)
-      user = where(email: email, provider: provider).first
-    else
-      avatar = download_image(auth.info.image)
-      user = new(name: auth.info.name,
-                 email: email,
-                 provider: provider,
-                 password_digest: 'no password',
-                 avatar_file: avatar[:file],
-                 avatar_size: avatar[:size],
-                 avatar_content_type: avatar[:content_type])
-      user.save!
-    end
-    user
-  end
+  # def self.find_for_auth0(auth)
+  #   email = auth.info.email
+  #   provider = "auth0/#{auth.extra.raw_info.identities.first.provider}"
+  #   user = nil
+  #   if exists?(email: email, provider: provider)
+  #     user = where(email: email, provider: provider).first
+  #   else
+  #     avatar = download_image(auth.info.image)
+  #     user = new(name: auth.info.name,
+  #                email: email,
+  #                provider: provider,
+  #                password_digest: 'no password',
+  #                avatar_file: avatar[:file],
+  #                avatar_size: avatar[:size],
+  #                avatar_content_type: avatar[:content_type])
+  #     user.save!
+  #   end
+  #   user
+  # end
 
   def self.download_image(url)
     open(url) do |io|

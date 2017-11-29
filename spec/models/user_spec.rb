@@ -108,6 +108,24 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe '#base64_image' do
+    context 'if image exists' do
+      let(:user) { create(:user, :with_avatar) }
+
+      it "returns avatar encoded by base64" do
+        expect(user.base64_avatar[:base64]).to be_a(String)
+      end
+    end
+
+    context 'if no avatar exists' do
+      let(:no_avatar_user) { create(:user) }
+
+      it "returns nil" do
+        expect(no_avatar_user.base64_avatar).to be_nil
+      end
+    end
+  end
+
   describe '.find_for_database_authentication' do
     let(:user) { create(:user) }
 

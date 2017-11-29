@@ -35,12 +35,7 @@ class UsersController < ApplicationController
   def avatar
     if @user.has_avatar? && accessible?
       if requested_base64?
-        avatar = {
-          content_type: @user.avatar_content_type,
-          size: @user.avatar_size,
-          base64: Base64.strict_encode64(@user.avatar_file)
-        }
-        render json: avatar
+        render json: @user.base64_avatar
       else
         send_data @user.avatar_file, type: @user.avatar_content_type, disposition: 'inline'
       end
@@ -91,19 +86,15 @@ class UsersController < ApplicationController
 
   def user_params
     avatar = params[:avatar]
+
     if avatar_attached?(avatar)
       original = Magick::Image.from_blob(avatar.read).first
       params[:avatar_file] = original.resize_to_fit(Settings.rmagick.width, Settings.rmagick.height).to_blob
       params[:avatar_size] = params[:avatar_file].size
       params[:avatar_content_type] = avatar.content_type
     end
-    params.permit(:name,
-                  :email,
-                  :password,
-                  :password_confirmation,
-                  :avatar_file,
-                  :avatar_size,
-                  :avatar_content_type)
+
+    params.permit(:name, :email, :password, :password_confirmation, :avatar_file, :avatar_size, :avatar_content_type)
   end
 
   def accessible?
