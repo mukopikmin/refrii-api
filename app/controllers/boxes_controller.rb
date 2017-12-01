@@ -6,19 +6,19 @@ class BoxesController < ApplicationController
   # GET /boxes
   def index
     @boxes = Box.all_with_invited(current_user)
-    render json: @boxes, include: [:owner, { foods: :unit }]
+    render json: @boxes, include: [:owner, { foods: [:unit, :created_user, :updated_user] }]
   end
 
   # GET /boxes/owns
   def owns
     @boxes = Box.owned_by(current_user)
-    render json: @boxes, include: [:owner, { foods: :unit }]
+    render json: @boxes, include: [:owner, { foods: [:unit, :created_user, :updated_user] }]
   end
 
   # GET /boxes/invited
   def invited
     @boxes = Box.inviting(current_user)
-    render json: @boxes, include: [:owner, { foods: :unit }]
+    render json: @boxes, include: [:owner, { foods: [:unit, :created_user, :updated_user] }]
   end
 
   # GET /boxes/1
@@ -26,7 +26,7 @@ class BoxesController < ApplicationController
     if !accessible?
       not_found('Specified box does not exist.')
     else
-      render json: @box, include: [:owner, { foods: :unit }]
+      render json: @box, include: [:owner, { foods: [:unit, :created_user, :updated_user] }]
     end
   end
 
