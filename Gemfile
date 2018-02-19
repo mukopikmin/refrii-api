@@ -28,18 +28,18 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
-group :test do
-  gem 'database_cleaner', '~> 1.6.1'
-  gem 'factory_bot_rails', '~> 4.8.2'  
-  gem 'rails-controller-testing', '~> 1.0.1'
-  gem 'codeclimate-test-reporter', '~> 1.0.8', require: false
-  gem 'brakeman', '~> 4.0.1', require: false
-end
-
 group :development, :test do
   gem 'byebug', platform: :mri
   gem 'sqlite3'
   gem 'rspec-rails', '~> 3.7.2'
+end
+
+group :test do
+  gem 'database_cleaner', '~> 1.6.1'
+  gem 'factory_bot_rails', '~> 4.8.2'
+  gem 'rails-controller-testing', '~> 1.0.1'
+  gem 'codeclimate-test-reporter', '~> 1.0.8', require: false
+  gem 'brakeman', '~> 4.0.1', require: false
 end
 
 group :production do
