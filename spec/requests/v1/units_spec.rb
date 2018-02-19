@@ -12,7 +12,7 @@ RSpec.describe "Units", type: :request do
 
   describe 'GET /units' do
     context 'without authentication' do
-      before(:each) { get units_path }
+      before(:each) { get v1_units_path }
 
       it "returns 401" do
         expect(response).to have_http_status(:unauthorized)
@@ -21,7 +21,7 @@ RSpec.describe "Units", type: :request do
 
     context 'with authentication' do
       before(:each) do
-        get units_path, headers: { authorization: "Bearer #{token(user1)}" }
+        get v1_units_path, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
       it "returns 200" do
@@ -32,7 +32,7 @@ RSpec.describe "Units", type: :request do
 
   describe 'GET /units/:id' do
     context 'without authentication' do
-      before(:each) { get unit_path(unit1) }
+      before(:each) { get v1_unit_path(unit1) }
 
       it "returns 401" do
         expect(response).to have_http_status(:unauthorized)
@@ -42,7 +42,7 @@ RSpec.describe "Units", type: :request do
     context 'with authentication' do
       context 'with own unit' do
         before(:each) do
-          get unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" }
+          get v1_unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 200" do
@@ -52,7 +52,7 @@ RSpec.describe "Units", type: :request do
 
       context 'with other\'s unit' do
         before(:each) do
-          get unit_path(unit2), headers: { authorization: "Bearer #{token(user1)}" }
+          get v1_unit_path(unit2), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 404" do
@@ -65,7 +65,7 @@ RSpec.describe "Units", type: :request do
   describe 'POST /units' do
     context 'without authentication' do
       let(:params) { attributes_for(:unit).merge!(unit_id: unit1.to_param) }
-      before(:each) { post units_path, params: params }
+      before(:each) { post v1_units_path, params: params }
 
       it "returns 401" do
         expect(response).to have_http_status(:unauthorized)
@@ -77,7 +77,7 @@ RSpec.describe "Units", type: :request do
         let(:params) { attributes_for(:unit) }
 
         before(:each) do
-          post units_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
+          post v1_units_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 201" do
@@ -89,7 +89,7 @@ RSpec.describe "Units", type: :request do
         let(:params) { attributes_for(:no_label_unit) }
 
         before(:each) do
-          post units_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
+          post v1_units_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do
@@ -102,7 +102,7 @@ RSpec.describe "Units", type: :request do
         let!(:unit) { Unit.create(params) }
 
         before(:each) do
-          post units_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
+          post v1_units_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do
@@ -116,7 +116,7 @@ RSpec.describe "Units", type: :request do
     context 'without authentication' do
       let(:params) { attributes_for(:unit) }
 
-      before(:each) { put unit_path(unit1), params: params }
+      before(:each) { put v1_unit_path(unit1), params: params }
 
       it "returns 401" do
         expect(response).to have_http_status(:unauthorized)
@@ -128,7 +128,7 @@ RSpec.describe "Units", type: :request do
         let(:params) { attributes_for(:unit) }
 
         before(:each) do
-          put unit_path(unit1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
+          put v1_unit_path(unit1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 200" do
@@ -140,7 +140,7 @@ RSpec.describe "Units", type: :request do
         let(:params) { attributes_for(:unit) }
 
         before(:each) do
-          put unit_path(unit2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
+          put v1_unit_path(unit2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do
@@ -152,7 +152,7 @@ RSpec.describe "Units", type: :request do
         let(:params) { attributes_for(:no_label_unit) }
 
         before(:each) do
-          put unit_path(unit2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
+          put v1_unit_path(unit2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do
@@ -165,7 +165,7 @@ RSpec.describe "Units", type: :request do
         let!(:unit) { Unit.create(params) }
 
         before(:each) do
-          put unit_path(unit1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
+          put v1_unit_path(unit1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do
@@ -177,7 +177,7 @@ RSpec.describe "Units", type: :request do
         let(:params) { attributes_for(:unit).merge!(user_id: user1.id) }
 
         before(:each) do
-          put unit_path(unit1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
+          put v1_unit_path(unit1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 200" do
@@ -189,7 +189,7 @@ RSpec.describe "Units", type: :request do
 
   describe 'DELETE /units/:id' do
     context 'without authentication' do
-      before(:each) { delete unit_path(unit1) }
+      before(:each) { delete v1_unit_path(unit1) }
 
       it "returns 401" do
         expect(response).to have_http_status(:unauthorized)
@@ -200,7 +200,7 @@ RSpec.describe "Units", type: :request do
       context 'with own unit' do
         context 'with unit not referenced by foods' do
           before(:each) do
-            delete unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" }
+            delete v1_unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" }
           end
 
           it "returns 201" do
@@ -213,7 +213,7 @@ RSpec.describe "Units", type: :request do
           let!(:food) { create(:food, box: box, unit: unit1, created_user: user1, updated_user: user1) }
 
           before(:each) do
-            delete unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" }
+            delete v1_unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" }
           end
 
           it "returns 400" do
@@ -224,7 +224,7 @@ RSpec.describe "Units", type: :request do
 
       context 'with other\'s unit' do
         before(:each) do
-          delete unit_path(unit2), headers: { authorization: "Bearer #{token(user1)}" }
+          delete v1_unit_path(unit2), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do

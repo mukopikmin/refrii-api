@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe UnitsController, type: :controller do
+RSpec.describe V1::UnitsController, type: :controller do
   def token(user)
     JsonWebToken.payload(user)[:jwt]
   end

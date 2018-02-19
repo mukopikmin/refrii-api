@@ -1,4 +1,4 @@
-class FoodsController < ApplicationController
+class V1::FoodsController < V1::ApplicationController
   before_action :set_food, only: [:show, :image, :update, :destroy]
   before_action :authenticate_request!
 
@@ -25,7 +25,7 @@ class FoodsController < ApplicationController
     if !accessible?
       bad_request('Could not create food in specified box.')
     elsif @food.save
-      render json: @food, status: :created, location: @food
+      render json: @food, status: :created, location: v1_foods_path(@food)
     else
       bad_request
     end

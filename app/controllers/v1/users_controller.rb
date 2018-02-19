@@ -1,4 +1,4 @@
-class UsersController < ApplicationController
+class V1::UsersController < V1::ApplicationController
   before_action :set_user, only: [:show, :avatar, :update, :destroy]
   before_action :authenticate_request!, only: [:index, :avatar, :verify, :show, :search, :update]
 
@@ -61,7 +61,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      render json: @user, status: :created, location: @user
+      render json: @user, status: :created, location: v1_users_path(@user)
     else
       bad_request
     end

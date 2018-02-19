@@ -10,7 +10,7 @@ RSpec.describe "Users", type: :request do
 
   describe 'GET /users' do
     context 'without authentication' do
-      before(:each) { get users_path }
+      before(:each) { get v1_users_path }
 
       it "returns 401" do
         expect(response).to have_http_status(:unauthorized)
@@ -22,7 +22,7 @@ RSpec.describe "Users", type: :request do
         let(:admin) { create(:admin_user) }
 
         before(:each) do
-          get users_path, headers: { authorization: "Bearer #{token(admin)}" }
+          get v1_users_path, headers: { authorization: "Bearer #{token(admin)}" }
         end
 
         it "returns 200" do
@@ -32,7 +32,7 @@ RSpec.describe "Users", type: :request do
 
       context 'by non-admin user' do
         before(:each) do
-          get users_path, headers: { authorization: "Bearer #{token(user1)}" }
+          get v1_users_path, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 403" do
@@ -44,7 +44,7 @@ RSpec.describe "Users", type: :request do
 
   describe 'GET /users/verify' do
     context 'without authorization' do
-      before(:each) { get verify_users_path }
+      before(:each) { get verify_v1_users_path }
 
       it "returns 401" do
         expect(response).to have_http_status(:unauthorized)
@@ -53,7 +53,7 @@ RSpec.describe "Users", type: :request do
 
     context 'with authentication' do
       before(:each) do
-        get verify_users_path, headers: { authorization: "Bearer #{token(user1)}" }
+        get verify_v1_users_path, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
       it "returns 200" do
@@ -70,7 +70,7 @@ RSpec.describe "Users", type: :request do
     }
 
     context 'without authorization' do
-      before(:each) { get search_users_path, params: params }
+      before(:each) { get search_v1_users_path, params: params }
 
       it "returns 401" do
         expect(response).to have_http_status(:unauthorized)
@@ -79,7 +79,7 @@ RSpec.describe "Users", type: :request do
 
     context 'with authentication' do
       before(:each) do
-        get search_users_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
+        get search_v1_users_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
       it "returns 200" do
@@ -90,7 +90,7 @@ RSpec.describe "Users", type: :request do
 
   describe 'GET /users/:id' do
     context 'without authentication' do
-      before(:each) { get user_path(user1) }
+      before(:each) { get v1_user_path(user1) }
 
       it "returns 401" do
         expect(response).to have_http_status(:unauthorized)
@@ -99,7 +99,7 @@ RSpec.describe "Users", type: :request do
 
     context 'with authentication' do
       before(:each) do
-        get user_path(user1), headers: { authorization: "Bearer #{token(user1)}" }
+        get v1_user_path(user1), headers: { authorization: "Bearer #{token(user1)}" }
       end
 
       it "returns 200" do
@@ -113,7 +113,7 @@ RSpec.describe "Users", type: :request do
     let(:no_avatar_user) { create(:user) }
 
     context 'without authentication' do
-      before(:each) { get avatar_user_path(user) }
+      before(:each) { get avatar_v1_user_path(user) }
 
       it "returns 401" do
         expect(response).to have_http_status(:unauthorized)
@@ -122,7 +122,7 @@ RSpec.describe "Users", type: :request do
 
     context 'with authentication' do
       context 'if image exists' do
-        before(:each) { get avatar_user_path(user), headers: { authorization: "Bearer #{token(user)}" } }
+        before(:each) { get avatar_v1_user_path(user), headers: { authorization: "Bearer #{token(user)}" } }
 
         it "return 200" do
           expect(response).to have_http_status(:ok)
@@ -130,7 +130,7 @@ RSpec.describe "Users", type: :request do
       end
 
       context 'if no image exists' do
-        before(:each) { get avatar_user_path(no_avatar_user), headers: { authorization: "Bearer #{token(user)}" } }
+        before(:each) { get avatar_v1_user_path(no_avatar_user), headers: { authorization: "Bearer #{token(user)}" } }
 
         it "return 404" do
           expect(response).to have_http_status(:not_found)
@@ -138,7 +138,7 @@ RSpec.describe "Users", type: :request do
       end
 
       context 'with base64 requested param' do
-        before(:each) { get avatar_user_path(user), headers: { authorization: "Bearer #{token(user)}" }, params: { base64: true } }
+        before(:each) { get avatar_v1_user_path(user), headers: { authorization: "Bearer #{token(user)}" }, params: { base64: true } }
 
         it 'return 200' do
           expect(response).to have_http_status(:ok)
@@ -152,7 +152,7 @@ RSpec.describe "Users", type: :request do
       let(:params) { attributes_for(:user) }
 
       before(:each) do
-        post users_path, params: params
+        post v1_users_path, params: params
       end
 
       it "returns 201" do
@@ -164,7 +164,7 @@ RSpec.describe "Users", type: :request do
       let(:params) { attributes_for(:no_email_user) }
 
       before(:each) do
-        post users_path, params: params
+        post v1_users_path, params: params
       end
 
       it "returns 400" do
@@ -176,7 +176,7 @@ RSpec.describe "Users", type: :request do
       let(:params) { attributes_for(:no_name_user) }
 
       before(:each) do
-        post users_path, params: params
+        post v1_users_path, params: params
       end
 
       it "returns 400" do
@@ -196,7 +196,7 @@ RSpec.describe "Users", type: :request do
     let(:no_name_user) { attributes_for(:no_name_user) }
 
     context 'without authentication' do
-      before(:each) { put user_path(user1), params: params }
+      before(:each) { put v1_user_path(user1), params: params }
 
       it "returns 401" do
         expect(response).to have_http_status(:unauthorized)
@@ -206,7 +206,7 @@ RSpec.describe "Users", type: :request do
     context 'with authentication' do
       context 'with valid params' do
         before(:each) do
-          put user_path(user1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
+          put v1_user_path(user1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 201" do
@@ -216,7 +216,7 @@ RSpec.describe "Users", type: :request do
 
       context 'with already used email' do
         before(:each) do
-          put user_path(user1), params: inused_params, headers: { authorization: "Bearer #{token(user1)}" }
+          put v1_user_path(user1), params: inused_params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do
@@ -226,7 +226,7 @@ RSpec.describe "Users", type: :request do
 
       context 'with no email user' do
         before(:each) do
-          put user_path(user1), params: no_email_user, headers: { authorization: "Bearer #{token(user1)}" }
+          put v1_user_path(user1), params: no_email_user, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do
@@ -236,7 +236,7 @@ RSpec.describe "Users", type: :request do
 
       context 'with no name user' do
         before(:each) do
-          put user_path(user1), params: no_name_user, headers: { authorization: "Bearer #{token(user1)}" }
+          put v1_user_path(user1), params: no_name_user, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
         it "returns 400" do

@@ -1,4 +1,4 @@
-class UnitsController < ApplicationController
+class V1::UnitsController < V1::ApplicationController
   before_action :set_unit, only: [:show, :update, :destroy]
   before_action :authenticate_request!
 
@@ -25,7 +25,7 @@ class UnitsController < ApplicationController
     if duplicate_unit?
       bad_request('Specified label of unit already exists.')
     elsif @unit.save
-      render json: @unit, status: :created, location: @unit
+      render json: @unit, status: :created, location: v1_units_path(@unit)
     else
       bad_request('Could not persite the unit.')
     end
