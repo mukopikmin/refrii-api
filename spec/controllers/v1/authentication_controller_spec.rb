@@ -1,31 +1,21 @@
 require 'rails_helper'
 
-RSpec.describe "Authenticaion", type: :request do
-  let(:params) { attributes_for(:user, :with_avatar) }
-  let!(:user) { User.create(params) }
+RSpec.describe V1::AuthenticationController, type: :controller do
 
   describe 'POST /auth/local' do
-    context 'with valid credentials' do
-      before(:each) { post auth_local_path, params: params }
+    let(:params) { attributes_for(:user, :with_avatar) }
+    let!(:user) { User.create(params) }
 
-      it "returns 200" do
-        expect(response).to have_http_status(:ok)
-      end
-    end
-
-    context 'with invalid credentials' do
-      before(:each) do
-        params[:password] = "INVALID #{params[:password]}"
-        post auth_local_path, params: params
-      end
-
-      it "returns 401" do
-        expect(response).to have_http_status(:unauthorized)
-      end
+    it 'assigns user as @user' do
+      post :local, params: params
+      expect(assigns(:user)).to eq(user)
     end
   end
 
-  describe 'GET /auth/google/callback' do
+  describe 'POST /auth/google/callback' do
+    let(:params) { attributes_for(:google_user, :with_avatar) }
+    let!(:user) { User.create(params) }
+
     before(:each) do
       file = File.new(File.join('spec', 'resources', 'avatar.jpg'), 'rb')
       params = {
@@ -36,17 +26,21 @@ RSpec.describe "Authenticaion", type: :request do
       allow(User).to receive(:download_image).and_return(params)
     end
 
-    it "returns 200" do
-      OmniAuth.config.mock_auth[:google] = OmniAuth::AuthHash.new({
-        provider: 'google',
+    before(:each) do
+      OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
+        provider: 'google_oauth2',
         uid: user.id,
         info: {
           name: params[:name],
           email: params[:email]
         }
       })
-      get auth_google_callback_path, headers: { 'omniauth.auth': OmniAuth.config.mock_auth[:google] }
-      expect(response).to have_http_status(:ok)
+    end
+
+    it "assigns user as @user" do
+      request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
+      get :google
+      expect(assigns(:user).id).to eq(user.id)
     end
   end
 
@@ -68,10 +62,10 @@ RSpec.describe "Authenticaion", type: :request do
       end
       let(:user) { create(:user, email: email, provider: provider) }
       let(:params) { { token: JsonWebToken.payload(user) } }
+      before(:each) { get :google_token, params: params }
 
-      it 'returns 200' do
-        get auth_google_token_path, params: params
-        expect(response).to have_http_status(:ok)
+      it 'assigns user as @user' do
+        expect(assigns(:user).id).to eq(user.id)
       end
     end
 
@@ -84,10 +78,10 @@ RSpec.describe "Authenticaion", type: :request do
       end
       let(:user) { build(:user, email: email, provider: provider) }
       let(:params) { { token: JsonWebToken.payload(user) } }
+      before(:each) { get :google_token, params: params }
 
-      it 'returns 200' do
-        get auth_google_token_path, params: params
-        expect(response).to have_http_status(:ok)
+      it 'assigns user as @user' do
+        expect(assigns(:user).email).to eq(user.email)
       end
     end
 
@@ -95,15 +89,18 @@ RSpec.describe "Authenticaion", type: :request do
       before(:each) { allow(RestClient).to receive(:get).and_raise(RestClient::ExceptionWithResponse.new) }
       let(:user) { build(:user, email: email, provider: provider) }
       let(:params) { { token: JsonWebToken.payload(user) } }
+      before(:each) { get :google_token, params: params }
 
-      it 'returns 400' do
-        get auth_google_token_path, params: params
-        expect(response).to have_http_status(:bad_request)
+      it 'assigns nil as @user' do
+        expect(assigns(:user)).to be_nil
       end
     end
   end
 
-  # describe 'GET /auth/auth0/callback' do
+  # describe 'POST /auth/auth0/callback' do
+  #   let(:params) { attributes_for(:google_user, :with_avatar, provider: 'auth0/google_oauth2') }
+  #   let!(:user) { User.create(params) }
+  #
   #   before(:each) do
   #     file = File.new(File.join('spec', 'resources', 'avatar.jpg'), 'rb')
   #     params = {
@@ -114,7 +111,7 @@ RSpec.describe "Authenticaion", type: :request do
   #     allow(User).to receive(:download_image).and_return(params)
   #   end
   #
-  #   it "returns 200" do
+  #   before(:each) do
   #     OmniAuth.config.mock_auth[:auth0] = OmniAuth::AuthHash.new({
   #       provider: 'auth0',
   #       uid: user.id,
@@ -132,8 +129,12 @@ RSpec.describe "Authenticaion", type: :request do
   #         }
   #       }
   #     })
-  #     get auth_auth0_callback_path, headers: { 'omniauth.auth': OmniAuth.config.mock_auth[:auth0] }
-  #     expect(response).to have_http_status(:ok)
+  #   end
+  #
+  #   it "assigns user as @user" do
+  #     request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:auth0]
+  #     get :auth0
+  #     expect(assigns(:user).id).to eq(user.id)
   #   end
   # end
 end

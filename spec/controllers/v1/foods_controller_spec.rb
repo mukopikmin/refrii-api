@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe FoodsController, type: :controller do
+RSpec.describe V1::FoodsController, type: :controller do
   def token(user)
     JsonWebToken.payload(user)[:jwt]
   end

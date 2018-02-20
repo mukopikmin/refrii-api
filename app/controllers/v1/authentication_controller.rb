@@ -1,4 +1,4 @@
-class AuthenticationController < ApplicationController
+class V1::AuthenticationController < V1::ApplicationController
 
   # POST /auth/local
   def local

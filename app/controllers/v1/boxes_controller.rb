@@ -1,4 +1,4 @@
-class BoxesController < ApplicationController
+class V1::BoxesController < V1::ApplicationController
   before_action :authenticate_request!
   before_action :set_box, only: [:show, :image, :units, :update, :destroy, :invite, :deinvite]
   before_action :set_invitation, only: [:deinvite]
@@ -59,7 +59,7 @@ class BoxesController < ApplicationController
     @box = Box.new(box_params)
 
     if @box.save
-      render json: @box, status: :created, location: @box
+      render json: @box, status: :created, location: v1_boxes_path(@box)
     else
       bad_request
     end
