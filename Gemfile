@@ -20,6 +20,7 @@ gem 'omniauth-oauth2', '~> 1.5.0'
 gem 'omniauth-google-oauth2', '~> 0.5.0'
 gem 'rest-client', '~> 2.0.2'
 gem 'hashie', '~> 3.5.6'
+gem 'versionist', '~> 1.6.1'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 group :development do
@@ -46,5 +47,3 @@ group :production do
   gem 'pg', '~> 1.0.0'
   gem 'rails_12factor', '~> 0.0.3'
 end
-
-gem 'versionist', '~> 1.6.1'
