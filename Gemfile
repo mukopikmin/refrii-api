@@ -40,7 +40,7 @@ group :test do
   gem 'factory_bot_rails', '~> 4.8.2'
   gem 'rails-controller-testing', '~> 1.0.1'
   gem 'codeclimate-test-reporter', '~> 1.0.8', require: false
-  gem 'brakeman', '~> 4.1.1', require: false
+  gem 'brakeman', '~> 4.2.0', require: false
 end
 
 group :production do
