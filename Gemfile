@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '2.5.0'
+
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
@@ -20,7 +22,7 @@ gem 'omniauth-oauth2', '~> 1.5.0'
 gem 'omniauth-google-oauth2', '~> 0.5.0'
 gem 'rest-client', '~> 2.0.2'
 gem 'hashie', '~> 3.5.6'
-gem 'versionist', '~> 1.6.1'
+gem 'versionist', '~> 1.7.0'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 group :development do
