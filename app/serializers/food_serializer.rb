@@ -1,5 +1,14 @@
 class FoodSerializer < ActiveModel::Serializer
-  attributes :id, :name, :notice, :amount, :expiration_date, :image_url, :needs_adding, :created_at, :updated_at
+  attributes :id,
+             :name,
+             :notice,
+             :amount,
+             :expiration_date,
+             :image_url,
+             :needs_adding,
+             :created_at,
+             :updated_at,
+             :versions
 
   belongs_to :box
   belongs_to :unit

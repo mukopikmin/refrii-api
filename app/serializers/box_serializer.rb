@@ -1,5 +1,13 @@
 class BoxSerializer < ActiveModel::Serializer
-  attributes :id, :name, :notice, :image_url, :created_at, :updated_at, :is_invited, :invited_users
+  attributes :id,
+             :name,
+             :notice,
+             :image_url,
+             :created_at,
+             :updated_at,
+             :is_invited,
+             :invited_users,
+             :versions
 
   belongs_to :owner
   has_many :foods

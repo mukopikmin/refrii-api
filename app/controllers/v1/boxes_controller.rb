@@ -1,5 +1,6 @@
 class V1::BoxesController < V1::ApplicationController
   before_action :authenticate_request!
+  before_action :set_paper_trail_whodunnit
   before_action :set_box, only: [:show, :image, :units, :update, :destroy, :invite, :deinvite]
   before_action :set_invitation, only: [:deinvite]
 

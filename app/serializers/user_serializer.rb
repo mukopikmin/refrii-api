@@ -1,5 +1,11 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :name, :email, :provider, :avatar_url#, :created_at, :updated_at
+  attributes :id,
+             :name,
+             :email,
+             :provider,
+             :avatar_url,
+             :created_at,
+             :updated_at
 
   has_many :boxes
   has_many :units

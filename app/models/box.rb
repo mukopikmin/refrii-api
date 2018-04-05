@@ -1,4 +1,6 @@
 class Box < ApplicationRecord
+  has_paper_trail
+  
   belongs_to :owner, class_name: 'User'
   has_many :foods
   has_many :invitations

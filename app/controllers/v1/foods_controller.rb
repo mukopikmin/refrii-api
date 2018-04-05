@@ -1,6 +1,7 @@
 class V1::FoodsController < V1::ApplicationController
-  before_action :set_food, only: [:show, :image, :update, :destroy]
   before_action :authenticate_request!
+  before_action :set_paper_trail_whodunnit
+  before_action :set_food, only: [:show, :image, :update, :destroy]
 
   # GET /foods
   def index
