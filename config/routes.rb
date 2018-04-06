@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :foods do
       member do
         get :image
+        put :revert
       end
     end
 
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
         get :units
         get :image
         post :invite
+        put :revert
         delete 'invite' => :deinvite
       end
     end

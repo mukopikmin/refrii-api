@@ -26,6 +26,10 @@ RSpec.describe V1::FoodsController, type: :routing do
       expect(patch: '/v1/foods/1').to route_to('v1/foods#update', id: '1')
     end
 
+    it 'routes to #revert via PUT' do
+      expect(put: '/v1/foods/1/revert').to route_to('v1/foods#revert', id: '1')
+    end
+
     it 'routes to #destroy' do
       expect(delete: '/v1/foods/1').to route_to('v1/foods#destroy', id: '1')
     end

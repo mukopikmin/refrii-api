@@ -100,8 +100,8 @@ RSpec.describe Box, type: :model do
 
     context 'if image exists' do
       let(:box) { create(:box, :with_image, owner: user) }
-      
-      it "returns image encoded by base64" do
+
+      it 'returns image encoded by base64' do
         expect(box.base64_image[:base64]).to be_a(String)
       end
     end
@@ -109,8 +109,29 @@ RSpec.describe Box, type: :model do
     context 'if no image exists' do
       let(:no_image_box) { create(:box, owner: user) }
 
-      it "returns nil" do
+      it 'returns nil' do
         expect(no_image_box.base64_image).to be_nil
+      end
+    end
+  end
+
+  describe '#revert' do
+    let(:user) { create(:user) }
+    let(:box) { create(:box, name: name_before, owner: user) }
+    let(:name_before) { 'before box' }
+    let(:name_after) { 'after box' }
+
+    context 'with versions' do
+      before(:each) { box.update(name: name_after) }
+
+      it 'returns previous version' do
+        expect(box.revert.name).to eq(name_before)
+      end
+    end
+
+    context 'with no versions' do
+      it 'returns nil' do
+        expect(box.revert).to be_nil
       end
     end
   end

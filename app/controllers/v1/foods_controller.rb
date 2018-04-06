@@ -56,6 +56,17 @@ class V1::FoodsController < V1::ApplicationController
     end
   end
 
+  # PUT /boxes/1/revert
+  def revert
+    if !accessible?
+      bad_request('You can not revert the food.')
+    elsif @food = @food.revert
+      render json: @food
+    else
+      bad_request
+    end
+  end
+
   # DELETE /foods/1
   def destroy
     if !accessible?

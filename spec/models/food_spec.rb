@@ -46,4 +46,27 @@ RSpec.describe Food, type: :model do
       end
     end
   end
+
+  describe '#revert' do
+    let(:user) { create(:user) }
+    let(:box) { create(:box, name: name_before, owner: user) }
+    let(:unit) { create(:unit, user: user) }
+    let(:food) { create(:food, name: name_before, box: box, unit: unit, created_user: user, updated_user: user) }
+    let(:name_before) { 'before food' }
+    let(:name_after) { 'after food' }
+
+    context 'with versions' do
+      before(:each) { food.update(name: name_after) }
+
+      it 'returns previous version' do
+        expect(food.revert.name).to eq(name_before)
+      end
+    end
+
+    context 'with no versions' do
+      it 'returns nil' do
+        expect(food.revert).to be_nil
+      end
+    end
+  end
 end

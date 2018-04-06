@@ -1,6 +1,6 @@
 class Box < ApplicationRecord
   has_paper_trail
-  
+
   belongs_to :owner, class_name: 'User'
   has_many :foods
   has_many :invitations
@@ -38,5 +38,11 @@ class Box < ApplicationRecord
     else
       nil
     end
+  end
+
+  def revert
+    object = paper_trail.previous_version
+    object.save unless object.nil?
+    object
   end
 end

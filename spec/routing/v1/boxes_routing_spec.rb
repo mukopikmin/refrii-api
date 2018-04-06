@@ -38,6 +38,10 @@ RSpec.describe V1::BoxesController, type: :routing do
       expect(patch: '/v1/boxes/1').to route_to('v1/boxes#update', id: '1')
     end
 
+    it 'routes to #revert via PUT' do
+      expect(put: '/v1/boxes/1/revert').to route_to('v1/boxes#revert', id: '1')
+    end
+
     it 'routes to #destroy' do
       expect(delete: '/v1/boxes/1').to route_to('v1/boxes#destroy', id: '1')
     end

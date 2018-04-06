@@ -151,6 +151,29 @@ RSpec.describe V1::BoxesController, type: :controller do
     end
   end
 
+  describe 'PUT #revert' do
+    let!(:user) { create(:user) }
+    let!(:box) { create(:box, name: name_before, owner: user) }
+    let(:name_before) { 'before changed' }
+    let(:name_after) { 'after changed' }
+
+    before(:each) do
+      request.headers['Authorization'] = "Bearer #{token(user)}"
+      put :update, params: { id: box.to_param, name: name_after }
+    end
+
+    it 'revert the requested box' do
+      put :revert, params: { id: box.to_param }
+      box.reload
+      expect(box.name).to eq(name_before)
+    end
+
+    it 'assigns the reverted box as @box' do
+      put :revert, params: { id: box.to_param }
+      expect(assigns(:box)).to eq(box)
+    end
+  end
+
   describe 'DELETE #destroy' do
     let!(:user) { create(:user) }
     let!(:box) { create(:box, owner: user) }

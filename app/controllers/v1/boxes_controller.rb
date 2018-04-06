@@ -1,7 +1,7 @@
 class V1::BoxesController < V1::ApplicationController
   before_action :authenticate_request!
   before_action :set_paper_trail_whodunnit
-  before_action :set_box, only: [:show, :image, :units, :update, :destroy, :invite, :deinvite]
+  before_action :set_box, only: [:show, :image, :units, :update, :revert, :destroy, :invite, :deinvite]
   before_action :set_invitation, only: [:deinvite]
 
   # GET /boxes
@@ -71,6 +71,17 @@ class V1::BoxesController < V1::ApplicationController
     if !owner_of_box?
       bad_request('You can not update the box.')
     elsif @box.update(box_params)
+      render json: @box
+    else
+      bad_request
+    end
+  end
+
+  # PUT /boxes/1/revert
+  def revert
+    if !owner_of_box?
+      bad_request('You can not revert the box.')
+    elsif @box = @box.revert
       render json: @box
     else
       bad_request

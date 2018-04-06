@@ -1,6 +1,6 @@
 class Food < ApplicationRecord
   has_paper_trail
-  
+
   belongs_to :box
   belongs_to :unit
   belongs_to :created_user, class_name: 'User'
@@ -29,5 +29,11 @@ class Food < ApplicationRecord
     else
       nil
     end
+  end
+
+  def revert
+    object = paper_trail.previous_version
+    object.save unless object.nil?
+    object
   end
 end
