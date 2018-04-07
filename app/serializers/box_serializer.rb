@@ -6,11 +6,11 @@ class BoxSerializer < ActiveModel::Serializer
              :created_at,
              :updated_at,
              :is_invited,
-             :invited_users,
-             :versions
+             :invited_users
 
   belongs_to :owner
   has_many :foods
+  has_many :versions
 
   def is_invited
     current_user != object.owner
