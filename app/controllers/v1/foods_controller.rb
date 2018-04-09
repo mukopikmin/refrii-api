@@ -60,7 +60,7 @@ class V1::FoodsController < V1::ApplicationController
   def revert
     if !accessible?
       bad_request('You can not revert the food.')
-    elsif @food = @food.revert
+    elsif @food.revert
       render json: @food
     else
       bad_request

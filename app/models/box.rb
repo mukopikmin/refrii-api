@@ -41,8 +41,9 @@ class Box < ApplicationRecord
   end
 
   def revert
-    object = paper_trail.previous_version
-    object.save unless object.nil?
-    object
+    previous = paper_trail.previous_version
+    update(name: previous.name,
+           notice: previous.notice) unless previous.nil?
+    previous
   end
 end

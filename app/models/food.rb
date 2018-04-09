@@ -32,8 +32,11 @@ class Food < ApplicationRecord
   end
 
   def revert
-    object = paper_trail.previous_version
-    object.save unless object.nil?
-    object
+    previous = paper_trail.previous_version
+    update(name: previous.name,
+           notice: previous.notice,
+           amount: previous.amount,
+           expiration_date: previous.expiration_date) unless previous.nil?
+    previous
   end
 end

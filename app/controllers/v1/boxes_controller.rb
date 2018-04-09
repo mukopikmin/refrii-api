@@ -81,7 +81,7 @@ class V1::BoxesController < V1::ApplicationController
   def revert
     if !owner_of_box?
       bad_request('You can not revert the box.')
-    elsif @box = @box.revert
+    elsif @box.revert
       render json: @box
     else
       bad_request
