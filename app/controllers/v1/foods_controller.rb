@@ -14,7 +14,7 @@ class V1::FoodsController < V1::ApplicationController
     if !accessible?
       not_found
     else
-      render json: @food, include: [:box, :unit, :created_user, :updated_user, :versions]
+      render json: @food, include: [:box, :unit, :created_user, :updated_user]
     end
   end
 

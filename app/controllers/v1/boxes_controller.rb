@@ -27,7 +27,7 @@ class V1::BoxesController < V1::ApplicationController
     if !accessible?
       not_found('Specified box does not exist.')
     else
-      render json: @box, include: [:owner, :versions, { foods: [:unit, :created_user, :updated_user] }]
+      render json: @box, include: [:owner, { foods: [:unit, :created_user, :updated_user] }]
     end
   end
 
