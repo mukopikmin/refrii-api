@@ -7,7 +7,7 @@ class BoxSerializer < ActiveModel::Serializer
              :updated_at,
              :is_invited,
              :invited_users,
-             :changeset
+             :change_sets
 
   belongs_to :owner
   has_many :foods
@@ -24,7 +24,7 @@ class BoxSerializer < ActiveModel::Serializer
     "#{ENV['HOSTNAME']}/boxes/#{object.id}/image" if object.has_image?
   end
 
-  def changeset
+  def change_sets
     object.versions.map(&:changeset).reverse
   end
 end
