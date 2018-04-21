@@ -1,7 +1,7 @@
 class V1::BoxesController < V1::ApplicationController
   before_action :authenticate_request!
   before_action :set_paper_trail_whodunnit
-  before_action :set_box, only: [:show, :image, :units, :update, :revert, :destroy, :invite, :deinvite]
+  before_action :set_box, only: [:show, :foods, :image, :units, :update, :revert, :destroy, :invite, :deinvite]
   before_action :set_invitation, only: [:deinvite]
 
   # GET /boxes
@@ -28,6 +28,15 @@ class V1::BoxesController < V1::ApplicationController
       not_found('Specified box does not exist.')
     else
       render json: @box, include: [:owner, { foods: [:unit, :created_user, :updated_user] }]
+    end
+  end
+
+  # GET /boxes/1/foods
+  def foods
+    if !accessible?
+      not_found('Specified box does not exist.')
+    else
+      render json: @box.foods
     end
   end
 

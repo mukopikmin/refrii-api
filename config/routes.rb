@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       end
 
       member do
+        get :foods
         get :units
         get :image
         post :invite
