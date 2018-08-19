@@ -135,6 +135,7 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     netrc (0.11.0)
+    newrelic_rpm (5.3.0.346)
     nio4r (2.3.1)
     nokogiri (1.8.3)
       mini_portile2 (~> 2.3.0)
@@ -276,6 +277,7 @@ DEPENDENCIES
   ffaker (~> 2.8.1)
   hashie (~> 3.5.6)
   listen (~> 3.1.5)
+  newrelic_rpm (~> 5.3.0.346)
   omniauth (~> 1.8.1)
   omniauth-auth0 (~> 2.0.0)
   omniauth-google-oauth2 (~> 0.5.0)
@@ -300,4 +302,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.1
+   1.16.3
