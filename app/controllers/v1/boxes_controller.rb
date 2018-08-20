@@ -158,7 +158,11 @@ class V1::BoxesController < V1::ApplicationController
   end
 
   def invitatation_params
+    user = User.where(email: params[:email]).first
+
     params[:box_id] = params[:id]
+    params[:user_id] = user.nil? ? nil : user.id
+
     params.permit(:box_id, :user_id)
   end
 

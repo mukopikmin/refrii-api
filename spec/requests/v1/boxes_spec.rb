@@ -299,7 +299,7 @@ RSpec.describe 'Boxes', type: :request do
   end
 
   describe 'POST /boxes/:id/invite' do
-    let(:params) { { user_id: user2.to_param } }
+    let(:params) { { email: user2.email } }
     let(:unpersisted_user) { attributes_for(:user) }
 
     context 'without authentication' do
