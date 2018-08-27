@@ -9,15 +9,17 @@ services:
     environment:
       - SECRET_KEY_BASE
       - POSTGRESQL_HOST=postgres
-      - POSTGRESQL_DATABASE=refrii
+      - POSTGRESQL_DATABASE
       - POSTGRESQL_PORT=5432
-      - POSTGRESQL_USERNAME=refrii
-      - POSTGRESQL_PASSWORD=password
+      - POSTGRESQL_USERNAME
+      - POSTGRESQL_PASSWORD
+    restart: unless-stopped
   postgres:
     image: postgres:9.6
     volumes:
       - ./db/data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=refrii
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=refrii
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+    restart: unless-stopped
