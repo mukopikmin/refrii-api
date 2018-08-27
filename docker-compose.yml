@@ -1,0 +1,23 @@
+version: "3"
+services:
+  app:
+    build: .
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres
+    environment:
+      - SECRET_KEY_BASE
+      - POSTGRESQL_HOST=postgres
+      - POSTGRESQL_DATABASE=refrii
+      - POSTGRESQL_PORT=5432
+      - POSTGRESQL_USERNAME=refrii
+      - POSTGRESQL_PASSWORD=password
+  postgres:
+    image: postgres:9.6
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=refrii
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=refrii
