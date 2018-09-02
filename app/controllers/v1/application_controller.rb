@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class V1::ApplicationController < ActionController::API
   attr_reader :current_user
 
@@ -32,42 +34,22 @@ class V1::ApplicationController < ActionController::API
   end
 
   def unauthorized(message = nil)
-    error = {
-      error: 'Not authenticated',
-      message: message || 'This action needs authorization.'
-    }
-    render json: error, status: :unauthorized
+    render json: HttpError.new(:unauthorized, message), status: :unauthorized
   end
 
   def not_found(message = nil)
-    error = {
-      error: 'Not found',
-      message: message || 'Resource not found.'
-    }
-    render json: error, status: :not_found
+    render json: HttpError.new(:not_found, message), status: :not_found
   end
 
   def bad_request(message = nil)
-    error = {
-      error: 'Bad request',
-      message: message || 'Unexpected error has occured.'
-    }
-    render json: error, status: :bad_request
+    render json: HttpError.new(:bad_request, message), status: :bad_request
   end
 
   def forbidden(message = nil)
-    error = {
-      error: 'forbidden',
-      message: message || 'Not allowed.'
-    }
-    render json: error, status: :forbidden
+    render json: HttpError.new(:forbidden, message), status: :forbidden
   end
 
-  def internal_server_error(message=nil)
-    error = {
-      error: 'forbidden',
-      message: message || 'Internal server error occured.'
-    }
-    render json: error, status: :internal_server_error
+  def internal_server_error(message = nil)
+    render json: HttpError.new(:internal_server_error, message), status: :internal_server_error
   end
 end

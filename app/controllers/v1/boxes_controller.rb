@@ -1,25 +1,30 @@
+# frozen_string_literal: true
+
 class V1::BoxesController < V1::ApplicationController
   before_action :authenticate_request!
   before_action :set_paper_trail_whodunnit
-  before_action :set_box, only: [:show, :foods, :image, :units, :update, :revert, :destroy, :invite, :deinvite]
+  before_action :set_box, only: %i[show foods image units update revert destroy invite deinvite]
   before_action :set_invitation, only: [:deinvite]
 
   # GET /boxes
   def index
     @boxes = Box.all_with_invited(current_user)
-    render json: @boxes, include: [:owner, { foods: [:unit, :created_user, :updated_user] }]
+
+    render json: @boxes, include: [:owner, { foods: %i[unit created_user updated_user] }]
   end
 
   # GET /boxes/owns
   def owns
     @boxes = Box.owned_by(current_user)
-    render json: @boxes, include: [:owner, { foods: [:unit, :created_user, :updated_user] }]
+
+    render json: @boxes, include: [:owner, { foods: %i[unit created_user updated_user] }]
   end
 
   # GET /boxes/invited
   def invited
     @boxes = Box.inviting(current_user)
-    render json: @boxes, include: [:owner, { foods: [:unit, :created_user, :updated_user] }]
+    
+    render json: @boxes, include: [:owner, { foods: %i[unit created_user updated_user] }]
   end
 
   # GET /boxes/1
@@ -27,7 +32,7 @@ class V1::BoxesController < V1::ApplicationController
     if !accessible?
       not_found('Specified box does not exist.')
     else
-      render json: @box, include: [:owner, { foods: [:unit, :created_user, :updated_user] }]
+      render json: @box, include: [:owner, { foods: %i[unit created_user updated_user] }]
     end
   end
 
