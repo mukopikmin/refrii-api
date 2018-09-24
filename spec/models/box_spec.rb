@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Box, type: :model do
@@ -27,58 +29,58 @@ RSpec.describe Box, type: :model do
     end
   end
 
-  describe '#is_owned_by' do
+  describe '#owned_by?' do
     context 'with box owned by user' do
-      subject(:owns) { box1.is_owned_by(user1) }
+      subject(:owns) { box1.owned_by?(user1) }
       it { is_expected.to be_truthy }
     end
 
     context 'with box not owned by user' do
-      subject(:owns) { box2.is_owned_by(user1) }
+      subject(:owns) { box2.owned_by?(user1) }
       it { is_expected.to be_falsey }
     end
   end
 
-  describe '#is_inviting' do
+  describe '#inviting?' do
     context 'with box owned by user' do
-      subject(:inviting) { box1.is_inviting(user1) }
+      subject(:inviting) { box1.inviting?(user1) }
       it { is_expected.to be_falsey }
     end
 
     context 'with box not owned by user' do
-      subject(:inviting) { box2.is_inviting(user1) }
+      subject(:inviting) { box2.inviting?(user1) }
       it { is_expected.to be_falsey }
     end
 
     context 'with box inviting user' do
-      subject(:inviting) { box1.is_inviting(user2) }
+      subject(:inviting) { box1.inviting?(user2) }
       it { is_expected.to be_truthy }
     end
   end
 
-  describe '#is_accessible_for' do
+  describe '#accessible_for?' do
     context 'with box owned by user' do
-      subject(:accesable) { box1.is_accessible_for(user1) }
+      subject(:accesable) { box1.accessible_for?(user1) }
       it { is_expected.to be_truthy }
     end
 
     context 'with box not owned by user' do
-      subject(:accesable) { box2.is_accessible_for(user1) }
+      subject(:accesable) { box2.accessible_for?(user1) }
       it { is_expected.to be_falsey }
     end
 
     context 'with box inviting user' do
-      subject(:accesable) { box1.is_accessible_for(user2) }
+      subject(:accesable) { box1.accessible_for?(user2) }
       it { is_expected.to be_truthy }
     end
   end
 
-  describe '#has_image?' do
+  describe '#image_exists?' do
     let(:user) { create(:user) }
 
     context 'if image exists' do
       let(:box) { create(:box, :with_image, owner: user) }
-      subject { box.has_image? }
+      subject { box.image_exists? }
 
       it 'returns true' do
         is_expected.to be_truthy
@@ -87,7 +89,7 @@ RSpec.describe Box, type: :model do
 
     context 'if no image exists' do
       let(:no_image_box) { create(:box, owner: user) }
-      subject { no_image_box.has_image? }
+      subject { no_image_box.image_exists? }
 
       it 'returns false' do
         is_expected.to be_falsey

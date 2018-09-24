@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UnitSerializer < ActiveModel::Serializer
   attributes :id,
              :label,

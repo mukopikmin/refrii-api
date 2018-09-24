@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
@@ -12,6 +14,6 @@ class UserSerializer < ActiveModel::Serializer
   has_many :invitations
 
   def avatar_url
-    "#{ENV['HOSTNAME']}/users/#{object.id}/avatar" if object.has_avatar?
+    "#{ENV['HOSTNAME']}/users/#{object.id}/avatar" if object.avatar_exists?
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FoodSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
@@ -16,7 +18,7 @@ class FoodSerializer < ActiveModel::Serializer
   belongs_to :updated_user
 
   def image_url
-    "#{ENV['HOSTNAME']}/foods/#{object.id}/image" if object.has_image?
+    "#{ENV['HOSTNAME']}/foods/#{object.id}/image" if object.image_exists?
   end
 
   def change_sets

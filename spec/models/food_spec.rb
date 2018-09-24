@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Food, type: :model do
@@ -7,9 +9,9 @@ RSpec.describe Food, type: :model do
   let(:food) { create(:food, :with_image, box: box, unit: unit, created_user: user, updated_user: user) }
   let(:no_image_food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user) }
 
-  describe '#has_image?' do
+  describe '#image_exists?' do
     context 'if image exists' do
-      subject { food.has_image? }
+      subject { food.image_exists? }
 
       it 'returns true' do
         is_expected.to be_truthy
@@ -17,7 +19,7 @@ RSpec.describe Food, type: :model do
     end
 
     context 'if no image exists' do
-      subject { no_image_food.has_image? }
+      subject { no_image_food.image_exists? }
 
       it 'returns false' do
         is_expected.to be_falsey
@@ -33,7 +35,7 @@ RSpec.describe Food, type: :model do
     context 'if image exists' do
       let(:food) { create(:food, :with_image, box: box, unit: unit, created_user: user, updated_user: user) }
 
-      it "returns image encoded by base64" do
+      it 'returns image encoded by base64' do
         expect(food.base64_image[:base64]).to be_a(String)
       end
     end
@@ -41,7 +43,7 @@ RSpec.describe Food, type: :model do
     context 'if no image exists' do
       let(:no_image_food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user) }
 
-      it "returns nil" do
+      it 'returns nil' do
         expect(no_image_food.base64_image).to be_nil
       end
     end

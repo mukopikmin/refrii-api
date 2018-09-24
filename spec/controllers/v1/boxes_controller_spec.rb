@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe V1::BoxesController, type: :controller do
@@ -111,7 +113,6 @@ RSpec.describe V1::BoxesController, type: :controller do
     end
 
     context 'with invited boxes' do
-
     end
   end
 

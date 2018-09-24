@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Unit < ApplicationRecord
   validates_presence_of :label
   validates :step, presence: true,
@@ -10,11 +12,11 @@ class Unit < ApplicationRecord
 
   scope :owned_by, ->(user) { where(user: user) }
 
-  def is_owned_by(user)
+  def owned_by?(user)
     user.units.include?(self)
   end
 
-  def is_inuse?
-    foods.size > 0
+  def inuse?
+    !foods.empty?
   end
 end

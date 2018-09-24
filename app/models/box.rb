@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Box < ApplicationRecord
   has_paper_trail
 
@@ -12,38 +14,38 @@ class Box < ApplicationRecord
   scope :inviting, ->(user) { joins(:invitations).where(invitations: { user: user }) }
   scope :all_with_invited, ->(user) { owned_by(user) + inviting(user) }
 
-  def is_owned_by(user)
+  def owned_by?(user)
     user.boxes.include?(self)
   end
 
-  def is_inviting(user)
+  def inviting?(user)
     invitations.map(&:user).include?(user)
   end
 
-  def is_accessible_for(user)
-    is_owned_by(user) || is_inviting(user)
+  def accessible_for?(user)
+    owned_by?(user) || inviting?(user)
   end
 
-  def has_image?
+  def image_exists?
     !(image_file.nil? || image_size.nil? || image_content_type.nil?)
   end
 
   def base64_image
-    if has_image?
-      {
-        content_type: image_content_type,
-        size: image_size,
-        base64: Base64.strict_encode64(image_file)
-      }
-    else
-      nil
-    end
+    return nil unless image_exists?
+
+    {
+      content_type: image_content_type,
+      size: image_size,
+      base64: Base64.strict_encode64(image_file)
+    }
   end
 
   def revert
     previous = paper_trail.previous_version
-    update(name: previous.name,
-           notice: previous.notice) unless previous.nil?
+    unless previous.nil?
+      update(name: previous.name,
+             notice: previous.notice)
+    end
     previous
   end
 end

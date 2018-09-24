@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe V1::AuthenticationController, type: :controller do
-
   describe 'POST /auth/local' do
     let(:params) { attributes_for(:user, :with_avatar) }
     let!(:user) { User.create(params) }
@@ -27,18 +28,18 @@ RSpec.describe V1::AuthenticationController, type: :controller do
     end
 
     before(:each) do
-      OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
+      OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new(
         provider: 'google_oauth2',
         uid: user.id,
         info: {
           name: params[:name],
           email: params[:email]
         }
-      })
+      )
     end
 
-    it "assigns user as @user" do
-      request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
+    it 'assigns user as @user' do
+      request.env['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
       get :google
       expect(assigns(:user).id).to eq(user.id)
     end
@@ -46,9 +47,7 @@ RSpec.describe V1::AuthenticationController, type: :controller do
 
   describe 'GET /auth/google/token' do
     let(:mock_response) do
-      open(File.join('spec', 'mocks', 'tokeninfo.json')) do |io|
-        JSON.load(io).to_json
-      end
+      JSON.parse(File.read(File.join('spec', 'mocks', 'tokeninfo.json'))).to_json
     end
     let(:email) { JSON.parse(mock_response)['email'] }
     let(:provider) { 'google' }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
@@ -62,9 +64,9 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#has_avatar?' do
+  describe '#avatar_exists?' do
     context 'with avatar' do
-      subject { create(:user, :with_avatar).has_avatar? }
+      subject { create(:user, :with_avatar).avatar_exists? }
 
       it 'returns true' do
         is_expected.to be_truthy
@@ -72,7 +74,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'without avatar' do
-      subject { create(:user).has_avatar? }
+      subject { create(:user).avatar_exists? }
 
       it 'returns false' do
         is_expected.to be_falsey
@@ -92,18 +94,18 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#has_unit_labeled_with' do
+  describe '#unit_owns?' do
     let!(:user1) { create(:user) }
     let!(:user2) { create(:user) }
     let!(:unit1) { create(:unit, user: user1) }
 
     context 'if have same labeled unit' do
-      subject { user1.has_unit_labeled_with(unit1.label) }
+      subject { user1.unit_owns?(unit1.label) }
       it { is_expected.to be_truthy }
     end
 
     context 'if do not have same labeled unit' do
-      subject { user2.has_unit_labeled_with(unit1.label) }
+      subject { user2.unit_owns?(unit1.label) }
       it { is_expected.to be_falsey }
     end
   end
@@ -112,7 +114,7 @@ RSpec.describe User, type: :model do
     context 'if image exists' do
       let(:user) { create(:user, :with_avatar) }
 
-      it "returns avatar encoded by base64" do
+      it 'returns avatar encoded by base64' do
         expect(user.base64_avatar[:base64]).to be_a(String)
       end
     end
@@ -120,7 +122,7 @@ RSpec.describe User, type: :model do
     context 'if no avatar exists' do
       let(:no_avatar_user) { create(:user) }
 
-      it "returns nil" do
+      it 'returns nil' do
         expect(no_avatar_user.base64_avatar).to be_nil
       end
     end
@@ -160,9 +162,7 @@ RSpec.describe User, type: :model do
     end
 
     let(:auth) do
-      open(File.join('spec', 'mocks', 'google_oauth.json')) do |io|
-        Hashie::Mash.new(JSON.load(io))
-      end
+      Hashie::Mash.new(JSON.parse(File.read(File.join('spec', 'mocks', 'google_oauth.json'))))
     end
     let(:user) { User.find_for_google(auth) }
 
@@ -174,9 +174,7 @@ RSpec.describe User, type: :model do
 
   describe '.find_for_google_token' do
     let(:mock_response) do
-      open(File.join('spec', 'mocks', 'tokeninfo.json')) do |io|
-        JSON.load(io).to_json
-      end
+      JSON.parse(File.read(File.join('spec', 'mocks', 'tokeninfo.json'))).to_json
     end
     let(:email) { JSON.parse(mock_response)['email'] }
     let(:provider) { 'google' }
@@ -215,9 +213,9 @@ RSpec.describe User, type: :model do
       before(:each) { allow(RestClient).to receive(:get).and_raise(RestClient::ExceptionWithResponse.new) }
 
       it 'raises error' do
-        expect {
+        expect do
           User.find_for_google_token(JsonWebToken.payload(user))
-        }.to raise_error(RestClient::ExceptionWithResponse)
+        end.to raise_error(RestClient::ExceptionWithResponse)
       end
     end
   end
@@ -234,9 +232,7 @@ RSpec.describe User, type: :model do
     end
 
     let(:auth) do
-      open(File.join('spec', 'mocks', 'auth0_google_oauth.json')) do |io|
-        Hashie::Mash.new(JSON.load(io))
-      end
+      Hashie::Mash.new(JSON.parse(File.read(File.join('spec', 'mocks', 'auth0_google_oauth.json'))))
     end
     let(:user) { User.find_for_google(auth) }
 

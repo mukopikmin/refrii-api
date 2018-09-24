@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe "Units", type: :request do
+RSpec.describe 'Units', type: :request do
   def token(user)
     JsonWebToken.payload(user)[:jwt]
   end
@@ -14,7 +16,7 @@ RSpec.describe "Units", type: :request do
     context 'without authentication' do
       before(:each) { get v1_units_path }
 
-      it "returns 401" do
+      it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
       end
     end
@@ -24,7 +26,7 @@ RSpec.describe "Units", type: :request do
         get v1_units_path, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
-      it "returns 200" do
+      it 'returns 200' do
         expect(response).to have_http_status(:ok)
       end
     end
@@ -34,7 +36,7 @@ RSpec.describe "Units", type: :request do
     context 'without authentication' do
       before(:each) { get v1_unit_path(unit1) }
 
-      it "returns 401" do
+      it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
       end
     end
@@ -45,7 +47,7 @@ RSpec.describe "Units", type: :request do
           get v1_unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 200" do
+        it 'returns 200' do
           expect(response).to have_http_status(:ok)
         end
       end
@@ -55,7 +57,7 @@ RSpec.describe "Units", type: :request do
           get v1_unit_path(unit2), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 404" do
+        it 'returns 404' do
           expect(response).to have_http_status(:not_found)
         end
       end
@@ -67,7 +69,7 @@ RSpec.describe "Units", type: :request do
       let(:params) { attributes_for(:unit).merge!(unit_id: unit1.to_param) }
       before(:each) { post v1_units_path, params: params }
 
-      it "returns 401" do
+      it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
       end
     end
@@ -80,7 +82,7 @@ RSpec.describe "Units", type: :request do
           post v1_units_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 201" do
+        it 'returns 201' do
           expect(response).to have_http_status(:created)
         end
       end
@@ -92,7 +94,7 @@ RSpec.describe "Units", type: :request do
           post v1_units_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 400" do
+        it 'returns 400' do
           expect(response).to have_http_status(:bad_request)
         end
       end
@@ -105,7 +107,7 @@ RSpec.describe "Units", type: :request do
           post v1_units_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 400" do
+        it 'returns 400' do
           expect(response).to have_http_status(:bad_request)
         end
       end
@@ -118,7 +120,7 @@ RSpec.describe "Units", type: :request do
 
       before(:each) { put v1_unit_path(unit1), params: params }
 
-      it "returns 401" do
+      it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
       end
     end
@@ -131,7 +133,7 @@ RSpec.describe "Units", type: :request do
           put v1_unit_path(unit1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 200" do
+        it 'returns 200' do
           expect(response).to have_http_status(:ok)
         end
       end
@@ -143,7 +145,7 @@ RSpec.describe "Units", type: :request do
           put v1_unit_path(unit2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 400" do
+        it 'returns 400' do
           expect(response).to have_http_status(:bad_request)
         end
       end
@@ -155,7 +157,7 @@ RSpec.describe "Units", type: :request do
           put v1_unit_path(unit2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 400" do
+        it 'returns 400' do
           expect(response).to have_http_status(:bad_request)
         end
       end
@@ -168,7 +170,7 @@ RSpec.describe "Units", type: :request do
           put v1_unit_path(unit1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 400" do
+        it 'returns 400' do
           expect(response).to have_http_status(:bad_request)
         end
       end
@@ -180,7 +182,7 @@ RSpec.describe "Units", type: :request do
           put v1_unit_path(unit1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 200" do
+        it 'returns 200' do
           expect(response).to have_http_status(:ok)
         end
       end
@@ -191,7 +193,7 @@ RSpec.describe "Units", type: :request do
     context 'without authentication' do
       before(:each) { delete v1_unit_path(unit1) }
 
-      it "returns 401" do
+      it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
       end
     end
@@ -203,7 +205,7 @@ RSpec.describe "Units", type: :request do
             delete v1_unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" }
           end
 
-          it "returns 201" do
+          it 'returns 201' do
             expect(response).to have_http_status(:no_content)
           end
         end
@@ -216,7 +218,7 @@ RSpec.describe "Units", type: :request do
             delete v1_unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" }
           end
 
-          it "returns 400" do
+          it 'returns 400' do
             expect(response).to have_http_status(:bad_request)
           end
         end
@@ -227,7 +229,7 @@ RSpec.describe "Units", type: :request do
           delete v1_unit_path(unit2), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it "returns 400" do
+        it 'returns 400' do
           expect(response).to have_http_status(:bad_request)
         end
       end

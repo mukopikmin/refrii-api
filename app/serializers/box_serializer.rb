@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BoxSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
@@ -5,14 +7,14 @@ class BoxSerializer < ActiveModel::Serializer
              :image_url,
              :created_at,
              :updated_at,
-             :is_invited,
+             :invited?,
              :invited_users,
              :change_sets
 
   belongs_to :owner
   has_many :foods
 
-  def is_invited
+  def invited?
     current_user != object.owner
   end
 
@@ -21,7 +23,7 @@ class BoxSerializer < ActiveModel::Serializer
   end
 
   def image_url
-    "#{ENV['HOSTNAME']}/boxes/#{object.id}/image" if object.has_image?
+    "#{ENV['HOSTNAME']}/boxes/#{object.id}/image" if object.image_exists?
   end
 
   def change_sets

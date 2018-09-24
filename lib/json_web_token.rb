@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 class JsonWebToken
   def self.payload(user)
-    return nil unless user && user.id
+    return nil unless user&.id
+
     {
-      jwt: self.encode(user_id: user.id, expires_at: 7.days.since),
+      jwt: encode(user_id: user.id, expires_at: 7.days.since),
       expires_at: 7.days.since,
       user: {
         id: user.id,
@@ -18,8 +21,8 @@ class JsonWebToken
   end
 
   def self.decode(token)
-    return HashWithIndifferentAccess.new(JWT.decode(token, Rails.application.secrets.secret_key_base)[0])
-  rescue
+    HashWithIndifferentAccess.new(JWT.decode(token, Rails.application.secrets.secret_key_base)[0])
+  rescue StandardError
     nil
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe V1::FoodsController, type: :controller do
@@ -121,7 +123,6 @@ RSpec.describe V1::FoodsController, type: :controller do
       expect(assigns(:food)).to eq(food)
     end
   end
-
 
   describe 'PUT #revert' do
     let(:user) { create(:user) }

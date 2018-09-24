@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe "Authenticaion", type: :request do
+RSpec.describe 'Authenticaion', type: :request do
   let(:params) { attributes_for(:user, :with_avatar) }
   let!(:user) { User.create(params) }
 
@@ -8,7 +10,7 @@ RSpec.describe "Authenticaion", type: :request do
     context 'with valid credentials' do
       before(:each) { post v1_auth_local_path, params: params }
 
-      it "returns 200" do
+      it 'returns 200' do
         expect(response).to have_http_status(:ok)
       end
     end
@@ -19,7 +21,7 @@ RSpec.describe "Authenticaion", type: :request do
         post v1_auth_local_path, params: params
       end
 
-      it "returns 401" do
+      it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
       end
     end
@@ -36,15 +38,15 @@ RSpec.describe "Authenticaion", type: :request do
       allow(User).to receive(:download_image).and_return(params)
     end
 
-    it "returns 200" do
-      OmniAuth.config.mock_auth[:google] = OmniAuth::AuthHash.new({
+    it 'returns 200' do
+      OmniAuth.config.mock_auth[:google] = OmniAuth::AuthHash.new(
         provider: 'google',
         uid: user.id,
         info: {
           name: params[:name],
           email: params[:email]
         }
-      })
+      )
       get v1_auth_google_callback_path, headers: { 'omniauth.auth': OmniAuth.config.mock_auth[:google] }
       expect(response).to have_http_status(:ok)
     end
@@ -52,9 +54,7 @@ RSpec.describe "Authenticaion", type: :request do
 
   describe 'GET /auth/google/token' do
     let(:mock_response) do
-      open(File.join('spec', 'mocks', 'tokeninfo.json')) do |io|
-        JSON.load(io).to_json
-      end
+      JSON.parse(File.read(File.join('spec', 'mocks', 'tokeninfo.json'))).to_json
     end
     let(:email) { JSON.parse(mock_response)['email'] }
     let(:provider) { 'google' }

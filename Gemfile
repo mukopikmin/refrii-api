@@ -1,30 +1,32 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 ruby '2.5.1'
 
 git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 5.2.1'
-gem 'puma', '~> 3.12.0'
-gem 'bcrypt', '~> 3.1.12'
-gem 'rack-cors', '~> 1.0.2'
 gem 'active_model_serializers', '~> 0.10.7'
+gem 'bcrypt', '~> 3.1.12'
+gem 'config', '~> 1.7.0'
 gem 'dotenv-rails', '~> 2.5.0'
 gem 'ffaker', '~> 2.10.0'
-gem 'omniauth', '~> 1.8.1'
-gem 'rmagick', '~> 2.16.0'
-gem 'config', '~> 1.7.0'
-gem 'omniauth-auth0', '~> 2.0.0'
-gem 'omniauth-oauth2', '~> 1.5.0'
-gem 'omniauth-google-oauth2', '~> 0.5.3'
-gem 'paper_trail', '~> 10.0.1'
-gem 'rest-client', '~> 2.0.2'
 gem 'hashie', '~> 3.5.6'
+gem 'omniauth', '~> 1.8.1'
+gem 'omniauth-auth0', '~> 2.0.0'
+gem 'omniauth-google-oauth2', '~> 0.5.3'
+gem 'omniauth-oauth2', '~> 1.5.0'
+gem 'paper_trail', '~> 10.0.1'
+gem 'puma', '~> 3.12.0'
+gem 'rack-cors', '~> 1.0.2'
+gem 'rails', '~> 5.2.1'
+gem 'rest-client', '~> 2.0.2'
+gem 'rmagick', '~> 2.16.0'
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'versionist', '~> 1.7.0'
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 group :development do
   gem 'listen', '~> 3.1.5'
@@ -34,20 +36,21 @@ end
 
 group :development, :test do
   gem 'byebug', '~> 10.0.2', platform: :mri
-  gem 'sqlite3'
   gem 'rspec-rails', '~> 3.8.0'
+  gem 'rubocop', '~> 0.59.2'
+  gem 'sqlite3'
 end
 
 group :test do
+  gem 'brakeman', '~> 4.3.1', require: false
+  gem 'codeclimate-test-reporter', '~> 1.0.8', require: false
   gem 'database_cleaner', '~> 1.7.0'
   gem 'factory_bot_rails', '~> 4.11.1'
   gem 'rails-controller-testing', '~> 1.0.2'
-  gem 'codeclimate-test-reporter', '~> 1.0.8', require: false
-  gem 'brakeman', '~> 4.3.1', require: false
 end
 
 group :production do
+  gem 'newrelic_rpm', '~> 5.3.0.346'
   gem 'pg', '~> 1.1.3'
   gem 'rails_12factor', '~> 0.0.3'
-  gem 'newrelic_rpm', '~> 5.3.0.346'
 end

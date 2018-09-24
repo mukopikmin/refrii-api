@@ -1,4 +1,4 @@
-require 'open-uri'
+# frozen_string_literal: true
 
 class User < ApplicationRecord
   has_secure_password
@@ -24,7 +24,7 @@ class User < ApplicationRecord
     provider == 'local'
   end
 
-  def has_avatar?
+  def avatar_exists?
     !(avatar_file.nil? || avatar_size.nil? || avatar_content_type.nil?)
   end
 
@@ -32,20 +32,18 @@ class User < ApplicationRecord
     invitations.map(&:box)
   end
 
-  def has_unit_labeled_with(label)
+  def unit_owns?(label)
     units.map(&:label).include?(label)
   end
 
   def base64_avatar
-    if has_avatar?
-      {
-        content_type: avatar_content_type,
-        size: avatar_size,
-        base64: Base64.strict_encode64(avatar_file)
-      }
-    else
-      nil
-    end
+    return nil unless avatar_exists?
+
+    {
+      content_type: avatar_content_type,
+      size: avatar_size,
+      base64: Base64.strict_encode64(avatar_file)
+    }
   end
 
   def self.find_for_database_authentication(conditions)
@@ -118,16 +116,17 @@ class User < ApplicationRecord
   # end
 
   def self.download_image(url)
-    open(url) do |io|
-      Tempfile.open do |tempfile|
-        tempfile.binmode
-        tempfile.write(io.read)
-        {
-          file: tempfile.open.read,
-          size: tempfile.size,
-          content_type: io.content_type
-        }
-      end
+    Tempfile.open do |tempfile|
+      image = RestClient.get(url).body
+
+      tempfile.binmode
+      tempfile.write(image)
+
+      {
+        file: tempfile.open.read,
+        size: tempfile.size,
+        content_type: io.content_type
+      }
     end
   end
 end

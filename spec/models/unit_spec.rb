@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Unit, type: :model do
@@ -37,21 +39,21 @@ RSpec.describe Unit, type: :model do
     end
   end
 
-  describe '#is_owned_by' do
+  describe '#owned_by?' do
     context 'with unit owned' do
-      subject { unit1.is_owned_by(user1) }
+      subject { unit1.owned_by?(user1) }
       it { is_expected.to be_truthy }
     end
 
     context 'with unit not owned' do
-      subject { unit1.is_owned_by(user2) }
+      subject { unit1.owned_by?(user2) }
       it { is_expected.to be_falsey }
     end
   end
 
-  describe '#is_inuse?' do
+  describe '#inuse?' do
     context 'with units not referenced by foods' do
-      subject { unit1.is_inuse? }
+      subject { unit1.inuse? }
       it { is_expected.to be_falsey }
     end
 
@@ -59,7 +61,7 @@ RSpec.describe Unit, type: :model do
       let(:box) { create(:box, owner: user1) }
       let!(:food) { create(:food, unit: unit1, box: box, created_user: user1, updated_user: user1) }
 
-      subject { unit1.is_inuse? }
+      subject { unit1.inuse? }
       it { is_expected.to be_truthy }
     end
   end

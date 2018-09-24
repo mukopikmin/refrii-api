@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe V1::UsersController, type: :controller do
@@ -45,7 +47,7 @@ RSpec.describe V1::UsersController, type: :controller do
   end
 
   describe 'GET #avatar' do
-    let(:user) {create(:user, :with_avatar)}
+    let(:user) { create(:user, :with_avatar) }
 
     before(:each) do
       request.headers['Authorization'] = "Bearer #{token(user)}"

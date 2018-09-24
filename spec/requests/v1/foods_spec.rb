@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'Foods', type: :request do
@@ -76,17 +78,17 @@ RSpec.describe 'Foods', type: :request do
     end
   end
 
-  describe "GET /foods/:id/image" do
+  describe 'GET /foods/:id/image' do
     let(:user) { create(:user) }
     let(:box) { create(:box, owner: user) }
     let(:unit) { create(:unit, user: user) }
     let(:food) { create(:food, :with_image, box: box, unit: unit, created_user: user, updated_user: user) }
-    let(:no_image_food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user)  }
+    let(:no_image_food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user) }
 
     context 'without authentication' do
       before(:each) { get image_v1_food_path(food) }
 
-      it "returns 401" do
+      it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
       end
     end
@@ -95,7 +97,7 @@ RSpec.describe 'Foods', type: :request do
       context 'if image exists' do
         before(:each) { get image_v1_food_path(food), headers: { authorization: "Bearer #{token(user)}" } }
 
-        it "return 200" do
+        it 'return 200' do
           expect(response).to have_http_status(:ok)
         end
       end
@@ -103,7 +105,7 @@ RSpec.describe 'Foods', type: :request do
       context 'if no image exists' do
         before(:each) { get image_v1_food_path(no_image_food), headers: { authorization: "Bearer #{token(user)}" } }
 
-        it "return 404" do
+        it 'return 404' do
           expect(response).to have_http_status(:not_found)
         end
       end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 #
@@ -23,24 +25,24 @@ end
 20.times do
   Box.create(name: FFaker::Book.title,
              notice: FFaker::Lorem.paragraph,
-             owner: User.find(rand(User.first.id .. User.last.id)))
+             owner: User.find(rand(User.first.id..User.last.id)))
 end
 
 User.all.each do |user|
-  %w(g pieces packs).each do |label|
+  %w[g pieces packs].each do |label|
     Unit.create(label: label,
                 user: user)
   end
 end
 
 100.times do
-  box = Box.find(rand(Box.first.id .. Box.last.id))
+  box = Box.find(rand(Box.first.id..Box.last.id))
   Food.create(name: FFaker::Food.fruit,
               notice: FFaker::BaconIpsum.phrase,
               amount: Random.rand(100.0).round(1),
               expiration_date: Random.rand(Time.zone.tomorrow..Time.zone.tomorrow.next_year),
               box: box,
-              unit: Unit.find(rand(box.owner.units.first.id .. box.owner.units.last.id)),
+              unit: Unit.find(rand(box.owner.units.first.id..box.owner.units.last.id)),
               created_user: box.owner,
               updated_user: box.owner)
 end

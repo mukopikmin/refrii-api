@@ -1,22 +1,17 @@
+# frozen_string_literal: true
+
 class HttpError
+  DEFAULT_MESSAGE = {
+    bad_request: 'Bad request',
+    unauthorized: 'This action needs authorization',
+    forbidden: 'This actions is not allowed',
+    not_found: 'Not found',
+    internal_server_error: 'Internal server error'
+  }.freeze
+
   def initialize(status, message = nil)
     @status = self.class.numeric_status(status)
-    @message = message
-
-    if message.nil?
-      case status
-      when :bad_request
-        @message = 'Bad request'
-      when :unauthorized
-        @message = 'This action needs authorization'
-      when :forbidden
-        @message = 'This actions is not allowed'
-      when :not_found
-        @message = 'Not found'
-      when :internal_server_error
-        @message = 'Internal server error'
-      end
-    end
+    @message = message || DEFAULT_MESSAGE[status]
   end
 
   def self.numeric_status(status)
