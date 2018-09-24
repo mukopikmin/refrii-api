@@ -10,7 +10,7 @@ RSpec.describe V1::UsersController, type: :controller do
   describe 'GET #index' do
     let(:admin) { create(:admin_user) }
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(admin)}"
     end
 
@@ -21,7 +21,7 @@ RSpec.describe V1::UsersController, type: :controller do
   end
 
   describe 'GET #verify' do
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
@@ -36,7 +36,7 @@ RSpec.describe V1::UsersController, type: :controller do
   describe 'GET #show' do
     let(:user) { create(:user) }
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
@@ -49,7 +49,7 @@ RSpec.describe V1::UsersController, type: :controller do
   describe 'GET #avatar' do
     let(:user) { create(:user, :with_avatar) }
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
@@ -86,7 +86,7 @@ RSpec.describe V1::UsersController, type: :controller do
   describe 'PUT #update' do
     let(:user) { create(:user) }
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 

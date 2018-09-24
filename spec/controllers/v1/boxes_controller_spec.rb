@@ -11,7 +11,7 @@ RSpec.describe V1::BoxesController, type: :controller do
     let(:user) { create(:user) }
     let!(:box) { create(:box, owner: user) }
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
@@ -25,9 +25,10 @@ RSpec.describe V1::BoxesController, type: :controller do
     let(:user1) { create(:user) }
     let(:user2) { create(:user) }
     let!(:box1) { create(:box, owner: user1) }
-    let!(:box2) { create(:box, owner: user2) }
 
-    before(:each) do
+    before { create(:box, owner: user2) }
+
+    before do
       request.headers['Authorization'] = "Bearer #{token(user1)}"
     end
 
@@ -42,9 +43,10 @@ RSpec.describe V1::BoxesController, type: :controller do
     let(:user2) { create(:user) }
     let(:box1) { create(:box, owner: user1) }
     let(:box2) { create(:box, owner: user2) }
-    let!(:invitation) { Invitation.create(box: box1, user: user2) }
 
-    before(:each) do
+    before { Invitation.create(box: box1, user: user2) }
+
+    before do
       request.headers['Authorization'] = "Bearer #{token(user2)}"
     end
 
@@ -58,7 +60,7 @@ RSpec.describe V1::BoxesController, type: :controller do
     let!(:user) { create(:user) }
     let!(:box) { create(:box, owner: user) }
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
@@ -72,7 +74,7 @@ RSpec.describe V1::BoxesController, type: :controller do
     let(:user) { create(:user) }
     let(:box) { create(:box, owner: user) }
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
@@ -86,7 +88,7 @@ RSpec.describe V1::BoxesController, type: :controller do
     let(:user) { create(:user) }
     let(:box) { create(:box, :with_image, owner: user) }
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
@@ -101,7 +103,7 @@ RSpec.describe V1::BoxesController, type: :controller do
     let(:box) { create(:box, owner: user) }
     let!(:unit) { create(:unit, user: user) }
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
@@ -112,14 +114,14 @@ RSpec.describe V1::BoxesController, type: :controller do
       end
     end
 
-    context 'with invited boxes' do
-    end
+    # context 'with invited boxes' do
+    # end
   end
 
   describe 'POST #create' do
     let!(:user) { create(:user) }
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
@@ -150,7 +152,7 @@ RSpec.describe V1::BoxesController, type: :controller do
     let!(:user) { create(:user) }
     let!(:box) { create(:box, owner: user) }
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
@@ -172,7 +174,7 @@ RSpec.describe V1::BoxesController, type: :controller do
     let(:name_before) { 'before changed' }
     let(:name_after) { 'after changed' }
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
       put :update, params: { id: box.to_param, name: name_after }
     end
@@ -193,7 +195,7 @@ RSpec.describe V1::BoxesController, type: :controller do
     let!(:user) { create(:user) }
     let!(:box) { create(:box, owner: user) }
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 

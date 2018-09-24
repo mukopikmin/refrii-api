@@ -28,7 +28,7 @@ RSpec.describe 'Foods', type: :request do
 
   describe 'GET /foods' do
     context 'without authentication' do
-      before(:each) { get v1_foods_path }
+      before { get v1_foods_path }
 
       it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
@@ -36,7 +36,7 @@ RSpec.describe 'Foods', type: :request do
     end
 
     context 'with authentication' do
-      before(:each) do
+      before do
         get v1_foods_path, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
@@ -48,7 +48,7 @@ RSpec.describe 'Foods', type: :request do
 
   describe 'GET /foods/:id' do
     context 'without authentication' do
-      before(:each) { get v1_food_path(food1) }
+      before { get v1_food_path(food1) }
 
       it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
@@ -57,7 +57,7 @@ RSpec.describe 'Foods', type: :request do
 
     context 'with authentication' do
       context 'with food in own box' do
-        before(:each) do
+        before do
           get v1_food_path(food1), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -67,7 +67,7 @@ RSpec.describe 'Foods', type: :request do
       end
 
       context 'with food in other\'s box' do
-        before(:each) do
+        before do
           get v1_food_path(food2), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -86,7 +86,7 @@ RSpec.describe 'Foods', type: :request do
     let(:no_image_food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user) }
 
     context 'without authentication' do
-      before(:each) { get image_v1_food_path(food) }
+      before { get image_v1_food_path(food) }
 
       it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
@@ -94,16 +94,16 @@ RSpec.describe 'Foods', type: :request do
     end
 
     context 'with authentication' do
-      context 'if image exists' do
-        before(:each) { get image_v1_food_path(food), headers: { authorization: "Bearer #{token(user)}" } }
+      context 'with image' do
+        before { get image_v1_food_path(food), headers: { authorization: "Bearer #{token(user)}" } }
 
         it 'return 200' do
           expect(response).to have_http_status(:ok)
         end
       end
 
-      context 'if no image exists' do
-        before(:each) { get image_v1_food_path(no_image_food), headers: { authorization: "Bearer #{token(user)}" } }
+      context 'with no image' do
+        before { get image_v1_food_path(no_image_food), headers: { authorization: "Bearer #{token(user)}" } }
 
         it 'return 404' do
           expect(response).to have_http_status(:not_found)
@@ -111,7 +111,7 @@ RSpec.describe 'Foods', type: :request do
       end
 
       context 'with base64 requested param' do
-        before(:each) { get image_v1_food_path(food), headers: { authorization: "Bearer #{token(user)}" }, params: { base64: true } }
+        before { get image_v1_food_path(food), headers: { authorization: "Bearer #{token(user)}" }, params: { base64: true } }
 
         it 'return 200' do
           expect(response).to have_http_status(:ok)
@@ -123,7 +123,8 @@ RSpec.describe 'Foods', type: :request do
   describe 'POST /foods' do
     context 'without authentication' do
       let(:params) { attributes_for(:food).merge!(box_id: box1.to_param, unit_id: unit1.to_param) }
-      before(:each) { post v1_foods_path, params: params }
+
+      before { post v1_foods_path, params: params }
 
       it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
@@ -134,7 +135,7 @@ RSpec.describe 'Foods', type: :request do
       context 'with food in own box' do
         let(:params) { attributes_for(:food).merge!(box_id: box1.to_param, unit_id: unit1.to_param) }
 
-        before(:each) do
+        before do
           post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -146,7 +147,7 @@ RSpec.describe 'Foods', type: :request do
       context 'with food in other\'s box' do
         let(:params) { attributes_for(:food).merge!(box_id: box2.to_param, unit_id: unit2.to_param) }
 
-        before(:each) do
+        before do
           post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -158,7 +159,7 @@ RSpec.describe 'Foods', type: :request do
       context 'with no name food' do
         let(:params) { attributes_for(:no_name_food).merge!(box_id: box1.to_param, unit_id: unit1.to_param) }
 
-        before(:each) do
+        before do
           post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -174,7 +175,7 @@ RSpec.describe 'Foods', type: :request do
     let(:no_name_params) { attributes_for(:no_name_food) }
 
     context 'without authentication' do
-      before(:each) { put v1_food_path(food1), params: params }
+      before { put v1_food_path(food1), params: params }
 
       it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
@@ -183,7 +184,7 @@ RSpec.describe 'Foods', type: :request do
 
     context 'with authentication' do
       context 'with food in own box' do
-        before(:each) do
+        before do
           put v1_food_path(food1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -193,7 +194,7 @@ RSpec.describe 'Foods', type: :request do
       end
 
       context 'with food in other\'s box' do
-        before(:each) do
+        before do
           put v1_food_path(food2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -203,7 +204,7 @@ RSpec.describe 'Foods', type: :request do
       end
 
       context 'with no name food' do
-        before(:each) do
+        before do
           put v1_food_path(food1), params: no_name_params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -216,7 +217,7 @@ RSpec.describe 'Foods', type: :request do
 
   describe 'DELETE /foods/:id' do
     context 'without authentication' do
-      before(:each) { delete v1_food_path(food1) }
+      before { delete v1_food_path(food1) }
 
       it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
@@ -225,7 +226,7 @@ RSpec.describe 'Foods', type: :request do
 
     context 'with authentication' do
       context 'with food in own box' do
-        before(:each) do
+        before do
           delete v1_food_path(food1), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -235,7 +236,7 @@ RSpec.describe 'Foods', type: :request do
       end
 
       context 'with food in other\'s box' do
-        before(:each) do
+        before do
           delete v1_food_path(food2), headers: { authorization: "Bearer #{token(user1)}" }
         end
 

@@ -12,13 +12,12 @@ RSpec.describe 'Boxes', type: :request do
   let(:box1) { create(:box, owner: user1) }
   let(:box2) { create(:box, owner: user2) }
   let(:box3) { create(:box, owner: user2) }
-  let(:unit1) { create(:unit, box: box1, user: user1) }
-  let(:unit1) { create(:unit, box: box2, user: user2) }
-  let!(:invitation) { Invitation.create(box: box3, user: user1) }
+
+  before { Invitation.create(box: box3, user: user1) }
 
   describe 'GET /boxes' do
     context 'without authentication' do
-      before(:each) { get v1_boxes_path }
+      before { get v1_boxes_path }
 
       it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
@@ -26,7 +25,7 @@ RSpec.describe 'Boxes', type: :request do
     end
 
     context 'with authentication' do
-      before(:each) do
+      before do
         get v1_boxes_path, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
@@ -38,7 +37,7 @@ RSpec.describe 'Boxes', type: :request do
 
   describe 'GET /boxes/owns' do
     context 'without authentication' do
-      before(:each) { get owns_v1_boxes_path }
+      before { get owns_v1_boxes_path }
 
       it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
@@ -46,7 +45,7 @@ RSpec.describe 'Boxes', type: :request do
     end
 
     context 'with authentication' do
-      before(:each) do
+      before do
         get owns_v1_boxes_path, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
@@ -58,7 +57,7 @@ RSpec.describe 'Boxes', type: :request do
 
   describe 'GET /boxes/invited' do
     context 'without authentication' do
-      before(:each) { get invited_v1_boxes_path }
+      before { get invited_v1_boxes_path }
 
       it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
@@ -66,7 +65,7 @@ RSpec.describe 'Boxes', type: :request do
     end
 
     context 'with authentication' do
-      before(:each) do
+      before do
         get invited_v1_boxes_path, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
@@ -78,7 +77,7 @@ RSpec.describe 'Boxes', type: :request do
 
   describe 'GET /boxes/:id' do
     context 'without authentication' do
-      before(:each) { get v1_box_path(box1) }
+      before { get v1_box_path(box1) }
 
       it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
@@ -87,7 +86,7 @@ RSpec.describe 'Boxes', type: :request do
 
     context 'with authentication' do
       context 'with own box' do
-        before(:each) do
+        before do
           get v1_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -97,7 +96,7 @@ RSpec.describe 'Boxes', type: :request do
       end
 
       context 'with other\'s box' do
-        before(:each) do
+        before do
           get v1_box_path(box2), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -114,7 +113,7 @@ RSpec.describe 'Boxes', type: :request do
     let(:no_image_box) { create(:box, owner: user) }
 
     context 'without authentication' do
-      before(:each) { get image_v1_box_path(box) }
+      before { get image_v1_box_path(box) }
 
       it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
@@ -122,16 +121,16 @@ RSpec.describe 'Boxes', type: :request do
     end
 
     context 'with authentication' do
-      context 'if image exists' do
-        before(:each) { get image_v1_box_path(box), headers: { authorization: "Bearer #{token(user)}" } }
+      context 'with image' do
+        before { get image_v1_box_path(box), headers: { authorization: "Bearer #{token(user)}" } }
 
         it 'return 200' do
           expect(response).to have_http_status(:ok)
         end
       end
 
-      context 'if no image exists' do
-        before(:each) { get image_v1_box_path(no_image_box), headers: { authorization: "Bearer #{token(user)}" } }
+      context 'with no image' do
+        before { get image_v1_box_path(no_image_box), headers: { authorization: "Bearer #{token(user)}" } }
 
         it 'return 404' do
           expect(response).to have_http_status(:not_found)
@@ -139,7 +138,7 @@ RSpec.describe 'Boxes', type: :request do
       end
 
       context 'with base64 requested param' do
-        before(:each) { get image_v1_box_path(box), headers: { authorization: "Bearer #{token(user)}" }, params: { base64: true } }
+        before { get image_v1_box_path(box), headers: { authorization: "Bearer #{token(user)}" }, params: { base64: true } }
 
         it 'return 200' do
           expect(response).to have_http_status(:ok)
@@ -150,7 +149,7 @@ RSpec.describe 'Boxes', type: :request do
 
   describe 'GET /boxes/:id/units' do
     context 'without authentication' do
-      before(:each) { get units_v1_box_path(box1) }
+      before { get units_v1_box_path(box1) }
 
       it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
@@ -159,7 +158,7 @@ RSpec.describe 'Boxes', type: :request do
 
     context 'with authentication' do
       context 'with own box' do
-        before(:each) do
+        before do
           get units_v1_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -169,7 +168,7 @@ RSpec.describe 'Boxes', type: :request do
       end
 
       context 'with other\'s box' do
-        before(:each) do
+        before do
           get units_v1_box_path(box2), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -185,7 +184,7 @@ RSpec.describe 'Boxes', type: :request do
     let(:no_name_box) { attributes_for(:no_name_box) }
 
     context 'without authentication' do
-      before(:each) { post v1_boxes_path, params: params }
+      before { post v1_boxes_path, params: params }
 
       it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
@@ -193,7 +192,7 @@ RSpec.describe 'Boxes', type: :request do
     end
 
     context 'with authentication' do
-      before(:each) do
+      before do
         post v1_boxes_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
@@ -203,7 +202,7 @@ RSpec.describe 'Boxes', type: :request do
     end
 
     context 'with no name params' do
-      before(:each) do
+      before do
         post v1_boxes_path, params: no_name_box, headers: { authorization: "Bearer #{token(user1)}" }
       end
 
@@ -218,7 +217,7 @@ RSpec.describe 'Boxes', type: :request do
     let(:no_name_box) { attributes_for(:no_name_box) }
 
     context 'without authentication' do
-      before(:each) { put v1_box_path(box1), params: params }
+      before { put v1_box_path(box1), params: params }
 
       it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
@@ -227,7 +226,7 @@ RSpec.describe 'Boxes', type: :request do
 
     context 'with authentication' do
       context 'with own box' do
-        before(:each) do
+        before do
           put v1_box_path(box1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -237,7 +236,7 @@ RSpec.describe 'Boxes', type: :request do
       end
 
       context 'with other\'s box' do
-        before(:each) do
+        before do
           put v1_box_path(box2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -247,7 +246,7 @@ RSpec.describe 'Boxes', type: :request do
       end
 
       context 'with no name params' do
-        before(:each) do
+        before do
           put v1_box_path(box1), params: no_name_box, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -260,7 +259,7 @@ RSpec.describe 'Boxes', type: :request do
 
   describe 'DELETE /boxes/:id' do
     context 'without authentication' do
-      before(:each) { delete v1_box_path(box1) }
+      before { delete v1_box_path(box1) }
 
       it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
@@ -269,7 +268,7 @@ RSpec.describe 'Boxes', type: :request do
 
     context 'with authentication' do
       context 'with own box' do
-        before(:each) do
+        before do
           delete v1_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -279,7 +278,7 @@ RSpec.describe 'Boxes', type: :request do
       end
 
       context 'with other\'s box' do
-        before(:each) do
+        before do
           delete v1_box_path(box2), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -289,7 +288,7 @@ RSpec.describe 'Boxes', type: :request do
       end
 
       context 'with invited box' do
-        before(:each) do
+        before do
           delete v1_box_path(box3), headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -305,7 +304,7 @@ RSpec.describe 'Boxes', type: :request do
     let(:unpersisted_user) { attributes_for(:user) }
 
     context 'without authentication' do
-      before(:each) { post invite_v1_box_path(box1), params: params }
+      before { post invite_v1_box_path(box1), params: params }
 
       it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
@@ -314,7 +313,7 @@ RSpec.describe 'Boxes', type: :request do
 
     context 'with authentication' do
       context 'with own box' do
-        before(:each) do
+        before do
           post invite_v1_box_path(box1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -324,7 +323,7 @@ RSpec.describe 'Boxes', type: :request do
       end
 
       context 'with other\'s box' do
-        before(:each) do
+        before do
           post invite_v1_box_path(box2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -334,7 +333,7 @@ RSpec.describe 'Boxes', type: :request do
       end
 
       context 'with unpersisted user' do
-        before(:each) do
+        before do
           post invite_v1_box_path(box1), params: unpersisted_user, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -350,7 +349,7 @@ RSpec.describe 'Boxes', type: :request do
     let(:unpersisted_user) { attributes_for(:user) }
 
     context 'without authentication' do
-      before(:each) { delete invite_v1_box_path(box3), params: params }
+      before { delete invite_v1_box_path(box3), params: params }
 
       it 'returns 401' do
         expect(response).to have_http_status(:unauthorized)
@@ -359,7 +358,7 @@ RSpec.describe 'Boxes', type: :request do
 
     context 'with authentication' do
       context 'with own box' do
-        before(:each) do
+        before do
           delete invite_v1_box_path(box3), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -369,7 +368,7 @@ RSpec.describe 'Boxes', type: :request do
       end
 
       context 'with other\'s box' do
-        before(:each) do
+        before do
           delete invite_v1_box_path(box2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
@@ -379,7 +378,7 @@ RSpec.describe 'Boxes', type: :request do
       end
 
       context 'with unpersisted user' do
-        before(:each) do
+        before do
           delete invite_v1_box_path(box1), params: unpersisted_user, headers: { authorization: "Bearer #{token(user1)}" }
         end
 

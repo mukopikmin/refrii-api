@@ -17,7 +17,7 @@ RSpec.describe V1::AuthenticationController, type: :controller do
     let(:params) { attributes_for(:google_user, :with_avatar) }
     let!(:user) { User.create(params) }
 
-    before(:each) do
+    before do
       file = File.new(File.join('spec', 'resources', 'avatar.jpg'), 'rb')
       params = {
         file: file,
@@ -27,7 +27,7 @@ RSpec.describe V1::AuthenticationController, type: :controller do
       allow(User).to receive(:download_image).and_return(params)
     end
 
-    before(:each) do
+    before do
       OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new(
         provider: 'google_oauth2',
         uid: user.id,
@@ -53,15 +53,17 @@ RSpec.describe V1::AuthenticationController, type: :controller do
     let(:provider) { 'google' }
 
     context 'with valid token, existing user' do
-      before(:each) do
+      before do
         response = double
         allow(response).to receive(:code).and_return(200)
         allow(response).to receive(:body).and_return(mock_response)
         allow(RestClient).to receive(:get).and_return(response)
       end
+
       let(:user) { create(:user, email: email, provider: provider) }
       let(:params) { { token: JsonWebToken.payload(user) } }
-      before(:each) { get :google_token, params: params }
+
+      before { get :google_token, params: params }
 
       it 'assigns user as @user' do
         expect(assigns(:user).id).to eq(user.id)
@@ -69,15 +71,17 @@ RSpec.describe V1::AuthenticationController, type: :controller do
     end
 
     context 'with valid token, non-existing user' do
-      before(:each) do
+      before do
         response = double
         allow(response).to receive(:code).and_return(200)
         allow(response).to receive(:body).and_return(mock_response)
         allow(RestClient).to receive(:get).and_return(response)
       end
+
       let(:user) { build(:user, email: email, provider: provider) }
       let(:params) { { token: JsonWebToken.payload(user) } }
-      before(:each) { get :google_token, params: params }
+
+      before { get :google_token, params: params }
 
       it 'assigns user as @user' do
         expect(assigns(:user).email).to eq(user.email)
@@ -85,10 +89,12 @@ RSpec.describe V1::AuthenticationController, type: :controller do
     end
 
     context 'with invalid token' do
-      before(:each) { allow(RestClient).to receive(:get).and_raise(RestClient::ExceptionWithResponse.new) }
+      before { allow(RestClient).to receive(:get).and_raise(RestClient::ExceptionWithResponse.new) }
+
+      before { get :google_token, params: params }
+
       let(:user) { build(:user, email: email, provider: provider) }
       let(:params) { { token: JsonWebToken.payload(user) } }
-      before(:each) { get :google_token, params: params }
 
       it 'assigns nil as @user' do
         expect(assigns(:user)).to be_nil

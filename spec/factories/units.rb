@@ -6,11 +6,11 @@ FactoryBot.define do
   end
 
   factory :updated_unit, class: Unit do
-    label 'pack'
+    label { 'pack' }
   end
 
   factory :no_label_unit, class: Unit do
-    label ''
+    label { '' }
   end
 
   trait :with_user do

@@ -10,20 +10,16 @@ RSpec.describe Food, type: :model do
   let(:no_image_food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user) }
 
   describe '#image_exists?' do
-    context 'if image exists' do
+    context 'when image exists' do
       subject { food.image_exists? }
 
-      it 'returns true' do
-        is_expected.to be_truthy
-      end
+      it { is_expected.to be_truthy }
     end
 
-    context 'if no image exists' do
+    context 'when no image exists' do
       subject { no_image_food.image_exists? }
 
-      it 'returns false' do
-        is_expected.to be_falsey
-      end
+      it { is_expected.to be_falsey }
     end
   end
 
@@ -32,7 +28,7 @@ RSpec.describe Food, type: :model do
     let(:box) { create(:box, :with_image, owner: user) }
     let(:unit) { create(:unit, user: user) }
 
-    context 'if image exists' do
+    context 'when image exists' do
       let(:food) { create(:food, :with_image, box: box, unit: unit, created_user: user, updated_user: user) }
 
       it 'returns image encoded by base64' do
@@ -40,7 +36,7 @@ RSpec.describe Food, type: :model do
       end
     end
 
-    context 'if no image exists' do
+    context 'when no image exists' do
       let(:no_image_food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user) }
 
       it 'returns nil' do
@@ -58,7 +54,7 @@ RSpec.describe Food, type: :model do
     let(:name_after) { 'after food' }
 
     context 'with versions' do
-      before(:each) { food.update(name: name_after) }
+      before { food.update(name: name_after) }
 
       it 'returns previous version' do
         expect(food.revert.name).to eq(name_before)

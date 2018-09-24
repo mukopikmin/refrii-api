@@ -18,7 +18,7 @@ RSpec.describe V1::FoodsController, type: :controller do
                     updated_user: box.owner)
     end
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
@@ -39,7 +39,7 @@ RSpec.describe V1::FoodsController, type: :controller do
                     updated_user: box.owner)
     end
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
@@ -55,7 +55,7 @@ RSpec.describe V1::FoodsController, type: :controller do
     let(:unit) { create(:unit, user: user) }
     let(:food) { create(:food, :with_image, box: box, unit: unit, created_user: user, updated_user: user) }
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
@@ -70,7 +70,7 @@ RSpec.describe V1::FoodsController, type: :controller do
     let(:box) { create(:box, owner: user) }
     let(:unit) { create(:unit, user: user) }
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
@@ -108,7 +108,7 @@ RSpec.describe V1::FoodsController, type: :controller do
                     updated_user: box.owner)
     end
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
@@ -138,7 +138,7 @@ RSpec.describe V1::FoodsController, type: :controller do
     let(:name_before) { 'before changed' }
     let(:name_after) { 'after changed' }
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
       put :update, params: { id: food.to_param, name: name_after }
     end
@@ -166,7 +166,7 @@ RSpec.describe V1::FoodsController, type: :controller do
                     updated_user: box.owner)
     end
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 

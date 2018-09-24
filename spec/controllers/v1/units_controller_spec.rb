@@ -8,7 +8,7 @@ RSpec.describe V1::UnitsController, type: :controller do
   end
 
   describe 'GET #index' do
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(unit.user)}"
     end
 
@@ -21,7 +21,7 @@ RSpec.describe V1::UnitsController, type: :controller do
   end
 
   describe 'GET #show' do
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(unit.user)}"
     end
 
@@ -36,7 +36,7 @@ RSpec.describe V1::UnitsController, type: :controller do
   describe 'POST #create' do
     let(:user) { create(:user) }
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
@@ -66,7 +66,7 @@ RSpec.describe V1::UnitsController, type: :controller do
   describe 'PUT #update' do
     let(:unit) { create(:unit, :with_user) }
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(unit.user)}"
     end
 
@@ -79,7 +79,7 @@ RSpec.describe V1::UnitsController, type: :controller do
   describe 'DELETE #destroy' do
     let(:unit) { create(:unit, :with_user) }
 
-    before(:each) do
+    before do
       request.headers['Authorization'] = "Bearer #{token(unit.user)}"
     end
 
@@ -94,7 +94,8 @@ RSpec.describe V1::UnitsController, type: :controller do
     context 'with units refernced by foods' do
       let(:user) { create(:user) }
       let(:box) { create(:box, owner: user) }
-      let!(:food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user) }
+
+      before { create(:food, box: box, unit: unit, created_user: user, updated_user: user) }
 
       it 'not destroy the requested unit' do
         expect do

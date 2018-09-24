@@ -8,7 +8,7 @@ RSpec.describe 'Authenticaion', type: :request do
 
   describe 'POST /auth/local' do
     context 'with valid credentials' do
-      before(:each) { post v1_auth_local_path, params: params }
+      before { post v1_auth_local_path, params: params }
 
       it 'returns 200' do
         expect(response).to have_http_status(:ok)
@@ -16,7 +16,7 @@ RSpec.describe 'Authenticaion', type: :request do
     end
 
     context 'with invalid credentials' do
-      before(:each) do
+      before do
         params[:password] = "INVALID #{params[:password]}"
         post v1_auth_local_path, params: params
       end
@@ -28,7 +28,7 @@ RSpec.describe 'Authenticaion', type: :request do
   end
 
   describe 'GET /auth/google/callback' do
-    before(:each) do
+    before do
       file = File.new(File.join('spec', 'resources', 'avatar.jpg'), 'rb')
       params = {
         file: file,
@@ -38,7 +38,7 @@ RSpec.describe 'Authenticaion', type: :request do
       allow(User).to receive(:download_image).and_return(params)
     end
 
-    it 'returns 200' do
+    before do
       OmniAuth.config.mock_auth[:google] = OmniAuth::AuthHash.new(
         provider: 'google',
         uid: user.id,
@@ -47,6 +47,9 @@ RSpec.describe 'Authenticaion', type: :request do
           email: params[:email]
         }
       )
+    end
+
+    it 'returns 200' do
       get v1_auth_google_callback_path, headers: { 'omniauth.auth': OmniAuth.config.mock_auth[:google] }
       expect(response).to have_http_status(:ok)
     end
@@ -60,12 +63,13 @@ RSpec.describe 'Authenticaion', type: :request do
     let(:provider) { 'google' }
 
     context 'with valid token, existing user' do
-      before(:each) do
+      before do
         response = double
         allow(response).to receive(:code).and_return(200)
         allow(response).to receive(:body).and_return(mock_response)
         allow(RestClient).to receive(:get).and_return(response)
       end
+
       let(:user) { create(:user, email: email, provider: provider) }
       let(:params) { { token: JsonWebToken.payload(user) } }
 
@@ -76,12 +80,13 @@ RSpec.describe 'Authenticaion', type: :request do
     end
 
     context 'with valid token, non-existing user' do
-      before(:each) do
+      before do
         response = double
         allow(response).to receive(:code).and_return(200)
         allow(response).to receive(:body).and_return(mock_response)
         allow(RestClient).to receive(:get).and_return(response)
       end
+
       let(:user) { build(:user, email: email, provider: provider) }
       let(:params) { { token: JsonWebToken.payload(user) } }
 
@@ -92,7 +97,8 @@ RSpec.describe 'Authenticaion', type: :request do
     end
 
     context 'with invalid token' do
-      before(:each) { allow(RestClient).to receive(:get).and_raise(RestClient::ExceptionWithResponse.new) }
+      before { allow(RestClient).to receive(:get).and_raise(RestClient::ExceptionWithResponse.new) }
+
       let(:user) { build(:user, email: email, provider: provider) }
       let(:params) { { token: JsonWebToken.payload(user) } }
 

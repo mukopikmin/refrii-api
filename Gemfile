@@ -38,6 +38,7 @@ group :development, :test do
   gem 'byebug', '~> 10.0.2', platform: :mri
   gem 'rspec-rails', '~> 3.8.0'
   gem 'rubocop', '~> 0.59.2'
+  gem 'rubocop-rspec', '~> 1.29'
   gem 'sqlite3'
 end
 
