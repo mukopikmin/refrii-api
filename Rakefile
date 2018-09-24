@@ -7,6 +7,8 @@ require_relative 'config/application'
 require 'rubocop/rake_task'
 
 Rails.application.load_tasks
-RuboCop::RakeTask.new
+RuboCop::RakeTask.new do |t|
+  t.options = ['--fail-level', 'W']
+end
 
 task default: :spec
