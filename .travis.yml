@@ -5,6 +5,7 @@ cache: bundler
 addons:
   code_climate:
     repo_token: 0bef4d157d44f20ce4fef62d2618e8e0b3bbc2d4c7ae9c862e1a83f461d3e64b
+before_install: gem install bundler -v 1.16.5
 script: 
   - bundle exec rake spec
   - bundle exec rake rubocop 

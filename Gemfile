@@ -20,11 +20,14 @@ gem 'omniauth-auth0', '~> 2.0.0'
 gem 'omniauth-google-oauth2', '~> 0.5.3'
 gem 'omniauth-oauth2', '~> 1.5.0'
 gem 'paper_trail', '~> 10.0.1'
+gem 'paper_trail-association_tracking', '~> 1.0'
 gem 'puma', '~> 3.12.0'
 gem 'rack-cors', '~> 1.0.2'
 gem 'rails', '~> 5.2.1'
 gem 'rest-client', '~> 2.0.2'
 gem 'rmagick', '~> 2.16.0'
+gem 'rubocop', '~> 0.59.2', require: false
+gem 'rubocop-rspec', '~> 1.29'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'versionist', '~> 1.7.0'
 
@@ -37,8 +40,6 @@ end
 group :development, :test do
   gem 'byebug', '~> 10.0.2', platform: :mri
   gem 'rspec-rails', '~> 3.8.0'
-  gem 'rubocop', '~> 0.59.2'
-  gem 'rubocop-rspec', '~> 1.29'
   gem 'sqlite3'
 end
 
