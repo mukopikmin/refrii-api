@@ -51,7 +51,6 @@ group :test do
 end
 
 group :production do
-  gem 'newrelic_rpm', '~> 5.4.0.347'
   gem 'pg', '~> 1.1.3'
   gem 'rails_12factor', '~> 0.0.3'
 end
