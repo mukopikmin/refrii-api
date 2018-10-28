@@ -12,7 +12,12 @@ class Box < ApplicationRecord
 
   scope :owned_by, ->(user) { where(owner: user) }
   scope :inviting, ->(user) { joins(:invitations).where(invitations: { user: user }) }
-  scope :all_with_invited, ->(user) { owned_by(user) + inviting(user) }
+  scope :all_with_invited, ->(user) do
+    scope = includes(:invitations)
+
+    scope.where(owner: user)
+         .or(scope.where(invitations: { user: user }))
+  end
 
   def owned_by?(user)
     user.boxes.include?(self)

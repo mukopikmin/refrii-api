@@ -15,7 +15,10 @@ class Food < ApplicationRecord
 
   scope :owned_by, ->(user) { joins(:box).where(boxes: { owner: user }) }
   scope :inviting, ->(user) { joins(box: :invitations).where(box: { invitations: { user: user } }) }
-  scope :all_with_invited, ->(user) { owned_by(user) + inviting(user) }
+
+  def self.all_with_invited(user)
+    Box.all_with_invited(user).map(&:foods).flatten
+  end
 
   def image_exists?
     !(image_file.nil? || image_size.nil? || image_content_type.nil?)

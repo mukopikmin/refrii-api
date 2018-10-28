@@ -3,14 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe Box, type: :model do
-  let!(:user1) { create(:user) }
-  let!(:user2) { create(:user) }
+  let(:user1) { create(:user) }
+  let(:user2) { create(:user) }
   let!(:box1) { create(:box, owner: user1) }
   let!(:box2) { create(:box, owner: user2) }
 
-  before do
-    Invitation.create(box: box1, user: user2)
-  end
+  before { Invitation.create(box: box1, user: user2) }
 
   describe 'scope' do
     describe 'owned_by' do
