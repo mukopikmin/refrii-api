@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'active_model_serializers', '~> 0.10.7'
+gem 'active_model_serializers', '~> 0.10.8'
 gem 'bcrypt', '~> 3.1.12'
 gem 'config', '~> 1.7.0'
 gem 'dotenv-rails', '~> 2.5.0'
