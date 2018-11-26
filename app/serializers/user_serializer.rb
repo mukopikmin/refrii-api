@@ -5,6 +5,8 @@ class UserSerializer < ActiveModel::Serializer
              :name,
              :email,
              :provider,
+             :disabled,
+             :admin,
              :avatar_url,
              :created_at,
              :updated_at
