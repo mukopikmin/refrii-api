@@ -11,6 +11,7 @@ class JsonWebToken
         id: user.id,
         email: user.email,
         name: user.name,
+        admin: user.admin,
         provider: user.provider
       }
     }
