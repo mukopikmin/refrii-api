@@ -20,7 +20,7 @@ gem 'paper_trail', '~> 10.0.1'
 gem 'paper_trail-association_tracking', '~> 1.0.0'
 gem 'puma', '~> 3.12.0'
 gem 'rack-cors', '~> 1.0.2'
-gem 'rails', '~> 5.2.1'
+gem 'rails', '~> 5.2.1', '>= 5.2.1.1'
 gem 'rest-client', '~> 2.0.2'
 gem 'rmagick', '~> 2.16.0'
 gem 'rubocop', '~> 0.59.2', require: false
