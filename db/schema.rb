@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 20_181_218_135_505) do
     t.binary 'avatar_file'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
-    t.index ['email'], name: 'index_users_on_email', unique: true
+    t.index ['email'], name: 'index_users_on_email'
   end
 
   create_table 'versions', force: :cascade do |t|
