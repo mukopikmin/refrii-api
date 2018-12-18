@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_180_412_140_806) do
+ActiveRecord::Schema.define(version: 20_181_218_135_505) do
   create_table 'boxes', force: :cascade do |t|
     t.string 'name', null: false
     t.text 'notice'
@@ -76,6 +76,7 @@ ActiveRecord::Schema.define(version: 20_180_412_140_806) do
     t.binary 'avatar_file'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
+    t.index ['email'], name: 'index_users_on_email', unique: true
   end
 
   create_table 'versions', force: :cascade do |t|

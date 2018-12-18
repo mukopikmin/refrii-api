@@ -10,7 +10,7 @@ end
 20.times do
   Box.create(name: FFaker::Book.title,
              notice: FFaker::Lorem.paragraph,
-             owner: User.find(rand(User.first.id .. User.last.id)))
+             owner: User.find(rand(User.first.id..User.last.id)))
 end
 
 User.all.each do |user|
@@ -20,7 +20,7 @@ User.all.each do |user|
   end
 
   Invitation.new(user: user,
-                 box: Box.find(rand(Box.first.id .. Box.last.id)))
+                 box: Box.find(rand(Box.first.id..Box.last.id)))
 end
 
 100.times do
