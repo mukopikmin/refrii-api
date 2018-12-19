@@ -4,7 +4,7 @@ module V1
   class BoxesController < V1::ApplicationController
     before_action :authenticate_request!
     before_action :set_paper_trail_whodunnit
-    before_action :set_box, only: %i[show foods image units update revert destroy invite deinvite]
+    before_action :set_box, only: %i[show versions foods image units update revert destroy invite deinvite]
     before_action :set_invitation, only: [:deinvite]
 
     # GET /boxes
@@ -35,6 +35,11 @@ module V1
       else
         render json: @box, include: [:owner, { foods: %i[unit created_user updated_user] }]
       end
+    end
+
+    # GET /boxes/1/versions
+    def versions
+      render json: @box.versions
     end
 
     # GET /boxes/1/foods

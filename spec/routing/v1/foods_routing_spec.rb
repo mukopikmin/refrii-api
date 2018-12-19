@@ -12,6 +12,10 @@ RSpec.describe V1::FoodsController, type: :routing do
       expect(get: '/v1/foods/1').to route_to('v1/foods#show', id: '1')
     end
 
+    it 'routes to #versions' do
+      expect(get: '/foods/1/versions').to route_to('v1/foods#versions', id: '1')
+    end
+
     it 'routes to #image' do
       expect(get: '/v1/foods/1/image').to route_to('v1/foods#image', id: '1')
     end

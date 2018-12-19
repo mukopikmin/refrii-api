@@ -78,6 +78,26 @@ RSpec.describe 'Foods', type: :request do
     end
   end
 
+  describe 'GET /foods/:id/versions' do
+    context 'without authentication' do
+      before { get versions_v1_food_path(food1) }
+
+      it 'returns 401' do
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context 'with authentication' do
+      before do
+        get versions_v1_food_path(food1), headers: { authorization: "Bearer #{token(user1)}" }
+      end
+
+      it 'returns 200' do
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
+
   describe 'GET /foods/:id/image' do
     let(:user) { create(:user) }
     let(:box) { create(:box, owner: user) }

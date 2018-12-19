@@ -4,7 +4,7 @@ module V1
   class FoodsController < V1::ApplicationController
     before_action :authenticate_request!
     before_action :set_paper_trail_whodunnit
-    before_action :set_food, only: %i[show image update revert destroy]
+    before_action :set_food, only: %i[show versions image update revert destroy]
 
     # GET /foods
     def index
@@ -19,6 +19,11 @@ module V1
       else
         render json: @food, include: %i[box unit created_user updated_user]
       end
+    end
+
+    # GET /foods/1/versions
+    def versions
+      render json: @food.versions
     end
 
     # POST /foods

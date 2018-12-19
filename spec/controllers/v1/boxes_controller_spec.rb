@@ -57,8 +57,8 @@ RSpec.describe V1::BoxesController, type: :controller do
   end
 
   describe 'GET #show' do
-    let!(:user) { create(:user) }
-    let!(:box) { create(:box, owner: user) }
+    let(:user) { create(:user) }
+    let(:box) { create(:box, owner: user) }
 
     before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
@@ -66,6 +66,20 @@ RSpec.describe V1::BoxesController, type: :controller do
 
     it 'assigns the requested box as @box' do
       get :show, params: { id: box.to_param }
+      expect(assigns(:box)).to eq(box)
+    end
+  end
+
+  describe 'GET #versions' do
+    let(:user) { create(:user) }
+    let(:box) { create(:box, owner: user) }
+
+    before do
+      request.headers['Authorization'] = "Bearer #{token(user)}"
+    end
+
+    it 'assigns the requested box as @box' do
+      get :versions, params: { id: box.to_param }
       expect(assigns(:box)).to eq(box)
     end
   end

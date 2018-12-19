@@ -12,8 +12,11 @@ RSpec.describe Food, type: :model do
     let(:box2) { create(:box, owner: user2) }
     let(:unit1) { create(:unit, user: user1) }
     let(:unit2) { create(:unit, user: user2) }
-    let!(:food1) { create(:food, box: box1, unit: unit1, created_user: user1, updated_user: user1) }
-    let!(:food2) { create(:food, box: box2, unit: unit2, created_user: user2, updated_user: user2) }
+
+    before do
+      create(:food, box: box1, unit: unit1, created_user: user1, updated_user: user1)
+      create(:food, box: box2, unit: unit2, created_user: user2, updated_user: user2)
+    end
 
     before { Invitation.create(box: box2, user: user1) }
 

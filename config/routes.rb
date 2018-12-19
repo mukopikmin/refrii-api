@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
     resources :foods do
       member do
+        get :versions
         get :image
         put :revert
       end
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
       end
 
       member do
+        get :versions
         get :foods
         get :units
         get :image

@@ -107,6 +107,26 @@ RSpec.describe 'Boxes', type: :request do
     end
   end
 
+  describe 'GET /boxes/:id/versions' do
+    context 'without authentication' do
+      before { get versions_v1_box_path(box1) }
+
+      it 'returns 401' do
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context 'with authentication' do
+      before do
+        get versions_v1_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" }
+      end
+
+      it 'returns 200' do
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
+
   describe 'GET /boxes/:id/image' do
     let(:user) { create(:user) }
     let(:box) { create(:box, :with_image, owner: user) }
