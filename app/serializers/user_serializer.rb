@@ -11,9 +11,9 @@ class UserSerializer < ActiveModel::Serializer
              :created_at,
              :updated_at
 
-  has_many :boxes
-  has_many :units
-  has_many :invitations
+  # has_many :boxes
+  # has_many :units
+  # has_many :invitations
 
   def avatar_url
     "#{ENV['HOSTNAME']}/users/#{object.id}/avatar" if object.avatar_exists?
