@@ -9,8 +9,8 @@ class FoodSerializer < ActiveModel::Serializer
              :image_url,
              :needs_adding,
              :created_at,
-             :updated_at,
-             :change_sets
+             :updated_at
+            #  :change_sets
 
   belongs_to :box
   belongs_to :unit
@@ -21,7 +21,7 @@ class FoodSerializer < ActiveModel::Serializer
     "#{ENV['HOSTNAME']}/foods/#{object.id}/image" if object.image_exists?
   end
 
-  def change_sets
-    object.versions.map(&:changeset).reverse
-  end
+  # def change_sets
+  #   object.versions.map(&:changeset).reverse
+  # end
 end
