@@ -19,7 +19,7 @@ User.all.each do |user|
                 user: user)
   end
 
-  Invitation.new(user: user,
+  Invitation.create(user: user,
                  box: Box.find(rand(Box.first.id..Box.last.id)))
 end
 
