@@ -1,0 +1,73 @@
+---
+"$schema": http://json-schema.org/draft-04/hyper-schema
+title: Food
+# id: schema/schemata/food
+description: Food schema
+stability: prototype
+strictProperties: true
+type: 
+  - object
+definitions:
+  id:
+    description: unique identifier of food
+    type: 
+      - integer
+  name:
+    description: name of food
+    type: 
+      - string
+  amount:
+    description: amount of food
+    type: 
+      - number
+  notice:
+    description: notice of food
+    type: 
+      - string
+  needs_adding:
+    description: needs_adding of food
+    type: 
+      - boolean
+  image_url:
+    description: image_url of food
+    type: 
+      - string
+  expiration_date:
+    description: when food was created
+    format: date-time
+    type: 
+      - string
+  created_at:
+    description: when food was created
+    format: date-time
+    type: 
+      - string
+  updated_at:
+    description: when food was updated
+    format: date-time
+    type: 
+      - string
+properties:
+  id:
+    "$ref": "schema/schemata/food.yml#/definitions/id"
+  name:
+    "$ref": "schema/schemata/food.yml#/definitions/name"
+  amount:
+    "$ref": "schema/schemata/food.yml#/definitions/amount"
+  notice:
+    "$ref": "schema/schemata/food.yml#/definitions/notice"
+  needs_adding:
+    "$ref": "schema/schemata/food.yml#/definitions/needs_adding"
+  image_url:
+    "$ref": "schema/schemata/food.yml#/definitions/image_url"
+  expiration_date:
+    "$ref": "schema/schemata/food.yml#/definitions/expiration_date"
+  created_at:
+    "$ref": "schema/schemata/food.yml#/definitions/created_at"
+  updated_at:
+    "$ref": "schema/schemata/food.yml#/definitions/updated_at"
+required:
+  - id
+  - name
+  - created_at
+  - updated_at

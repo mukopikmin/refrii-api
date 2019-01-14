@@ -1,0 +1,10 @@
+{
+  "description": "Refrii API JSON Schema",
+  "links": [
+    {
+      "href": "https://api.refrii.com",
+      "rel": "self"
+    }
+  ],
+  "title": "Refrii API"
+}

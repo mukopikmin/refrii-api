@@ -20,7 +20,7 @@ User.all.each do |user|
   end
 
   Invitation.create(user: user,
-                 box: Box.find(rand(Box.first.id..Box.last.id)))
+                    box: Box.find(rand(Box.first.id..Box.last.id)))
 end
 
 100.times do

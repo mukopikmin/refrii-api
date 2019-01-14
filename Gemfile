@@ -45,6 +45,7 @@ group :test do
   gem 'codeclimate-test-reporter', '~> 1.0.9', require: false
   gem 'database_cleaner', '~> 1.7.0'
   gem 'factory_bot_rails', '~> 4.11.1'
+  gem 'json-schema', '~> 2.8'
   gem 'rails-controller-testing', '~> 1.0.2'
 end
 

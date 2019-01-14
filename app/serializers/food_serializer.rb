@@ -10,7 +10,7 @@ class FoodSerializer < ActiveModel::Serializer
              :needs_adding,
              :created_at,
              :updated_at
-            #  :change_sets
+  #  :change_sets
 
   belongs_to :box
   belongs_to :unit

@@ -1,0 +1,79 @@
+---
+"$schema": http://json-schema.org/draft-04/hyper-schema
+title: User
+# id: schema/schemata/user
+description: User schema
+stability: prototype
+strictProperties: true
+type: 
+  - object
+definitions:
+  id:
+    description: unique identifier of user
+    readOnly: true
+    type: 
+      - integer
+  name:
+    description: name of user
+    type: 
+      - string
+  email:
+    description: email of user
+    type: 
+      - string
+  provider:
+    description: provider of user
+    type: 
+      - string
+  disabled:
+    description: disabled of user
+    type: 
+      - boolean
+  admin:
+    description: admin of user
+    type: 
+      - boolean
+  avatar_url:
+    description: avatar_url of user
+    type:
+      - string
+      - null
+  created_at:
+    description: when user was created
+    format: date-time
+    type: 
+      - string
+  updated_at:
+    description: when user was updated
+    format: date-time
+    type: 
+      - string
+properties:
+  id:
+    "$ref": "#/definitions/id"
+  name:
+    "$ref": "#/definitions/name"
+  email:
+    "$ref": "#/definitions/email"
+  provider:
+    "$ref": "#/definitions/provider"
+  disabled:
+    "$ref": "#/definitions/disabled"
+  admin:
+    "$ref": "#/definitions/admin"
+  avatar_url:
+    "$ref": "#/definitions/avatar_url"
+  created_at:
+    "$ref": "#/definitions/created_at"
+  updated_at:
+    "$ref": "#/definitions/updated_at"
+required:
+  - id
+  - name
+  - email
+  - provider
+  - disabled
+  - admin
+  - avatar_url
+  - created_at
+  - updated_at

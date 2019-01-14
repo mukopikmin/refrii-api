@@ -9,7 +9,7 @@ class VersionSerializer < ActiveModel::Serializer
              :updated_user
 
   def changes
-    YAML.load(object.object_changes)
+    YAML.safe_load(object.object_changes)
   end
 
   def updated_user

@@ -7,19 +7,20 @@ class BoxSerializer < ActiveModel::Serializer
              :image_url,
              :created_at,
              :updated_at,
-             :invited?,
+             :is_invited,
              :invited_users
-            #  :change_sets
+  #  :change_sets
 
   belongs_to :owner
   has_many :foods
 
-  def invited?
+  def is_invited
     current_user != object.owner
   end
 
   def invited_users
     object.invitations.map(&:user)
+          .map { |user| UserSerializer.new(user) }
   end
 
   def image_url
