@@ -13,7 +13,7 @@ RSpec.describe 'Foods', type: :request do
   let(:box2) { create(:box, owner: user2) }
   let(:unit1) { create(:unit, user: user1) }
   let(:unit2) { create(:unit, user: user2) }
-  let!(:food1) do
+  let(:food1) do
     create(:food, box: box1,
                   unit: unit1,
                   created_user: box1.owner,
@@ -42,7 +42,6 @@ RSpec.describe 'Foods', type: :request do
 
       it 'returns 200' do
         expect(response).to have_http_status(:ok)
-        # expect(response).to match_response_list_schema('food')
       end
     end
   end
@@ -64,7 +63,6 @@ RSpec.describe 'Foods', type: :request do
 
         it 'returns 200' do
           expect(response).to have_http_status(:ok)
-          # expect(response).to match_response_schema('food')
         end
       end
 

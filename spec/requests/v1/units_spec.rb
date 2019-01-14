@@ -28,7 +28,6 @@ RSpec.describe 'Units', type: :request do
 
       it 'returns 200' do
         expect(response).to have_http_status(:ok)
-        expect(response).to match_response_list_schema('unit')
       end
     end
   end
@@ -50,7 +49,6 @@ RSpec.describe 'Units', type: :request do
 
         it 'returns 200' do
           expect(response).to have_http_status(:ok)
-          expect(response).to match_response_schema('unit')
         end
       end
 

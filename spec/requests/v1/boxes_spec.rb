@@ -31,7 +31,6 @@ RSpec.describe 'Boxes', type: :request do
 
       it 'returns 200' do
         expect(response).to have_http_status(:ok)
-        expect(response).to match_response_schema('box')
       end
     end
   end
@@ -52,7 +51,6 @@ RSpec.describe 'Boxes', type: :request do
 
       it 'returns 200' do
         expect(response).to have_http_status(:ok)
-        expect(response).to match_response_schema('box')
       end
     end
   end
@@ -73,7 +71,6 @@ RSpec.describe 'Boxes', type: :request do
 
       it 'returns 200' do
         expect(response).to have_http_status(:ok)
-        expect(response).to match_response_schema('box')
       end
     end
   end
@@ -95,7 +92,6 @@ RSpec.describe 'Boxes', type: :request do
 
         it 'returns 200' do
           expect(response).to have_http_status(:ok)
-          expect(response).to match_response_schema('box')
         end
       end
 
@@ -188,7 +184,6 @@ RSpec.describe 'Boxes', type: :request do
 
         it 'returns 200' do
           expect(response).to have_http_status(:ok)
-          expect(response).to match_response_schema('unit')
         end
       end
 
@@ -199,7 +194,6 @@ RSpec.describe 'Boxes', type: :request do
 
         it 'returns 404' do
           expect(response).to have_http_status(:not_found)
-          expect(response).to match_response_schema('unit')
         end
       end
     end
@@ -224,7 +218,6 @@ RSpec.describe 'Boxes', type: :request do
 
       it 'returns 201' do
         expect(response).to have_http_status(:created)
-        expect(response).to match_response_schema('box')
       end
     end
 
@@ -259,7 +252,6 @@ RSpec.describe 'Boxes', type: :request do
 
         it 'returns 200' do
           expect(response).to have_http_status(:ok)
-          expect(response).to match_response_schema('box')
         end
       end
 

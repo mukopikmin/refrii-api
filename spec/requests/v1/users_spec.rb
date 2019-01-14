@@ -106,7 +106,6 @@ RSpec.describe 'Users', type: :request do
 
       it 'returns 200' do
         expect(response).to have_http_status(:ok)
-        expect(response).to match_response_schema('user')
       end
     end
   end
