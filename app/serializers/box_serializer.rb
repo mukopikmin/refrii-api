@@ -9,7 +9,7 @@ class BoxSerializer < ActiveModel::Serializer
              :updated_at,
              :invited?,
              :invited_users
-            #  :change_sets
+  #  :change_sets
 
   belongs_to :owner
   has_many :foods
