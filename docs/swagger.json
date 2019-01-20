@@ -34,10 +34,12 @@
     "http"
   ],
   "produces": [
-    "application/json"
+    "application/json",
+    "image/*"
   ],
   "consumes": [
-    "application/json"
+    "application/x-www-form-urlencoded",
+    "multipart/form-data"
   ],
   "paths": {
     "/boxes": {
@@ -74,10 +76,6 @@
         "tags": [
           "Boxes"
         ],
-        "consumes": [
-          "application/x-www-form-urlencoded",
-          "multipart/form-data"
-        ],
         "parameters": [
           {
             "in": "formData",
@@ -97,24 +95,6 @@
             "schema": {
               "$ref": "#/definitions/Box"
             }
-          },
-          "400": {
-            "description": "Invalid parameters",
-            "schema": {
-              "$ref": "#/definitions/ApiResponse"
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/ApiResponse"
-            }
-          },
-          "403": {
-            "description": "Unpermitted action",
-            "schema": {
-              "$ref": "#/definitions/ApiResponse"
-            }
           }
         },
         "security": [
@@ -128,13 +108,6 @@
       "put": {
         "tags": [
           "Boxes"
-        ],
-        "consumes": [
-          "application/x-www-form-urlencoded",
-          "multipart/form-data"
-        ],
-        "produces": [
-          "application/json"
         ],
         "parameters": [
           {
@@ -150,16 +123,60 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Invalid ID supplied",
+          "202": {
+            "description": "Created box",
             "schema": {
-              "$ref": "#/definitions/ApiResponse"
+              "$ref": "#/definitions/Box"
             }
-          },
-          "404": {
-            "description": "Pet not found",
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": [
+
+            ]
+          }
+        ]
+      }
+    },
+    "/boxes/owns": {
+      "get": {
+        "tags": [
+          "Boxes"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of box",
             "schema": {
-              "$ref": "#/definitions/ApiResponse"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Box"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": [
+
+            ]
+          }
+        ]
+      }
+    },
+    "/boxes/invited": {
+      "get": {
+        "tags": [
+          "Boxes"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of box",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Box"
+              }
             }
           }
         },
@@ -191,12 +208,6 @@
             "schema": {
               "$ref": "#/definitions/Box"
             }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/ApiResponse"
-            }
           }
         },
         "security": [
@@ -225,12 +236,6 @@
             "schema": {
               "$ref": "#/definitions/Box"
             }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/ApiResponse"
-            }
           }
         },
         "security": [
@@ -254,17 +259,8 @@
           }
         ],
         "responses": {
-          "400": {
+          "204": {
             "description": "Invalid username supplied"
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/ApiResponse"
-            }
-          },
-          "404": {
-            "description": "User not found"
           }
         },
         "security": [
@@ -298,12 +294,6 @@
                 "$ref": "#/definitions/Version"
               }
             }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/ApiResponse"
-            }
           }
         },
         "security": [
@@ -331,12 +321,6 @@
         "responses": {
           "200": {
             "description": "List of box"
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/ApiResponse"
-            }
           }
         },
         "security": [
@@ -370,74 +354,6 @@
                 "$ref": "#/definitions/Unit"
               }
             }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/ApiResponse"
-            }
-          }
-        },
-        "security": [
-          {
-            "BearerAuth": [
-
-            ]
-          }
-        ]
-      }
-    },
-    "/boxes/owns": {
-      "get": {
-        "tags": [
-          "Boxes"
-        ],
-        "responses": {
-          "200": {
-            "description": "List of box",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Box"
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/ApiResponse"
-            }
-          }
-        },
-        "security": [
-          {
-            "BearerAuth": [
-
-            ]
-          }
-        ]
-      }
-    },
-    "/boxes/invited": {
-      "get": {
-        "tags": [
-          "Boxes"
-        ],
-        "responses": {
-          "200": {
-            "description": "List of box",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Box"
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/ApiResponse"
-            }
           }
         },
         "security": [
@@ -466,16 +382,7 @@
           "200": {
             "description": "List of box",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Box"
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/ApiResponse"
+              "$ref": "#/definitions/Invitation"
             }
           }
         },
@@ -500,20 +407,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "List of box",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Box"
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/ApiResponse"
-            }
+          "204": {
+            "description": "List of box"
           }
         },
         "security": [
@@ -970,14 +865,42 @@
         "updated_at"
       ]
     },
+    "Version": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "item_id": {
+          "type": "integer"
+        },
+        "event": {
+          "type": "string"
+        },
+        "changes": {
+          "type": "object"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "item_id",
+        "event",
+        "changes",
+        "created_at"
+      ]
+    },
     "Invitation": {
       "type": "object",
       "properties": {
         "id": {
           "type": "integer"
         },
-        "name": {
-          "type": "string"
+        "box_id": {
+          "type": "integer"
         },
         "created_at": {
           "type": "string",
@@ -987,16 +910,13 @@
           "type": "string",
           "format": "date-time"
         }
-      }
-    },
-    "Version": {
-      "type": "array",
-      "items": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      }
+      },
+      "required": [
+        "id",
+        "box_id",
+        "created_at",
+        "updated_at"
+      ]
     },
     "ApiResponse": {
       "type": "object",

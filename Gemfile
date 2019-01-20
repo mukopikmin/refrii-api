@@ -43,7 +43,7 @@ end
 group :test do
   gem 'brakeman', '~> 4.3.1', require: false
   gem 'codeclimate-test-reporter', '~> 1.0.9', require: false
-gem 'committee', '~> 3.0.0.alpha'
+  gem 'committee', '~> 2.3.0'
   gem 'database_cleaner', '~> 1.7.0'
   gem 'factory_bot_rails', '~> 4.11.1'
   gem 'rails-controller-testing', '~> 1.0.2'

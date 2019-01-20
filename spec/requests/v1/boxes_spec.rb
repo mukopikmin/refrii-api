@@ -10,7 +10,6 @@ RSpec.describe 'Boxes', type: :request do
     JsonWebToken.payload(user)[:jwt]
   end
 
-
   def committee_schema
     @committee_schema ||=
       begin
@@ -30,38 +29,25 @@ RSpec.describe 'Boxes', type: :request do
 
   let(:user1) { create(:user) }
   let(:user2) { create(:user) }
-  let(:box1) { create(:box, owner: user1) }
-  let(:box2) { create(:box, owner: user2) }
-  let(:box3) { create(:box, owner: user2) }
+  let!(:box1) { create(:box, owner: user1) }
+  let!(:box2) { create(:box, owner: user2) }
+  let!(:box3) { create(:box, owner: user2) }
 
   before { Invitation.create(box: box3, user: user1) }
 
   describe 'GET /boxes' do
     context 'without authentication' do
-      # before { get v1_boxes_path }
+      before {get v1_boxes_path}
+      subject {last_response.status}
 
-      it 'returns 401' do
-        header "authorization", "aaaa"
-        get v1_boxes_path
-        p last_response.body
-        p last_response.status
-        # expect(response).to have_http_status(:unauthorized)
-        assert_schema_conform
-      end
+      it { is_expected.to eq(401)}
     end
 
     context 'with authentication' do
-      # before do
-      #   get v1_boxes_path, headers: { authorization: "Bearer #{token(user1)}" }
-      # end
-
-      it 'returns 200' do
+      it 'conforms schema' do
         header "authorization", "Bearer #{token(user1)}" 
-        get v1_boxes_path#, headers: { authorization: "Bearer #{token(user1)}" }
+        get v1_boxes_path
 
-        p last_response
-
-        # expect(response).to have_http_status(:ok)
         assert_schema_conform
       end
     end
@@ -69,109 +55,84 @@ RSpec.describe 'Boxes', type: :request do
 
   describe 'GET /boxes/owns' do
     context 'without authentication' do
-      # before { get owns_v1_boxes_path }
+      before { get owns_v1_boxes_path }
+      subject {last_response.status}
 
-      it 'returns 401' do
-        get owns_v1_boxes_path
-        assert_schema_conform
-        # expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401)}
     end
 
     context 'with authentication' do
-      # before do
-      #   get owns_v1_boxes_path, headers: { authorization: "Bearer #{token(user1)}" }
-      # end
+      it 'conforms schema' do
+        header "authorization", "Bearer #{token(user1)}" 
+        get owns_v1_boxes_path
 
-      it 'returns 200' do
-        get owns_v1_boxes_path, headers: { authorization: "Bearer #{token(user1)}" }
         assert_schema_conform
-        # expect(response).to have_http_status(:ok)
       end
     end
   end
 
   describe 'GET /boxes/invited' do
     context 'without authentication' do
-      # before { get invited_v1_boxes_path }
+      before { get invited_v1_boxes_path }
+      subject {last_response.status}
 
-      it 'returns 401' do
-        get invited_v1_boxes_path
-        assert_schema_conform
-        # expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401)}
     end
 
     context 'with authentication' do
-      # before do
-      #   get invited_v1_boxes_path, headers: { authorization: "Bearer #{token(user1)}" }
-      # end
-
       it 'returns 200' do
-        get invited_v1_boxes_path, headers: { authorization: "Bearer #{token(user1)}" }
-        # expect(response).to have_http_status(:ok)
+        header "authorization", "Bearer #{token(user1)}" 
+        get invited_v1_boxes_path
+        
+        assert_schema_conform
       end
     end
   end
 
   describe 'GET /boxes/:id' do
     context 'without authentication' do
-      # before { get v1_box_path(box1) }
+      before { get v1_box_path(box1) }
+      subject {last_response.status}
 
-      it 'returns 401' do
-        get v1_box_path(box1)
-        assert_schema_conform
-        # expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401)}
     end
 
     context 'with authentication' do
       context 'with own box' do
-        # before do
-        #   get v1_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" }
-        # end
-
         it 'returns 200' do
-          get v1_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" }
+        header "authorization", "Bearer #{token(user1)}" 
+        get v1_box_path(box1)
+
           assert_schema_conform
-          # expect(response).to have_http_status(:ok)
         end
       end
 
       context 'with other\'s box' do
-        # before do
-        #   get v1_box_path(box2), headers: { authorization: "Bearer #{token(user1)}" }
-        # end
-
-        it 'returns 404' do
-          get v1_box_path(box2), headers: { authorization: "Bearer #{token(user1)}" }
-          assert_schema_conform
-          # expect(response).to have_http_status(:not_found)
-        end
+          before do
+        header "authorization", "Bearer #{token(user1)}" 
+        get v1_box_path(box2) 
+          end
+          subject {last_response.status}
+    
+          it { is_expected.to eq(404)}
       end
     end
   end
 
   describe 'GET /boxes/:id/versions' do
     context 'without authentication' do
-      # before { get versions_v1_box_path(box1) }
+      before { get versions_v1_box_path(box1) }
+      subject {last_response.status}
 
-      it 'returns 401' do
-        get versions_v1_box_path(box1)
-        assert_schema_conform
-        # expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401)}
     end
 
     context 'with authentication' do
-      # before do
-      #   get versions_v1_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" }
-      # end
-
       it 'returns 200' do
-        get versions_v1_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" }
+        header "authorization", "Bearer #{token(user1)}" 
+        get versions_v1_box_path(box1)
+
         assert_schema_conform
-        # expect(response).to have_http_status(:ok)
       end
     end
   end
@@ -182,82 +143,71 @@ RSpec.describe 'Boxes', type: :request do
     let(:no_image_box) { create(:box, owner: user) }
 
     context 'without authentication' do
-      # before { get image_v1_box_path(box) }
+      before { get image_v1_box_path(box) }
+      subject {last_response.status}
 
-      it 'returns 401' do
-        get image_v1_box_path(box)
-        assert_schema_conform
-        # expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401)}
     end
 
     context 'with authentication' do
       context 'with image' do
-        # before { get image_v1_box_path(box), headers: { authorization: "Bearer #{token(user)}" } }
-
-        it 'return 200' do
-          get image_v1_box_path(box), headers: { authorization: "Bearer #{token(user)}" }
-          assert_schema_conform
-          # expect(response).to have_http_status(:ok)
+        before do
+          header "authorization", "Bearer #{token(user)}" 
+          get image_v1_box_path(box)
         end
+        subject {last_response.status}
+  
+        it { is_expected.to eq(200)}
       end
 
       context 'with no image' do
-        # before { get image_v1_box_path(no_image_box), headers: { authorization: "Bearer #{token(user)}" } }
-
-        it 'return 404' do
-          get image_v1_box_path(no_image_box), headers: { authorization: "Bearer #{token(user)}" }
-          assert_schema_conform
-          # expect(response).to have_http_status(:not_found)
+        before do
+          header "authorization", "Bearer #{token(user)}" 
+          get image_v1_box_path(no_image_box)
         end
+        subject {last_response.status}
+  
+        it { is_expected.to eq(404)}
       end
 
       context 'with base64 requested param' do
-        # before { get image_v1_box_path(box), headers: { authorization: "Bearer #{token(user)}" }, params: { base64: true } }
-
-        it 'return 200' do
-          get image_v1_box_path(box), headers: { authorization: "Bearer #{token(user)}" }, params: { base64: true }
-          assert_schema_conform
-          # expect(response).to have_http_status(:ok)
+        before do
+          header "authorization", "Bearer #{token(user)}" 
+          get image_v1_box_path(box), params: { base64: true }
         end
+        subject {last_response.status}
+  
+        it { is_expected.to eq(200)}
       end
     end
   end
 
   describe 'GET /boxes/:id/units' do
     context 'without authentication' do
-      # before { get units_v1_box_path(box1) }
+      before { get units_v1_box_path(box1) }
+      subject {last_response.status}
 
-      it 'returns 401' do
-        get units_v1_box_path(box1)
-        assert_schema_conform
-        # expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401)}
     end
 
     context 'with authentication' do
       context 'with own box' do
-        # before do
-        #   get units_v1_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" }
-        # end
-
         it 'returns 200' do
-          get units_v1_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" }
+        header "authorization", "Bearer #{token(user1)}" 
+        get units_v1_box_path(box1)
+        
           assert_schema_conform
-          # expect(response).to have_http_status(:ok)
         end
       end
 
       context 'with other\'s box' do
-        # before do
-        #   get units_v1_box_path(box2), headers: { authorization: "Bearer #{token(user1)}" }
-        # end
-
-        it 'returns 404' do
-          get units_v1_box_path(box2), headers: { authorization: "Bearer #{token(user1)}" }
-          assert_schema_conform
-          # expect(response).to have_http_status(:not_found)
+        before do
+        header "authorization", "Bearer #{token(user1)}" 
+        get units_v1_box_path(box2)
         end
+        subject {last_response.status}
+
+        it { is_expected.to eq(404)}
       end
     end
   end
@@ -267,37 +217,29 @@ RSpec.describe 'Boxes', type: :request do
     let(:no_name_box) { attributes_for(:no_name_box) }
 
     context 'without authentication' do
-      # before { post v1_boxes_path, params: params }
+      before { post v1_boxes_path, params: params }
+      subject {last_response.status}
 
-      it 'returns 401' do
-        post v1_boxes_path, params: params
-        assert_schema_conform
-        # expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401)}
     end
 
     context 'with authentication' do
-      # before do
-      #   post v1_boxes_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
-      # end
-
       it 'returns 201' do
-        post v1_boxes_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
+        header "authorization", "Bearer #{token(user1)}" 
+        post v1_boxes_path, params
+
         assert_schema_conform
-        # expect(response).to have_http_status(:created)
       end
     end
 
     context 'with no name params' do
-      # before do
-      #   post v1_boxes_path, params: no_name_box, headers: { authorization: "Bearer #{token(user1)}" }
-      # end
-
-      it 'returns 400' do
-        post v1_boxes_path, params: no_name_box, headers: { authorization: "Bearer #{token(user1)}" }
-        assert_schema_conform
-        # expect(response).to have_http_status(:bad_request)
+      before do
+        header "authorization", "Bearer #{token(user1)}" 
+        post v1_boxes_path, params: no_name_box
       end
+      subject {last_response.status}
+
+      it { is_expected.to eq(400)}
     end
   end
 
@@ -306,49 +248,39 @@ RSpec.describe 'Boxes', type: :request do
     let(:no_name_box) { attributes_for(:no_name_box) }
 
     context 'without authentication' do
-      # before { put v1_box_path(box1), params: params }
+      before { put v1_box_path(box1), params: params }
+      subject {last_response.status}
 
-      it 'returns 401' do
-        put v1_box_path(box1), params: params
-        assert_schema_conform
-        # expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401)}
     end
 
     context 'with authentication' do
       context 'with own box' do
-        # before do
-        #   put v1_box_path(box1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
-        # end
-
         it 'returns 200' do
-          put v1_box_path(box1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
+        header "authorization", "Bearer #{token(user1)}" 
+        put v1_box_path(box1)
+        
           assert_schema_conform
-          # expect(response).to have_http_status(:ok)
         end
       end
 
       context 'with other\'s box' do
-        # before do
-        #   put v1_box_path(box2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
-        # end
-
-        it 'returns 400' do
-          put v1_box_path(box2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
-          assert_schema_conform
-          # expect(response).to have_http_status(:bad_request)
+        before do
+        header "authorization", "Bearer #{token(user1)}" 
+        put v1_box_path(box2), params: params
         end
+        subject {last_response.status}
+
+        it { is_expected.to eq(400)}
       end
 
       context 'with no name params' do
-        # before do
-        #   put v1_box_path(box1), params: no_name_box, headers: { authorization: "Bearer #{token(user1)}" }
-        # end
 
-        it 'returns 400' do
-          put v1_box_path(box1), params: no_name_box, headers: { authorization: "Bearer #{token(user1)}" }
+        it 'returns 200' do
+        header "authorization", "Bearer #{token(user1)}" 
+        put v1_box_path(box1), params: no_name_box
+
           assert_schema_conform
-          # expect(response).to have_http_status(:bad_request)
         end
       end
     end
@@ -356,50 +288,40 @@ RSpec.describe 'Boxes', type: :request do
 
   describe 'DELETE /boxes/:id' do
     context 'without authentication' do
-      # before { delete v1_box_path(box1) }
+      before { delete v1_box_path(box1) }
+      subject {last_response.status}
 
-      it 'returns 401' do
-        delete v1_box_path(box1)
-        assert_schema_conform
-        # expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401)}
     end
 
     context 'with authentication' do
       context 'with own box' do
-        # before do
-        #   delete v1_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" }
-        # end
-
         it 'returns 204' do
-          delete v1_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" }
+        header "authorization", "Bearer #{token(user1)}" 
+        delete v1_box_path(box1)
+        
           assert_schema_conform
-          # expect(response).to have_http_status(:no_content)
         end
       end
 
       context 'with other\'s box' do
-        # before do
-        #   delete v1_box_path(box2), headers: { authorization: "Bearer #{token(user1)}" }
-        # end
-
-        it 'returns 400' do
-          delete v1_box_path(box2), headers: { authorization: "Bearer #{token(user1)}" }
-          assert_schema_conform
-          # expect(response).to have_http_status(:bad_request)
+        before do
+        header "authorization", "Bearer #{token(user1)}" 
+        delete v1_box_path(box2)
         end
+        subject {last_response.status}
+
+        it { is_expected.to eq(400)}
       end
 
       context 'with invited box' do
-        # before do
-        #   delete v1_box_path(box3), headers: { authorization: "Bearer #{token(user1)}" }
-        # end
-
-        it 'returns 400' do
-          delete v1_box_path(box3), headers: { authorization: "Bearer #{token(user1)}" }
-          assert_schema_conform
-          # expect(response).to have_http_status(:bad_request)
+        before do
+        header "authorization", "Bearer #{token(user1)}" 
+        delete v1_box_path(box3)
         end
+        subject {last_response.status}
+
+        it { is_expected.to eq(400)}
       end
     end
   end
@@ -409,50 +331,40 @@ RSpec.describe 'Boxes', type: :request do
     let(:unpersisted_user) { attributes_for(:user) }
 
     context 'without authentication' do
-      # before { post invite_v1_box_path(box1), params: params }
+      before { post invite_v1_box_path(box1), params: params }
+      subject {last_response.status}
 
-      it 'returns 401' do
-        post invite_v1_box_path(box1), params: params
-        assert_schema_conform
-        # expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401)}
     end
 
     context 'with authentication' do
       context 'with own box' do
-        # before do
-        #   post invite_v1_box_path(box1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
-        # end
-
         it 'returns 201' do
-          post invite_v1_box_path(box1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
-          assert_schema_conform
-          # expect(response).to have_http_status(:created)
+        header "authorization", "Bearer #{token(user1)}" 
+        post invite_v1_box_path(box1), params
+
+        assert_schema_conform
         end
       end
 
       context 'with other\'s box' do
-        # before do
-        #   post invite_v1_box_path(box2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
-        # end
-
-        it 'returns 400' do
-          post invite_v1_box_path(box2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
-          assert_schema_conform
-          # expect(response).to have_http_status(:bad_request)
+        before do
+          header "authorization", "Bearer #{token(user1)}" 
+          post invite_v1_box_path(box2), params: params
         end
+        subject {last_response.status}
+
+        it { is_expected.to eq(400)}
       end
 
       context 'with unpersisted user' do
-        # before do
-        #   post invite_v1_box_path(box1), params: unpersisted_user, headers: { authorization: "Bearer #{token(user1)}" }
-        # end
-
-        it 'returns 400' do
-          post invite_v1_box_path(box1), params: unpersisted_user, headers: { authorization: "Bearer #{token(user1)}" }
-          assert_schema_conform
-          # expect(response).to have_http_status(:bad_request)
+        before do
+          header "authorization", "Bearer #{token(user1)}" 
+          post invite_v1_box_path(box1), params: unpersisted_user
         end
+        subject {last_response.status}
+
+        it { is_expected.to eq(400)}
       end
     end
   end
@@ -462,50 +374,40 @@ RSpec.describe 'Boxes', type: :request do
     let(:unpersisted_user) { attributes_for(:user) }
 
     context 'without authentication' do
-      # before { delete invite_v1_box_path(box3), params: params }
+      before { delete invite_v1_box_path(box3), params: params }
+      subject {last_response.status}
 
-      it 'returns 401' do
-        delete invite_v1_box_path(box3), params: params
-        assert_schema_conform
-        # expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401)}
     end
 
     context 'with authentication' do
       context 'with own box' do
-        # before do
-        #   delete invite_v1_box_path(box3), params: params, headers: { authorization: "Bearer #{token(user1)}" }
-        # end
-
         it 'returns 204' do
-          delete invite_v1_box_path(box3), params: params, headers: { authorization: "Bearer #{token(user1)}" }
+          header "authorization", "Bearer #{token(user1)}" 
+          delete invite_v1_box_path(box3), params: params
+          
           assert_schema_conform
-          # expect(response).to have_http_status(:no_content)
         end
       end
 
       context 'with other\'s box' do
-        # before do
-        #   delete invite_v1_box_path(box2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
-        # end
-
-        it 'returns 400' do
-          delete invite_v1_box_path(box2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
-          assert_schema_conform
-          # expect(response).to have_http_status(:bad_request)
+        before do
+          header "authorization", "Bearer #{token(user1)}" 
+          delete invite_v1_box_path(box2), params: params
         end
+        subject {last_response.status}
+
+        it { is_expected.to eq(400)}
       end
 
       context 'with unpersisted user' do
-        # before do
-        #   delete invite_v1_box_path(box1), params: unpersisted_user, headers: { authorization: "Bearer #{token(user1)}" }
-        # end
-
-        it 'returns 400' do
-          delete invite_v1_box_path(box1), params: unpersisted_user, headers: { authorization: "Bearer #{token(user1)}" }
-          assert_schema_conform
-          # expect(response).to have_http_status(:bad_request)
+        before do
+          header "authorization", "Bearer #{token(user1)}" 
+          delete invite_v1_box_path(box1), params: unpersisted_user
         end
+        subject {last_response.status}
+
+        it { is_expected.to eq(400)}
       end
     end
   end
