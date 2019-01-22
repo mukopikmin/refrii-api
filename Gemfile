@@ -53,4 +53,3 @@ group :production do
   gem 'pg', '~> 1.1.3'
   gem 'rails_12factor', '~> 0.0.3'
 end
-
