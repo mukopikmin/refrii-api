@@ -1,0 +1,163 @@
+definitions:
+  Box:
+    type: object
+    # additionalProperties: false
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      notice:
+        type: string
+      image_url:
+        anyOf:
+        - type: string
+        - type: null
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+      owner:  
+        $ref: "#/definitions/User"
+      foods:
+        type: array
+        items:
+          $ref: "#/definitions/Food"
+      invited_users:
+        type: array
+        items:
+          $ref: "#/definitions/User"
+    required:
+    - id
+    - name
+    - notice
+    - image_url
+    - created_at
+    - updated_at
+    - owner
+    - foods
+    - invited_users
+  Food:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      notice:
+        type: string
+      image_url:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+      unit: 
+        $ref: "#/definitions/Unit"
+    required:
+    - id
+    - name
+    - image_url
+    - created_at
+    - updated_at
+    - unit
+  Unit:
+    type: object
+    properties:
+      id:
+        type: integer
+      label:
+        type: string
+      step:
+        type: number
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+    required:
+    - id
+    - label
+    - step
+    - created_at
+    - updated_at
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      email:
+        type: string
+      avatar_url:
+        oneOf:
+        - type: string
+        - type: null
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+    required:
+    - id
+    - name
+    - email
+    - created_at
+    - updated_at
+  Version:
+    type: object
+    properties:
+      id:
+        type: integer
+      item_id:
+        type: integer
+      event:
+        type: string        
+      changes:
+        type: object
+      created_at:
+        type: string
+        format: date-time
+      # updated_user:
+      #   $ref: "#/definitions/User"
+    required:
+    - id
+    - item_id
+    - event
+    - changes
+    - created_at
+  Invitation:
+    type: object
+    properties:
+      id:
+        type: integer
+      box_id:
+        type: integer
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+    required:
+    - id
+    - box_id
+    - created_at
+    - updated_at
+  ApiResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: integer
+    required:
+    - status
+    - message

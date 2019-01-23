@@ -1,0 +1,213 @@
+paths:
+  /boxes:
+    get:
+      tags:
+      - Boxes
+      responses:
+        200:
+          description: List of box
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Box"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ApiResponse"
+      security:
+      - BearerAuth: []
+    post:
+      tags:
+      - Boxes
+      # consumes: 
+      # - application/x-www-form-urlencoded
+      # - multipart/form-data
+      parameters:
+      - in: formData
+        name: name
+        type: string
+        required: true
+      - in: formData
+        name: notice
+        type: string
+      responses:
+        201:
+          description: Created box
+          schema:
+            $ref: "#/definitions/Box"
+      security:
+      - BearerAuth: []
+    put:
+      tags:
+      - Boxes
+      # consumes:
+      # - application/x-www-form-urlencoded
+      # - multipart/form-data
+      # produces:
+      # - application/json
+      parameters:
+      - in: formData
+        name: name
+        type: string
+        required: true
+      - in: formData
+        name: notice
+        type: string
+      responses:
+        202:
+          description: Created box
+          schema:
+            $ref: "#/definitions/Box"
+      security:
+      - BearerAuth: []
+  /boxes/owns:
+    get:
+      tags:
+      - Boxes
+      responses:
+        200:
+          description: List of box
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Box"
+      security:
+      - BearerAuth: []
+  /boxes/invited:
+    get:
+      tags:
+      - Boxes
+      responses:
+        200:
+          description: List of box
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Box"
+      security:
+      - BearerAuth: []
+  /boxes/{id}:
+    get:
+      tags:
+      - Boxes
+      parameters:
+      - in: path
+        name: id
+        type: string
+        required: true
+      responses:
+        200:
+          description: List of box
+          schema:
+            $ref: "#/definitions/Box"
+      security:
+      - BearerAuth: []
+    put:
+      tags:
+      - Boxes
+      parameters:
+      - in: path
+        name: id
+        type: string
+        required: true
+      responses:
+        200:
+          description: List of box
+          schema:
+            $ref: "#/definitions/Box"
+      security:
+      - BearerAuth: []
+    delete:
+      tags:
+      - Boxes
+      parameters:
+      - in: path
+        name: id
+        type: string
+        required: true
+      responses:
+        204:
+          description: Invalid username supplied
+      security:
+      - BearerAuth: []
+  /boxes/{id}/versions:
+    get:
+      tags:
+      - Boxes
+      parameters:
+      - in: path
+        name: id
+        type: integer
+        required: true
+      responses:
+        200:
+          description: List of box
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Version"
+      security:
+      - BearerAuth: []
+  /boxes/{id}/image:
+    get:
+      tags:
+      - Boxes
+      # produces:
+      # - image/*
+      parameters:
+      - in: path
+        name: id
+        type: integer
+        required: true
+      responses:
+        200:
+          description: List of box
+      security:
+      - BearerAuth: []
+  /boxes/{id}/units:
+    get:
+      tags:
+      - Boxes
+      parameters:
+      - in: path
+        name: id
+        type: string
+        required: true
+      responses:
+        200:
+          description: List of box
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Unit"
+      security:
+      - BearerAuth: []
+  /boxes/{id}/invite:
+    post:
+      tags:
+      - Boxes
+      parameters:
+      - in: path
+        name: id
+        type: string
+        required: true
+      responses:
+        200:
+          description: List of box
+          schema:
+            $ref: "#/definitions/Invitation"
+      security:
+      - BearerAuth: []
+    delete:
+      tags:
+      - Boxes
+      parameters:
+      - in: path
+        name: id
+        type: string
+        required: true
+      responses:
+        204:
+          description: List of box
+      security:
+      - BearerAuth: []
