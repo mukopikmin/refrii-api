@@ -56,4 +56,8 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # Committee request schema spec settings
+  config.add_setting :committee_options
+  config.committee_options = { schema_path: Rails.root.join('docs', 'swagger.json').to_s }
 end

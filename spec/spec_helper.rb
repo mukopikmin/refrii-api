@@ -26,6 +26,10 @@ require 'factory_bot_rails'
 require 'database_cleaner'
 require 'omniauth'
 
+def token(user)
+  JsonWebToken.payload(user)[:jwt]
+end
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest

@@ -339,31 +339,69 @@
       }
     },
     "/foods": {
+      "get": {
+        "tags": [
+          "Foods"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of foods",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Food"
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
           "Foods"
         ],
-        "summary": "Create user",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "createUser",
-        "produces": [
-          "application/xml",
-          "application/json"
+        "parameters": [
+          {
+            "in": "body",
+            "name": "name",
+            "description": "Food name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "box_id",
+            "description": "Box ID that food is created into",
+            "type": "integer",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created food",
+            "schema": {
+              "$ref": "#/definitions/Food"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Foods"
         ],
         "parameters": [
           {
             "in": "body",
-            "name": "body",
-            "description": "Created user object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
+            "name": "name",
+            "description": "Food name",
+            "type": "string"
           }
         ],
         "responses": {
-          "default": {
-            "description": "successful operation"
+          "204": {
+            "description": "Updated food",
+            "schema": {
+              "$ref": "#/definitions/Food"
+            }
           }
         }
       }

@@ -3,9 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Foods', type: :request do
-  def token(user)
-    JsonWebToken.payload(user)[:jwt]
-  end
+  include Committee::Rails::Test::Methods
 
   let(:user1) { create(:user) }
   let(:user2) { create(:user) }
@@ -28,20 +26,17 @@ RSpec.describe 'Foods', type: :request do
 
   describe 'GET /foods' do
     context 'without authentication' do
+      subject { response.status }
+
       before { get v1_foods_path }
 
-      it 'returns 401' do
-        expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401) }
     end
 
     context 'with authentication' do
-      before do
+      it 'conforms schema' do
         get v1_foods_path, headers: { authorization: "Bearer #{token(user1)}" }
-      end
-
-      it 'returns 200' do
-        expect(response).to have_http_status(:ok)
+        assert_schema_conform
       end
     end
   end
