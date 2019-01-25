@@ -451,7 +451,7 @@
           "200": {
             "description": "Description of the food",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/Food"
             }
           }
         }
