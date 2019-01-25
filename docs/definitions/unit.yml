@@ -1,0 +1,22 @@
+definitions:
+  Unit:
+    type: object
+    properties:
+      id:
+        type: integer
+      label:
+        type: string
+      step:
+        type: number
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+    required:
+    - id
+    - label
+    - step
+    - created_at
+    - updated_at

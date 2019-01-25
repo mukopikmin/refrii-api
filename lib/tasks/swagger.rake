@@ -6,14 +6,21 @@ namespace :swagger do
 
   desc 'Merge Swagger schemata to a one Yaml file'
   task :merge do
+    yaml_file = "#{base_dir}/swagger.yml"
     index = YAML.load_file("#{base_dir}/index.yml")
-    definitions = YAML.load_file("#{base_dir}/definitions.yml")
     security_definitions = YAML.load_file("#{base_dir}/security_definitions.yml")
+    definitions = Dir.glob("#{base_dir}/definitions/*.yml")
+                     .map { |file| YAML.load_file(file)['definitions'] }
+                     .inject(:merge)
     paths = Dir.glob("#{base_dir}/paths/*.yml")
                .map { |file| YAML.load_file(file)['paths'] }
                .inject(:merge)
-    targets = [index, definitions, security_definitions, { 'paths' => paths }]
-    yaml_file = "#{base_dir}/swagger.yml"
+    targets = [
+      index,
+      { 'definitions' => definitions },
+      security_definitions,
+      { 'paths' => paths }
+    ]
 
     File.open(yaml_file, 'w') do |file|
       YAML.dump(targets.inject(:merge), file)

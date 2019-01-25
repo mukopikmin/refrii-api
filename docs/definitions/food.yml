@@ -1,0 +1,29 @@
+definitions:
+  Food:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      notice:
+        type: string
+      image_url:
+        oneOf:
+        - type: string
+        - type: null
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+      unit: 
+        $ref: "#/definitions/Unit"
+    required:
+    - id
+    - name
+    - image_url
+    - created_at
+    - updated_at
+    - unit

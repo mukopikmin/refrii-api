@@ -10,10 +10,6 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Box"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ApiResponse"
       security:
       - BearerAuth: []
     post:

@@ -1,0 +1,19 @@
+definitions:
+  Invitation:
+    type: object
+    properties:
+      id:
+        type: integer
+      box_id:
+        type: integer
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+    required:
+    - id
+    - box_id
+    - created_at
+    - updated_at

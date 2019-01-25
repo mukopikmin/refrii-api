@@ -1,0 +1,41 @@
+definitions:
+  Box:
+    type: object
+    # additionalProperties: false
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      notice:
+        type: string
+      image_url:
+        oneOf:
+        - type: string
+        - type: null
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+      owner:  
+        $ref: "#/definitions/User"
+      foods:
+        type: array
+        items:
+          $ref: "#/definitions/Food"
+      invited_users:
+        type: array
+        items:
+          $ref: "#/definitions/User"
+    required:
+    - id
+    - name
+    - notice
+    - image_url
+    - created_at
+    - updated_at
+    - owner
+    - foods
+    - invited_users

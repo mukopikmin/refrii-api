@@ -39,6 +39,31 @@
     "multipart/form-data"
   ],
   "definitions": {
+    "Invitation": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "box_id": {
+          "type": "integer"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "box_id",
+        "created_at",
+        "updated_at"
+      ]
+    },
     "Box": {
       "type": "object",
       "properties": {
@@ -140,33 +165,32 @@
         "unit"
       ]
     },
-    "Unit": {
+    "Version": {
       "type": "object",
       "properties": {
         "id": {
           "type": "integer"
         },
-        "label": {
+        "item_id": {
+          "type": "integer"
+        },
+        "event": {
           "type": "string"
         },
-        "step": {
-          "type": "number"
+        "changes": {
+          "type": "object"
         },
         "created_at": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updated_at": {
           "type": "string",
           "format": "date-time"
         }
       },
       "required": [
         "id",
-        "label",
-        "step",
-        "created_at",
-        "updated_at"
+        "item_id",
+        "event",
+        "changes",
+        "created_at"
       ]
     },
     "User": {
@@ -208,42 +232,17 @@
         "updated_at"
       ]
     },
-    "Version": {
+    "Unit": {
       "type": "object",
       "properties": {
         "id": {
           "type": "integer"
         },
-        "item_id": {
-          "type": "integer"
-        },
-        "event": {
+        "label": {
           "type": "string"
         },
-        "changes": {
-          "type": "object"
-        },
-        "created_at": {
-          "type": "string",
-          "format": "date-time"
-        }
-      },
-      "required": [
-        "id",
-        "item_id",
-        "event",
-        "changes",
-        "created_at"
-      ]
-    },
-    "Invitation": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer"
-        },
-        "box_id": {
-          "type": "integer"
+        "step": {
+          "type": "number"
         },
         "created_at": {
           "type": "string",
@@ -256,24 +255,10 @@
       },
       "required": [
         "id",
-        "box_id",
+        "label",
+        "step",
         "created_at",
         "updated_at"
-      ]
-    },
-    "ApiResponse": {
-      "type": "object",
-      "properties": {
-        "status": {
-          "type": "integer"
-        },
-        "message": {
-          "type": "integer"
-        }
-      },
-      "required": [
-        "status",
-        "message"
       ]
     }
   },
@@ -517,12 +502,6 @@
               "items": {
                 "$ref": "#/definitions/Box"
               }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/ApiResponse"
             }
           }
         },
