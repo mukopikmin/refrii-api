@@ -34,62 +34,51 @@ RSpec.describe 'Foods', type: :request do
     end
 
     context 'with authentication' do
-      it 'conforms schema' do
-        get v1_foods_path, headers: { authorization: "Bearer #{token(user1)}" }
-        assert_schema_conform
-      end
+      before { get v1_foods_path, headers: { authorization: "Bearer #{token(user1)}" } }
+
+      it { assert_schema_conform }
     end
   end
 
   describe 'GET /foods/:id' do
     context 'without authentication' do
+      subject { response.status }
+
       before { get v1_food_path(food1) }
 
-      it 'returns 401' do
-        expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401) }
     end
 
     context 'with authentication' do
       context 'with food in own box' do
-        before do
-          get v1_food_path(food1), headers: { authorization: "Bearer #{token(user1)}" }
-        end
+        before { get v1_food_path(food1), headers: { authorization: "Bearer #{token(user1)}" } }
 
-        it 'returns 200' do
-          expect(response).to have_http_status(:ok)
-        end
+        it { assert_schema_conform }
       end
 
       context 'with food in other\'s box' do
-        before do
-          get v1_food_path(food2), headers: { authorization: "Bearer #{token(user1)}" }
-        end
+        subject { response.status }
 
-        it 'returns 404' do
-          expect(response).to have_http_status(:not_found)
-        end
+        before { get v1_food_path(food2), headers: { authorization: "Bearer #{token(user1)}" } }
+
+        it { is_expected.to eq(404) }
       end
     end
   end
 
   describe 'GET /foods/:id/versions' do
     context 'without authentication' do
+      subject { response.status }
+
       before { get versions_v1_food_path(food1) }
 
-      it 'returns 401' do
-        expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401) }
     end
 
     context 'with authentication' do
-      before do
-        get versions_v1_food_path(food1), headers: { authorization: "Bearer #{token(user1)}" }
-      end
+      before { get versions_v1_food_path(food1), headers: { authorization: "Bearer #{token(user1)}" } }
 
-      it 'returns 200' do
-        expect(response).to have_http_status(:ok)
-      end
+      it { assert_schema_conform }
     end
   end
 
@@ -101,86 +90,78 @@ RSpec.describe 'Foods', type: :request do
     let(:no_image_food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user) }
 
     context 'without authentication' do
+      subject { response.status }
+
       before { get image_v1_food_path(food) }
 
-      it 'returns 401' do
-        expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401) }
     end
 
     context 'with authentication' do
       context 'with image' do
+        subject { response.status }
+
         before { get image_v1_food_path(food), headers: { authorization: "Bearer #{token(user)}" } }
 
-        it 'return 200' do
-          expect(response).to have_http_status(:ok)
-        end
+        it { is_expected.to eq(200) }
       end
 
       context 'with no image' do
+        subject { response.status }
+
         before { get image_v1_food_path(no_image_food), headers: { authorization: "Bearer #{token(user)}" } }
 
-        it 'return 404' do
-          expect(response).to have_http_status(:not_found)
-        end
+        it { is_expected.to eq(404) }
       end
 
       context 'with base64 requested param' do
+        subject { response.status }
+
         before { get image_v1_food_path(food), headers: { authorization: "Bearer #{token(user)}" }, params: { base64: true } }
 
-        it 'return 200' do
-          expect(response).to have_http_status(:ok)
-        end
+        it { is_expected.to eq(200) }
       end
     end
   end
 
   describe 'POST /foods' do
     context 'without authentication' do
+      subject { response.status }
+
       let(:params) { attributes_for(:food).merge!(box_id: box1.to_param, unit_id: unit1.to_param) }
 
       before { post v1_foods_path, params: params }
 
-      it 'returns 401' do
-        expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401) }
     end
 
     context 'with authentication' do
       context 'with food in own box' do
         let(:params) { attributes_for(:food).merge!(box_id: box1.to_param, unit_id: unit1.to_param) }
 
-        before do
-          post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
-        end
+        before { post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
-        it 'returns 201' do
-          expect(response).to have_http_status(:created)
-        end
+        it { assert_schema_conform }
       end
 
       context 'with food in other\'s box' do
+        subject { response.status }
+
         let(:params) { attributes_for(:food).merge!(box_id: box2.to_param, unit_id: unit2.to_param) }
 
-        before do
-          post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
-        end
+        before {     post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
-        it 'returns 400' do
-          expect(response).to have_http_status(:bad_request)
-        end
+        it { is_expected.to eq(400) }
       end
 
       context 'with no name food' do
+        subject { response.status }
+
         let(:params) { attributes_for(:no_name_food).merge!(box_id: box1.to_param, unit_id: unit1.to_param) }
 
-        before do
-          post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
-        end
+        before { post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
-        it 'returns 400' do
-          expect(response).to have_http_status(:bad_request)
-        end
+        it { is_expected.to eq(400) }
       end
     end
   end
@@ -190,74 +171,60 @@ RSpec.describe 'Foods', type: :request do
     let(:no_name_params) { attributes_for(:no_name_food) }
 
     context 'without authentication' do
+      subject { response.status }
+
       before { put v1_food_path(food1), params: params }
 
-      it 'returns 401' do
-        expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401) }
     end
 
     context 'with authentication' do
       context 'with food in own box' do
-        before do
-          put v1_food_path(food1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
-        end
+        before { put v1_food_path(food1), params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
-        it 'returns 201' do
-          expect(response).to have_http_status(:ok)
-        end
+        it { assert_schema_conform }
       end
 
       context 'with food in other\'s box' do
-        before do
-          put v1_food_path(food2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
-        end
+        subject { response.status }
 
-        it 'returns 400' do
-          expect(response).to have_http_status(:bad_request)
-        end
+        before { put v1_food_path(food2), params: params, headers: { authorization: "Bearer #{token(user1)}" } }
+
+        it { is_expected.to eq(400) }
       end
 
       context 'with no name food' do
-        before do
-          put v1_food_path(food1), params: no_name_params, headers: { authorization: "Bearer #{token(user1)}" }
-        end
+        subject { response.status }
 
-        it 'returns 400' do
-          expect(response).to have_http_status(:bad_request)
-        end
+        before { put v1_food_path(food1), params: no_name_params, headers: { authorization: "Bearer #{token(user1)}" } }
+
+        it { is_expected.to eq(400) }
       end
     end
   end
 
   describe 'DELETE /foods/:id' do
     context 'without authentication' do
+      subject { response.status }
+
       before { delete v1_food_path(food1) }
 
-      it 'returns 401' do
-        expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401) }
     end
 
     context 'with authentication' do
       context 'with food in own box' do
-        before do
-          delete v1_food_path(food1), headers: { authorization: "Bearer #{token(user1)}" }
-        end
+        before { delete v1_food_path(food1), headers: { authorization: "Bearer #{token(user1)}" } }
 
-        it 'returns 201' do
-          expect(response).to have_http_status(:no_content)
-        end
+        it { assert_schema_conform }
       end
 
       context 'with food in other\'s box' do
-        before do
-          delete v1_food_path(food2), headers: { authorization: "Bearer #{token(user1)}" }
-        end
+        subject { response.status }
 
-        it 'returns 400' do
-          expect(response).to have_http_status(:bad_request)
-        end
+        before { delete v1_food_path(food2), headers: { authorization: "Bearer #{token(user1)}" } }
+
+        it { is_expected.to eq(400) }
       end
     end
   end

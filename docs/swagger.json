@@ -52,7 +52,7 @@
           "type": "string"
         },
         "image_url": {
-          "anyOf": [
+          "oneOf": [
             {
               "type": "string"
             },
@@ -110,7 +110,14 @@
           "type": "string"
         },
         "image_url": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": null
+            }
+          ]
         },
         "created_at": {
           "type": "string",
@@ -401,6 +408,97 @@
             "description": "Updated food",
             "schema": {
               "$ref": "#/definitions/Food"
+            }
+          }
+        }
+      }
+    },
+    "/foods/{id}": {
+      "get": {
+        "tags": [
+          "Foods"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Description of the food",
+            "schema": {
+              "$ref": "#/definitions/Food"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Foods"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Description of the food",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Foods"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Description of the food",
+            "schema": {
+              "$ref": "#/definitions/Food"
+            }
+          }
+        }
+      }
+    },
+    "/foods/{id}/versions": {
+      "get": {
+        "tags": [
+          "Foods"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Past versions of the food",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Version"
+              }
             }
           }
         }
