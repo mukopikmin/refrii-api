@@ -11,21 +11,21 @@ module V1
     def index
       @boxes = Box.all_with_invited(current_user)
 
-      render json: @boxes, include: [:owner, { foods: %i[unit created_user updated_user] }]
+      render json: @boxes
     end
 
     # GET /boxes/owns
     def owns
       @boxes = Box.owned_by(current_user)
 
-      render json: @boxes, include: [:owner, { foods: %i[unit created_user updated_user] }]
+      render json: @boxes
     end
 
     # GET /boxes/invited
     def invited
       @boxes = Box.inviting(current_user)
 
-      render json: @boxes, include: [:owner, { foods: %i[unit created_user updated_user] }]
+      render json: @boxes
     end
 
     # GET /boxes/1
@@ -33,7 +33,7 @@ module V1
       if !accessible?
         not_found('Specified box does not exist.')
       else
-        render json: @box, include: [:owner, { foods: %i[unit created_user updated_user] }]
+        render json: @box
       end
     end
 

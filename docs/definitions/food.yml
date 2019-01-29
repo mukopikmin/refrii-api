@@ -1,17 +1,25 @@
 definitions:
   Food:
     type: object
+    additionalProperties: false
     properties:
       id:
         type: integer
       name:
         type: string
+      amount:
+        type: number
       notice:
         type: string
       image_url:
         oneOf:
         - type: string
         - type: null
+      expiration_date:
+        type: string
+        format: date
+      needs_adding:
+        type: boolean
       created_at:
         type: string
         format: date-time
@@ -20,10 +28,19 @@ definitions:
         format: date-time
       unit: 
         $ref: "#/definitions/Unit"
+      created_user:
+        $ref: "#/definitions/User"
+      updated_user:
+        $ref: "#/definitions/User"
     required:
     - id
     - name
+    - amount
+    - notice
     - image_url
+    - expiration_date
     - created_at
     - updated_at
     - unit
+    - created_user
+    - updated_user

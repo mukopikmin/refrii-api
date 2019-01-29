@@ -1,12 +1,19 @@
 definitions:
   User:
     type: object
+    additionalProperties: false
     properties:
       id:
         type: integer
       name:
         type: string
       email:
+        type: string
+      admin:
+        type: boolean
+      disabled:
+        type: boolean
+      provider:
         type: string
       avatar_url:
         oneOf:
@@ -22,5 +29,9 @@ definitions:
     - id
     - name
     - email
+    - admin
+    - disabled
+    - provider
+    - avatar_url
     - created_at
     - updated_at

@@ -17,7 +17,7 @@ module V1
       if !accessible?
         not_found
       else
-        render json: @food, include: %i[box unit created_user updated_user]
+        render json: @food
       end
     end
 

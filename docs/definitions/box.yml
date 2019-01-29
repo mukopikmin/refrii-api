@@ -1,7 +1,7 @@
 definitions:
   Box:
     type: object
-    # additionalProperties: false
+    additionalProperties: false
     properties:
       id:
         type: integer
@@ -9,6 +9,8 @@ definitions:
         type: string
       notice:
         type: string
+      is_invited:
+        type: boolean
       image_url:
         oneOf:
         - type: string
@@ -21,10 +23,6 @@ definitions:
         format: date-time
       owner:  
         $ref: "#/definitions/User"
-      foods:
-        type: array
-        items:
-          $ref: "#/definitions/Food"
       invited_users:
         type: array
         items:
@@ -33,9 +31,9 @@ definitions:
     - id
     - name
     - notice
+    - is_invited
     - image_url
     - created_at
     - updated_at
     - owner
-    - foods
     - invited_users

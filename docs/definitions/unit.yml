@@ -1,6 +1,7 @@
 definitions:
   Unit:
     type: object
+    additionalProperties: false
     properties:
       id:
         type: integer

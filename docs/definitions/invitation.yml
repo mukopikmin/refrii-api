@@ -1,10 +1,13 @@
 definitions:
   Invitation:
     type: object
+    additionalProperties: false
     properties:
       id:
         type: integer
       box_id:
+        type: integer
+      user_id:
         type: integer
       created_at:
         type: string
@@ -15,5 +18,6 @@ definitions:
     required:
     - id
     - box_id
+    - user_id
     - created_at
     - updated_at

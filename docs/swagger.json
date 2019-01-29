@@ -14,6 +14,9 @@
   "basePath": "/v1",
   "tags": [
     {
+      "name": "Authentication"
+    },
+    {
       "name": "Boxes"
     },
     {
@@ -41,11 +44,15 @@
   "definitions": {
     "Invitation": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "id": {
           "type": "integer"
         },
         "box_id": {
+          "type": "integer"
+        },
+        "user_id": {
           "type": "integer"
         },
         "created_at": {
@@ -60,12 +67,14 @@
       "required": [
         "id",
         "box_id",
+        "user_id",
         "created_at",
         "updated_at"
       ]
     },
     "Box": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "id": {
           "type": "integer"
@@ -75,6 +84,9 @@
         },
         "notice": {
           "type": "string"
+        },
+        "is_invited": {
+          "type": "boolean"
         },
         "image_url": {
           "oneOf": [
@@ -97,12 +109,6 @@
         "owner": {
           "$ref": "#/definitions/User"
         },
-        "foods": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Food"
-          }
-        },
         "invited_users": {
           "type": "array",
           "items": {
@@ -114,22 +120,26 @@
         "id",
         "name",
         "notice",
+        "is_invited",
         "image_url",
         "created_at",
         "updated_at",
         "owner",
-        "foods",
         "invited_users"
       ]
     },
     "Food": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "id": {
           "type": "integer"
         },
         "name": {
           "type": "string"
+        },
+        "amount": {
+          "type": "number"
         },
         "notice": {
           "type": "string"
@@ -144,6 +154,13 @@
             }
           ]
         },
+        "expiration_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "needs_adding": {
+          "type": "boolean"
+        },
         "created_at": {
           "type": "string",
           "format": "date-time"
@@ -154,19 +171,31 @@
         },
         "unit": {
           "$ref": "#/definitions/Unit"
+        },
+        "created_user": {
+          "$ref": "#/definitions/User"
+        },
+        "updated_user": {
+          "$ref": "#/definitions/User"
         }
       },
       "required": [
         "id",
         "name",
+        "amount",
+        "notice",
         "image_url",
+        "expiration_date",
         "created_at",
         "updated_at",
-        "unit"
+        "unit",
+        "created_user",
+        "updated_user"
       ]
     },
     "Version": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "id": {
           "type": "integer"
@@ -183,6 +212,16 @@
         "created_at": {
           "type": "string",
           "format": "date-time"
+        },
+        "updated_user": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/User"
+            },
+            {
+              "type": null
+            }
+          ]
         }
       },
       "required": [
@@ -190,11 +229,34 @@
         "item_id",
         "event",
         "changes",
-        "created_at"
+        "created_at",
+        "updated_user"
+      ]
+    },
+    "Credential": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "jwt": {
+          "type": "string"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        }
+      },
+      "required": [
+        "jwt",
+        "expires_at",
+        "user"
       ]
     },
     "User": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "id": {
           "type": "integer"
@@ -203,6 +265,15 @@
           "type": "string"
         },
         "email": {
+          "type": "string"
+        },
+        "admin": {
+          "type": "boolean"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "provider": {
           "type": "string"
         },
         "avatar_url": {
@@ -228,12 +299,17 @@
         "id",
         "name",
         "email",
+        "admin",
+        "disabled",
+        "provider",
+        "avatar_url",
         "created_at",
         "updated_at"
       ]
     },
     "Unit": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "id": {
           "type": "integer"
@@ -353,14 +429,14 @@
         ],
         "parameters": [
           {
-            "in": "body",
+            "in": "formData",
             "name": "name",
             "description": "Food name",
             "type": "string",
             "required": true
           },
           {
-            "in": "body",
+            "in": "formData",
             "name": "box_id",
             "description": "Box ID that food is created into",
             "type": "integer",
@@ -382,7 +458,7 @@
         ],
         "parameters": [
           {
-            "in": "body",
+            "in": "formData",
             "name": "name",
             "description": "Food name",
             "type": "string"
@@ -859,6 +935,21 @@
             ]
           }
         ]
+      }
+    },
+    "/auth": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success authorization",
+            "schema": {
+              "$ref": "#/definitions/Credential"
+            }
+          }
+        }
       }
     }
   }

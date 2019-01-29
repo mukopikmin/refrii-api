@@ -14,12 +14,12 @@ paths:
       tags:
       - Foods
       parameters:
-      - in: body
+      - in: formData
         name: name
         description: Food name
         type: string
         required: true
-      - in: body
+      - in: formData
         name: box_id
         description: Box ID that food is created into
         type: integer
@@ -33,7 +33,7 @@ paths:
       tags:
       - Foods
       parameters:
-      - in: body
+      - in: formData
         name: name
         description: Food name
         type: string

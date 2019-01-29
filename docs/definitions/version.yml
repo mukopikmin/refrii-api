@@ -1,6 +1,7 @@
 definitions:
   Version:
     type: object
+    additionalProperties: false
     properties:
       id:
         type: integer
@@ -13,11 +14,14 @@ definitions:
       created_at:
         type: string
         format: date-time
-      # updated_user:
-      #   $ref: "#/definitions/User"
+      updated_user:
+        oneOf:
+          - $ref: "#/definitions/User"
+          - type: null
     required:
     - id
     - item_id
     - event
     - changes
     - created_at
+    - updated_user

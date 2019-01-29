@@ -10,6 +10,7 @@ info:
 host: api.refrii.com
 basePath: /v1
 tags:
+- name: Authentication
 - name: Boxes
 - name: Foods
 - name: Units
