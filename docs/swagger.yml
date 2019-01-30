@@ -226,6 +226,8 @@ definitions:
       updated_at:
         type: string
         format: date-time
+      user:
+        "$ref": "#/definitions/User"
     required:
     - id
     - label
@@ -239,25 +241,68 @@ securityDefinitions:
     in: header
 paths:
   "/units":
+    get:
+      tags:
+      - Units
+      responses:
+        200:
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/Unit"
     post:
       tags:
       - Units
-      summary: Create user
-      description: This can only be done by the logged in user.
-      operationId: createUser
-      produces:
-      - application/xml
-      - application/json
       parameters:
-      - in: body
-        name: body
-        description: Created user object
-        required: true
-        schema:
-          "$ref": "#/definitions/User"
+      - in: formData
+        name: label
+        type: string
+      - in: formData
+        name: step
+        type: number
       responses:
-        default:
-          description: successful operation
+        201:
+          schema:
+            "$ref": "#/definitions/Unit"
+  "/units/{id}":
+    get:
+      tags:
+      - Units
+      parameters:
+      - in: path
+        name: id
+        type: integer
+        required: true
+      responses:
+        200:
+          schema:
+            "$ref": "#/definitions/Unit"
+    put:
+      tags:
+      - Units
+      parameters:
+      - in: path
+        name: id
+        type: integer
+        required: true
+      - in: formData
+        name: label
+        type: string
+      responses:
+        200:
+          schema:
+            "$ref": "#/definitions/Unit"
+    delete:
+      tags:
+      - Units
+      parameters:
+      - in: path
+        name: id
+        type: integer
+        required: true
+      responses:
+        204:
+          description: No content
   "/users":
     post:
       tags:
