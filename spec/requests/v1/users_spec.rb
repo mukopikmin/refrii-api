@@ -3,110 +3,86 @@
 require 'rails_helper'
 
 RSpec.describe 'Users', type: :request do
-  def token(user)
-    JsonWebToken.payload(user)[:jwt]
-  end
+  include Committee::Rails::Test::Methods
 
   let(:user1) { create(:user) }
   let(:user2) { create(:user) }
 
   describe 'GET /users' do
     context 'without authentication' do
+      subject { response.status }
+
       before { get v1_users_path }
 
-      it 'returns 401' do
-        expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401) }
     end
 
     context 'with authentication' do
       context 'with admin user' do
         let(:admin) { create(:admin_user) }
 
-        before do
-          get v1_users_path, headers: { authorization: "Bearer #{token(admin)}" }
-        end
+        before { get v1_users_path, headers: { authorization: "Bearer #{token(admin)}" } }
 
-        it 'returns 200' do
-          expect(response).to have_http_status(:ok)
-        end
+        it { assert_schema_conform }
       end
 
       context 'with non-admin user' do
-        before do
-          get v1_users_path, headers: { authorization: "Bearer #{token(user1)}" }
-        end
+        subject { response.status }
 
-        it 'returns 403' do
-          expect(response).to have_http_status(:forbidden)
-        end
+        before { get v1_users_path, headers: { authorization: "Bearer #{token(user1)}" } }
+
+        it { is_expected.to eq(403) }
       end
     end
   end
 
   describe 'GET /users/verify' do
     context 'without authorization' do
+      subject { response.status }
+
       before { get verify_v1_users_path }
 
-      it 'returns 401' do
-        expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401) }
     end
 
     context 'with authentication' do
-      before do
-        get verify_v1_users_path, headers: { authorization: "Bearer #{token(user1)}" }
-      end
+      before { get verify_v1_users_path, headers: { authorization: "Bearer #{token(user1)}" } }
 
-      it 'returns 200' do
-        expect(response).to have_http_status(:ok)
-      end
+      it { assert_schema_conform }
     end
   end
 
   describe 'GET /users/search' do
-    let(:params) do
-      {
-        email: user1.email
-      }
-    end
+    let(:params) { { email: user1.email } }
 
     context 'without authorization' do
+      subject { response.status }
+
       before { get search_v1_users_path, params: params }
 
-      it 'returns 401' do
-        expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401) }
     end
 
     context 'with authentication' do
-      before do
-        get search_v1_users_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
-      end
+      before { get search_v1_users_path, params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
-      it 'returns 200' do
-        expect(response).to have_http_status(:ok)
-      end
+      it { assert_schema_conform }
     end
   end
 
   describe 'GET /users/:id' do
     context 'without authentication' do
+      subject { response.status }
+
       before { get v1_user_path(user1) }
 
-      it 'returns 401' do
-        expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401) }
     end
 
     context 'with authentication' do
-      before do
-        get v1_user_path(user1), headers: { authorization: "Bearer #{token(user1)}" }
-      end
+      before { get v1_user_path(user1), headers: { authorization: "Bearer #{token(user1)}" } }
 
-      it 'returns 200' do
-        expect(response).to have_http_status(:ok)
-      end
+      it { assert_schema_conform }
     end
   end
 
@@ -115,36 +91,36 @@ RSpec.describe 'Users', type: :request do
     let(:no_avatar_user) { create(:user) }
 
     context 'without authentication' do
+      subject { response.status }
+
       before { get avatar_v1_user_path(user) }
 
-      it 'returns 401' do
-        expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401) }
     end
 
     context 'with authentication' do
       context 'with image' do
+        subject { response.status }
+
         before { get avatar_v1_user_path(user), headers: { authorization: "Bearer #{token(user)}" } }
 
-        it 'return 200' do
-          expect(response).to have_http_status(:ok)
-        end
+        it { is_expected.to eq(200) }
       end
 
       context 'with no image' do
+        subject { response.status }
+
         before { get avatar_v1_user_path(no_avatar_user), headers: { authorization: "Bearer #{token(user)}" } }
 
-        it 'return 404' do
-          expect(response).to have_http_status(:not_found)
-        end
+        it { is_expected.to eq(404) }
       end
 
       context 'with base64 requested param' do
+        subject { response.status }
+
         before { get avatar_v1_user_path(user), headers: { authorization: "Bearer #{token(user)}" }, params: { base64: true } }
 
-        it 'return 200' do
-          expect(response).to have_http_status(:ok)
-        end
+        it { is_expected.to eq(200) }
       end
     end
   end
@@ -153,37 +129,29 @@ RSpec.describe 'Users', type: :request do
     context 'with valid params' do
       let(:params) { attributes_for(:user) }
 
-      before do
-        post v1_users_path, params: params
-      end
+      before { post v1_users_path, params: params }
 
-      it 'returns 201' do
-        expect(response).to have_http_status(:created)
-      end
+      it { assert_schema_conform }
     end
 
     context 'with no email user' do
+      subject { response.status }
+
       let(:params) { attributes_for(:no_email_user) }
 
-      before do
-        post v1_users_path, params: params
-      end
+      before { post v1_users_path, params: params }
 
-      it 'returns 400' do
-        expect(response).to have_http_status(:bad_request)
-      end
+      it { is_expected.to eq(400) }
     end
 
     context 'with no name user' do
+      subject { response.status }
+
       let(:params) { attributes_for(:no_name_user) }
 
-      before do
-        post v1_users_path, params: params
-      end
+      before { post v1_users_path, params: params }
 
-      it 'returns 400' do
-        expect(response).to have_http_status(:bad_request)
-      end
+      it { is_expected.to eq(400) }
     end
   end
 
@@ -199,11 +167,11 @@ RSpec.describe 'Users', type: :request do
     let(:no_name_user) { attributes_for(:no_name_user) }
 
     context 'without authentication' do
+      subject { response.status }
+
       before { put v1_user_path(user1), params: params }
 
-      it 'returns 401' do
-        expect(response).to have_http_status(:unauthorized)
-      end
+      it { is_expected.to eq(401) }
     end
 
     context 'with authentication' do
@@ -212,39 +180,31 @@ RSpec.describe 'Users', type: :request do
           put v1_user_path(user1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
         end
 
-        it 'returns 201' do
-          expect(response).to have_http_status(:ok)
-        end
+        it { assert_schema_conform }
       end
 
       context 'with already used email' do
-        before do
-          put v1_user_path(user1), params: inused_params, headers: { authorization: "Bearer #{token(user1)}" }
-        end
+        subject { response.status }
 
-        it 'returns 400' do
-          expect(response).to have_http_status(:bad_request)
-        end
+        before { put v1_user_path(user1), params: inused_params, headers: { authorization: "Bearer #{token(user1)}" } }
+
+        it { is_expected.to eq(400) }
       end
 
       context 'with no email user' do
-        before do
-          put v1_user_path(user1), params: no_email_user, headers: { authorization: "Bearer #{token(user1)}" }
-        end
+        subject { response.status }
 
-        it 'returns 400' do
-          expect(response).to have_http_status(:bad_request)
-        end
+        before { put v1_user_path(user1), params: no_email_user, headers: { authorization: "Bearer #{token(user1)}" } }
+
+        it { is_expected.to eq(400) }
       end
 
       context 'with no name user' do
-        before do
-          put v1_user_path(user1), params: no_name_user, headers: { authorization: "Bearer #{token(user1)}" }
-        end
+        subject { response.status }
 
-        it 'returns 400' do
-          expect(response).to have_http_status(:bad_request)
-        end
+        before { put v1_user_path(user1), params: no_name_user, headers: { authorization: "Bearer #{token(user1)}" } }
+
+        it { is_expected.to eq(400) }
       end
     end
   end

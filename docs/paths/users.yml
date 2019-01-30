@@ -12,19 +12,37 @@ paths:
     post:
       tags:
       - Users
-      summary: Create user
-      description: This can only be done by the logged in user.
-      operationId: createUser
-      produces:
-      - application/xml
-      - application/json
       parameters:
-      - in: body
-        name: body
-        description: Created user object
+      - in: formData
+        name: email
+        type: string
         required: true
-        schema:
-          $ref: "#/definitions/User"
       responses:
-        default:
-          description: "successful operation"
+        204:
+          schema:
+            $ref: "#/definitions/User"
+  /users/{id}:
+    get:
+      tags:
+      - Users
+      parameters:
+      - in: path
+        name: id
+        type: integer
+        required: true
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/User"
+    put:
+      tags:
+      - Users
+      parameters:
+      - in: formData
+        name: email
+        type: string
+        required: true
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/User"
