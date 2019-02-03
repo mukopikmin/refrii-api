@@ -10,7 +10,7 @@ script:
   - bundle exec rake spec
   - bundle exec rake rubocop 
 after_success:
-  - bundle exec codeclimate-test-reporter
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then bundle exec codeclimate-test-reporter; fi || travis_terminate 1
 notifications:
   email: false
   slack:
