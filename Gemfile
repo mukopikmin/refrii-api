@@ -27,9 +27,9 @@ gem 'rubocop', '~> 0.59.2', require: false
 gem 'rubocop-rspec', '~> 1.30.0'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'versionist', '~> 1.7.0'
-  gem 'listen', '~> 3.1.5'
 
 group :development do
+  gem 'listen', '~> 3.1.5'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.1'
 end
