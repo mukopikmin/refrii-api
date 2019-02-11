@@ -11,6 +11,7 @@ module V1
         unauthorized
         return
       end
+
       @current_user = User.find(auth_token[:user_id])
     rescue StandardError
       unauthorized
@@ -22,15 +23,21 @@ module V1
     end
 
     def auth_token
-      @auth_token ||= JsonWebToken.decode(http_token)
+      @auth_token = FirebaseUtils::Auth.decode_id_token(http_token)
+      # @auth_token ||= JsonWebToken.decode(http_token)
     end
 
     def user_id_in_token?
-      http_token && auth_token && auth_token[:user_id].to_i
+      if http_token && auth_token
+        User.find(email: auth_token[:decoded_token][:payload][:exp]).exists?
+      end
+
+      false
+      # http_token && auth_token && auth_token[:user_id].to_i
     end
 
     def token_not_expired?
-      Time.zone.parse(auth_token[:expires_at]) > Time.zone.now
+      Time.zone.at(auth_token[:decoded_token][:payload][:exp]) > Time.zone.now
     end
 
     def unauthorized(message = nil)
