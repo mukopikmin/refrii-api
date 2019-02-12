@@ -117,7 +117,9 @@ class User < ApplicationRecord
 
   def self.download_image(url)
     Tempfile.open do |tempfile|
-      image = RestClient.get(url).body
+      response = RestClient.get(url)
+      image = response.body
+      content_type = response.headers[:content_type]
 
       tempfile.binmode
       tempfile.write(image)
@@ -125,7 +127,7 @@ class User < ApplicationRecord
       {
         file: tempfile.open.read,
         size: tempfile.size,
-        content_type: io.content_type
+        content_type: content_type
       }
     end
   end
