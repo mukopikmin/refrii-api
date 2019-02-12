@@ -12,7 +12,7 @@ module V1
         return
       end
 
-      @current_user = User.find(auth_token[:user_id])
+      @current_user = User.where(email: auth_token['decoded_token'][:payload]['email']).first
     rescue StandardError
       unauthorized
     end
@@ -23,21 +23,34 @@ module V1
     end
 
     def auth_token
-      @auth_token = FirebaseUtils::Auth.decode_id_token(http_token)
-      # @auth_token ||= JsonWebToken.decode(http_token)
+      @auth_token = FirebaseUtils::Auth.verify_id_token(http_token)
     end
 
     def user_id_in_token?
       if http_token && auth_token
-        User.find(email: auth_token[:decoded_token][:payload][:exp]).exists?
-      end
+        payload = auth_token['decoded_token'][:payload]
+        email = payload['email']
 
-      false
-      # http_token && auth_token && auth_token[:user_id].to_i
+        if User.exists?(email: email)
+          true
+        else
+          avatar = User.download_image(payload['picture'])
+          user = User.new(name: payload['name'],
+                          email: email,
+                          provider: 'google',
+                          password_digest: 'no password',
+                          avatar_file: avatar[:file],
+                          avatar_size: avatar[:size],
+                          avatar_content_type: avatar[:content_type])
+          user.save
+        end
+      else
+        false
+      end
     end
 
     def token_not_expired?
-      Time.zone.at(auth_token[:decoded_token][:payload][:exp]) > Time.zone.now
+      Time.zone.at(auth_token['decoded_token'][:payload]['exp']) > Time.zone.now
     end
 
     def unauthorized(message = nil)
