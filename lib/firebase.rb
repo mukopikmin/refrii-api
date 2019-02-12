@@ -5,8 +5,6 @@ require 'yaml'
 require 'net/http'
 
 module FirebaseUtils
-  CONFIG = YAML.load_file('config/secrets.yml')[Rails.env]
-
   module Auth
     ALGORITHM = 'RS256'
     ISSUER_BASE_URL = 'https://securetoken.google.com/'
@@ -75,7 +73,7 @@ module FirebaseUtils
       end
 
       def validate_jwt(json)
-        project_id = FirebaseUtils::CONFIG['firebase_project_id']
+        project_id = Rails.application.secrets.firebase_project_id
         payload = json[:payload]
         header = json[:header]
 
