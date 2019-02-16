@@ -24,7 +24,7 @@ deploy:
     master:
       - rake db:migrate
     staging:
-      - rake db:migrate RAILS_ENV=development
+      - rake db:migrate
   api_key:
     secure: 3tbl43b9VCTHuoDv/WYXCKuV61LYwoq7O9bXMV4u0nPWqDattTOtQpAnlt8dTXUOvfYliVG0Wd3Rr2K/YRSA+07sXXyG012vY8rnP7X1+gL6Ct+dcW8zzwbo8YkTihXjI4rhEUlRloPqt0TEgmpYExCDQqTiSBSZjq/LuXmX+LHjDeZKOLkqewSTyh4IDblSKMzc5K9RIOa1WoN4T3533itadLX3xfej8YMK1kDqalu0E73xOzVnoIyaB9oXu+YnwBdVsL5ZzNCdRqlVz2g907AnIpsxVPgqx1cDKbuzylr5xDo+8tiDIaIqHZbhi37nXUiEjO25mOimb8G+yOGVES3mOyqyoiM5UbEBdkt8sRG+beOBi1TtrDDR/WA0P4EoVzBrqlftqILtRPXiBmzmDfW8RtrUFg+fK9xIte3g2Bjda84vKBgOeXtCuF9qPDM8CwSlW/UGNRHz1wkn9Ws9w5hPrQFqvRikISpYnZGcJiZbk0fUBi6IpKCgelKQDRfUMr6qk3hQX1digzYo8Zn11Td70mYCfYx1VZFoqocFIU4K1GagI6YBJZt7IQC1a7VCXiKedwqDMIS9VYheEfsUIKDBQL/Q/kM2W0D1USxzgDsGL1oq3w1Xvm2FKvuif9BC49QNNeW8fnvao9MMbsgDl6MIY+mFmX3GS5y8mlE9jOk=
       
