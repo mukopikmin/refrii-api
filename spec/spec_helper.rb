@@ -27,7 +27,12 @@ require 'database_cleaner'
 require 'omniauth'
 
 def token(user)
-  JsonWebToken.payload(user)[:jwt]
+  dummy_token = 'this is dummy token'
+
+  allow_any_instance_of(V1::ApplicationController).to receive(:authenticate_request!).and_return(user)
+  allow_any_instance_of(V1::ApplicationController).to receive(:current_user).and_return(user)
+
+  dummy_token
 end
 
 RSpec.configure do |config|

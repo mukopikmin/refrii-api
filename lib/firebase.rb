@@ -40,7 +40,7 @@ module FirebaseUtils
       def decode_token(token, key = nil, verify = false, options = {})
         begin
           decoded_token = JWT.decode(token, key, verify, options)
-        rescue JWT::ExpiredSignature => e
+        rescue JWT::ExpiredSignature
           raise 'Firebase ID token has expired. Get a fresh token from your client app and try again.'
         rescue StandardError => e
           raise "Firebase ID token has invalid signature. #{e.message}"

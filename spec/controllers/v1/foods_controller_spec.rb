@@ -3,10 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe V1::FoodsController, type: :controller do
-  def token(user)
-    JsonWebToken.payload(user)[:jwt]
-  end
-
   describe 'GET #index' do
     let(:user) { create(:user) }
     let(:box) { create(:box, owner: user) }
