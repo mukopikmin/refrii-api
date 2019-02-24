@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 class HttpError
+  include ActiveModel::Serialization
+
+  attr_reader :status,
+              :message
+
   DEFAULT_MESSAGE = {
     bad_request: 'Bad request',
     unauthorized: 'This action needs authorization',
