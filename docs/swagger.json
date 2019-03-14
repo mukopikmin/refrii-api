@@ -169,6 +169,9 @@
           "type": "string",
           "format": "date-time"
         },
+        "box": {
+          "$ref": "#/definitions/Box"
+        },
         "unit": {
           "$ref": "#/definitions/Unit"
         },
@@ -188,6 +191,7 @@
         "expiration_date",
         "created_at",
         "updated_at",
+        "box",
         "unit",
         "created_user",
         "updated_user"
