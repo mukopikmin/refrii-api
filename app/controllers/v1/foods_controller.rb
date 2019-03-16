@@ -9,6 +9,7 @@ module V1
     # GET /foods
     def index
       @foods = Food.all_with_invited(current_user)
+
       render json: @foods
     end
 

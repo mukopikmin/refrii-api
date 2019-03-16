@@ -12,7 +12,7 @@ class FoodSerializer < ActiveModel::Serializer
              :updated_at
   #  :change_sets
 
-  # belongs_to :box
+  belongs_to :box
   belongs_to :unit
   belongs_to :created_user
   belongs_to :updated_user
