@@ -23,6 +23,18 @@ RSpec.describe Food, type: :model do
     it { is_expected.to eq(2) }
   end
 
+  describe '#assignable_units' do
+    subject { food.assignable_units }
+
+    let(:user) { create(:user) }
+    let(:box) { create(:box, owner: user) }
+    let(:unit1) { create(:unit, user: user) }
+    let(:unit2) { create(:unit, user: user) }
+    let(:food) { create(:food, :with_image, box: box, unit: unit1, created_user: user, updated_user: user) }
+
+    it { is_expected.to eq([unit1, unit2]) }
+  end
+
   describe '#image_exists?' do
     let(:user) { create(:user) }
     let(:box) { create(:box, owner: user) }

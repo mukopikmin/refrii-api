@@ -15,7 +15,7 @@ module V1
 
     # GET /foods/1
     def show
-      if !accessible?
+      if !box_accessible?
         not_found
       else
         render json: @food
@@ -32,8 +32,10 @@ module V1
       @food = Food.new(food_params)
       @food.created_user = current_user
 
-      if !accessible?
+      if !box_accessible?
         bad_request('Could not create food in specified box.')
+      elsif !unit_assignable?
+        bad_request('The unit is not assignable to the food.')
       elsif @food.save
         render json: @food, status: :created, location: v1_foods_path(@food)
       else
@@ -43,7 +45,7 @@ module V1
 
     # GET /foods/1/image
     def image
-      if @food.image_exists? && accessible?
+      if @food.image_exists? && box_accessible?
         if requested_base64?
           render json: @food.base64_image
         else
@@ -56,8 +58,10 @@ module V1
 
     # PATCH/PUT /foods/1
     def update
-      if !accessible?
+      if !box_accessible?
         bad_request('Could not update specified food.')
+      elsif !unit_assignable?
+        bad_request('The unit is not assignable to the food.')
       elsif @food.update(food_params)
         render json: @food
       else
@@ -67,7 +71,7 @@ module V1
 
     # PUT /boxes/1/revert
     def revert
-      if !accessible?
+      if !box_accessible?
         bad_request('You can not revert the food.')
       elsif @food.revert
         render json: @food
@@ -78,7 +82,7 @@ module V1
 
     # DELETE /foods/1
     def destroy
-      if !accessible?
+      if !box_accessible?
         bad_request('Could not remove specified food.')
       else
         @food.destroy
@@ -105,11 +109,31 @@ module V1
 
       params[:updated_user_id] = current_user.id
 
-      params.permit(:name, :notice, :amount, :expiration_date, :needs_adding, :box_id, :unit_id, :updated_user_id, :image_file, :image_size, :image_content_type)
+      params.permit(:name,
+                    :notice,
+                    :amount,
+                    :expiration_date,
+                    :needs_adding,
+                    :box_id,
+                    :unit_id,
+                    :updated_user_id,
+                    :image_file,
+                    :image_size,
+                    :image_content_type)
     end
 
-    def accessible?
+    def box_accessible?
       @food.box.accessible_for?(current_user)
+    end
+
+    def unit_assignable?
+      unit_id = params[:unit_id].nil? ? nil : params[:unit_id].to_i
+
+      if unit_id.nil?
+        true
+      else
+        @food.assignable_units.map(&:id).include?(unit_id)
+      end
     end
 
     def requested_base64?

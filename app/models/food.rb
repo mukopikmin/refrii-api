@@ -16,6 +16,10 @@ class Food < ApplicationRecord
   scope :owned_by, ->(user) { joins(:box).where(boxes: { owner: user }) }
   scope :inviting, ->(user) { joins(box: :invitations).where(box: { invitations: { user: user } }) }
 
+  def assignable_units
+    box.owner.units
+  end
+
   def self.all_with_invited(user)
     Box.all_with_invited(user).map(&:foods).flatten
   end

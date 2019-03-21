@@ -163,12 +163,21 @@ RSpec.describe 'Foods', type: :request do
 
         it { is_expected.to eq(400) }
       end
+
+      context 'with unit for box owned by other users' do
+        subject { response.status }
+
+        let(:params) { { box_id: box1.to_param, unit_id: unit2.to_param } }
+
+        before { post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" } }
+
+        it { is_expected.to eq(400) }
+      end
     end
   end
 
   describe 'PUT /foods/:id' do
     let(:params) { attributes_for(:food) }
-    let(:no_name_params) { attributes_for(:no_name_food) }
 
     context 'without authentication' do
       subject { response.status }
@@ -196,7 +205,19 @@ RSpec.describe 'Foods', type: :request do
       context 'with no name food' do
         subject { response.status }
 
+        let(:no_name_params) { attributes_for(:no_name_food) }
+
         before { put v1_food_path(food1), params: no_name_params, headers: { authorization: "Bearer #{token(user1)}" } }
+
+        it { is_expected.to eq(400) }
+      end
+
+      context 'with unit for box owned by other users' do
+        subject { response.status }
+
+        let(:params) { { unit_id: unit2.to_param } }
+
+        before { put v1_food_path(food1), params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(400) }
       end
