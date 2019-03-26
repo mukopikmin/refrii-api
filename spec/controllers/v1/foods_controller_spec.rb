@@ -112,13 +112,9 @@ RSpec.describe V1::FoodsController, type: :controller do
   describe 'PUT #update' do
     let(:user) { create(:user) }
     let(:box) { create(:box, owner: user) }
-    let(:unit) { create(:unit, user: user) }
-    let(:food) do
-      create(:food, box: box,
-                    unit: unit,
-                    created_user: box.owner,
-                    updated_user: box.owner)
-    end
+    let(:unit1) { create(:unit, user: user) }
+    let(:unit2) { create(:unit, user: user) }
+    let(:food) { create(:food, box: box, unit: unit1, created_user: box.owner, updated_user: box.owner) }
 
     before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
@@ -128,6 +124,12 @@ RSpec.describe V1::FoodsController, type: :controller do
       put :update, params: { id: food.to_param }.merge!(attributes_for(:another_food))
       food.reload
       expect(food.name).to eq(attributes_for(:another_food)[:name])
+    end
+
+    it 'updates the associated unit' do
+      put :update, params: { id: food.to_param, unit_id: unit2.to_param }
+      food.reload
+      expect(food.unit).to eq(unit2)
     end
 
     it 'assigns the requested food as @food' do
