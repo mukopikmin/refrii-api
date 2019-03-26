@@ -21,7 +21,7 @@ gem 'paper_trail', '~> 10.0.1'
 gem 'paper_trail-association_tracking', '~> 1.0.0'
 gem 'puma', '~> 3.12.0'
 gem 'rack-cors', '~> 1.0.2'
-gem 'rails', '~> 5.2.1', '>= 5.2.1.1'
+gem 'rails', '~> 5.2.2', '>= 5.2.2.1'
 gem 'rest-client', '~> 2.0.2'
 gem 'rmagick', '~> 2.16.0'
 gem 'rubocop', '~> 0.59.2', require: false
@@ -37,7 +37,7 @@ end
 
 group :development, :test do
   gem 'byebug', '~> 10.0.2', platform: :mri
-  gem 'rspec-rails', '~> 3.8.1'
+  gem 'rspec-rails', '~> 3.8.2'
   gem 'sqlite3'
 end
 
@@ -48,7 +48,7 @@ group :test do
   gem 'committee-rails', '~> 0.4.0'
   gem 'database_cleaner', '~> 1.7.0'
   gem 'factory_bot_rails', '~> 4.11.1'
-  gem 'rails-controller-testing', '~> 1.0.2'
+  gem 'rails-controller-testing', '~> 1.0.4'
 end
 
 group :production do
