@@ -49,11 +49,11 @@
         "id": {
           "type": "integer"
         },
-        "box_id": {
-          "type": "integer"
+        "box": {
+          "$ref": "#/definitions/Box"
         },
-        "user_id": {
-          "type": "integer"
+        "user": {
+          "$ref": "#/definitions/User"
         },
         "created_at": {
           "type": "string",
@@ -66,8 +66,8 @@
       },
       "required": [
         "id",
-        "box_id",
-        "user_id",
+        "box",
+        "user",
         "created_at",
         "updated_at"
       ]
