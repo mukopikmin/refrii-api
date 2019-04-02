@@ -336,11 +336,10 @@ RSpec.describe 'Boxes', type: :request do
   end
 
   describe 'DELETE /boxes/:id/invite' do
-    let(:params) { { user_id: user2.to_param } }
-    let(:unpersisted_user) { attributes_for(:user) }
-
     context 'without authentication' do
       subject { response.status }
+
+      let(:params) { { user_id: user2.to_param } }
 
       before { delete invite_v1_box_path(box3), params: params }
 
@@ -349,6 +348,8 @@ RSpec.describe 'Boxes', type: :request do
 
     context 'with authentication' do
       context 'with own box' do
+        let(:params) { { email: user1.email} }
+
         it 'returns 204' do
           delete invite_v1_box_path(box3), params: params, headers: { authorization: "Bearer #{token(user1)}" }
           assert_schema_conform
@@ -357,6 +358,8 @@ RSpec.describe 'Boxes', type: :request do
 
       context 'with other\'s box' do
         subject { response.status }
+
+        let(:params) { { email: user1.email} }
 
         before do
           delete invite_v1_box_path(box2), params: params, headers: { authorization: "Bearer #{token(user1)}" }
@@ -367,6 +370,9 @@ RSpec.describe 'Boxes', type: :request do
 
       context 'with unpersisted user' do
         subject { response.status }
+
+        let(:params) { {email: user1.email } }
+        let(:unpersisted_user) { attributes_for(:user) }
 
         before do
           delete invite_v1_box_path(box1), params: unpersisted_user, headers: { authorization: "Bearer #{token(user1)}" }

@@ -4,8 +4,8 @@ module V1
   class BoxesController < V1::ApplicationController
     before_action :authenticate_request!
     before_action :set_paper_trail_whodunnit
-    before_action :set_box, only: %i[show versions foods image units update revert destroy invite deinvite]
-    before_action :set_invitation, only: [:deinvite]
+    before_action :set_box, only: %i[show versions foods image units update revert destroy invite uninvite]
+    before_action :set_invitation, only: [:uninvite]
 
     # GET /boxes
     def index
@@ -133,8 +133,10 @@ module V1
     end
 
     # DELETE /boxes/1/invite
-    def deinvite
-      if @invitation.nil?
+    def uninvite
+      if !owner_of_box?
+        bad_request('You can not delete the invitation.')
+      elsif @invitation.nil?
         bad_request('Specified invitation does not exist.')
       else
         @invitation.destroy
@@ -165,7 +167,9 @@ module V1
     end
 
     def set_invitation
-      @invitation = Invitation.find_by(user: current_user, box: @box)
+      user = User.where(email: params[:email]).first
+
+      @invitation = Invitation.find_by(user: user, box: @box)
     end
 
     def invitatation_params

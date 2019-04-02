@@ -149,7 +149,7 @@ RSpec.describe 'Foods', type: :request do
 
         let(:params) { attributes_for(:food).merge!(box_id: box2.to_param, unit_id: unit2.to_param) }
 
-        before {     post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" } }
+        before { post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(400) }
       end

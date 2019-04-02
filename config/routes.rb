@@ -27,7 +27,7 @@ Rails.application.routes.draw do
         get :image
         post :invite
         put :revert
-        delete 'invite' => :deinvite
+        delete 'invite' => :uninvite
       end
     end
 
