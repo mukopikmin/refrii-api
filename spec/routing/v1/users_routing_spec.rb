@@ -31,5 +31,9 @@ RSpec.describe V1::UsersController, type: :routing do
     it 'routes to #destroy' do
       expect(delete: '/v1/users/1').to route_to('v1/users#destroy', id: '1')
     end
+
+    it 'routes to #push_token' do
+      expect(post: '/v1/users/1/push_token').to route_to('v1/users#push_token', id: '1')
+    end
   end
 end

@@ -2,7 +2,7 @@
 
 module V1
   class UsersController < V1::ApplicationController
-    before_action :set_user, only: %i[show avatar update destroy]
+    before_action :set_user, only: %i[show avatar update destroy push_token]
     before_action :authenticate_request!, only: %i[index avatar verify show search update]
 
     # GET /users
@@ -81,6 +81,19 @@ module V1
       end
     end
 
+    # POST /users/1/push_token
+    def push_token
+      @push_token = PushToken.new(push_token_params)
+
+      if !accessible?
+        forbidden('You can only update self.')
+      elsif @push_token.save
+        render json: current_user
+      else
+        bad_request
+      end
+    end
+
     private
 
     def set_user
@@ -97,7 +110,19 @@ module V1
         params[:avatar_content_type] = avatar.content_type
       end
 
-      params.permit(:name, :email, :password, :password_confirmation, :avatar_file, :avatar_size, :avatar_content_type)
+      params.permit(:name,
+                    :email,
+                    :password,
+                    :password_confirmation,
+                    :avatar_file,
+                    :avatar_size,
+                    :avatar_content_type)
+    end
+
+    def push_token_params
+      params[:user_id] = current_user.id
+
+      params.permit(:user_id, :token)
     end
 
     def accessible?

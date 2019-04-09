@@ -92,4 +92,20 @@ RSpec.describe V1::UsersController, type: :controller do
       expect(assigns(:user).email).to eq(build(:updated_user).email)
     end
   end
+
+  describe 'POST #push_token' do
+    let(:user) { create(:user) }
+    let(:push_token) { 'this is dummy token for push notification' }
+    let(:params) { { id: user.to_param }.merge(token: push_token) }
+
+    before do
+      request.headers['Authorization'] = "Bearer #{token(user)}"
+    end
+
+    it 'assigns the requested token as @push_token' do
+      post :push_token, params: params
+      user.reload
+      expect(assigns(:push_token).token).to eq(push_token)
+    end
+  end
 end

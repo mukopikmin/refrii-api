@@ -39,6 +39,7 @@ Rails.application.routes.draw do
 
       member do
         get :avatar
+        post :push_token
       end
     end
 

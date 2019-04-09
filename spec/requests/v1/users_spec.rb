@@ -208,4 +208,27 @@ RSpec.describe 'Users', type: :request do
       end
     end
   end
+
+  describe 'POST /users/:id/push_token' do
+    context 'with user self' do
+      let(:user) { create(:user) }
+      let(:params) { { token: 'this is dummy token' } }
+
+      before { post push_token_v1_user_path(user), params: params, headers: { authorization: "Bearer #{token(user)}" } }
+
+      it { assert_schema_conform }
+    end
+
+    context 'with other user' do
+      subject { response.status }
+
+      let(:user) { create(:user) }
+      let(:other) { create(:user) }
+      let(:params) { { token: 'this is dummy token' } }
+
+      before { post push_token_v1_user_path(other), params: params, headers: { authorization: "Bearer #{token(user)}" } }
+
+      it { is_expected.to eq(403) }
+    end
+  end
 end

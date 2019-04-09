@@ -46,3 +46,16 @@ paths:
         200:
           schema:
             $ref: "#/definitions/User"
+  /users/{id}/push_token:
+    post:
+      tags:
+      - Users
+      parameters:
+      - in: path
+        name: id
+        type: integer
+        required: true
+      responses:
+        201:
+          schema:
+            $ref: "#/definitions/User"

@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :boxes, class_name: 'Box', foreign_key: 'owner_id'
   has_many :units
   has_many :invitations
+  has_many :push_tokens
   has_many :created_foods, class_name: 'Food', foreign_key: 'created_user_id'
   has_many :updated_foods, class_name: 'Food', foreign_key: 'updated_user_id'
 

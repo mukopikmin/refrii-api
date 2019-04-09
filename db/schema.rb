@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_181_218_135_505) do
+ActiveRecord::Schema.define(version: 20_190_409_135_243) do
   create_table 'boxes', force: :cascade do |t|
     t.string 'name', null: false
     t.text 'notice'
@@ -53,6 +53,14 @@ ActiveRecord::Schema.define(version: 20_181_218_135_505) do
     t.datetime 'updated_at', null: false
     t.index ['box_id'], name: 'index_invitations_on_box_id'
     t.index ['user_id'], name: 'index_invitations_on_user_id'
+  end
+
+  create_table 'push_tokens', force: :cascade do |t|
+    t.string 'token', null: false
+    t.integer 'user_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['user_id'], name: 'index_push_tokens_on_user_id'
   end
 
   create_table 'units', force: :cascade do |t|
