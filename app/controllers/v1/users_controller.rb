@@ -3,7 +3,7 @@
 module V1
   class UsersController < V1::ApplicationController
     before_action :set_user, only: %i[show avatar update destroy push_token]
-    before_action :authenticate_request!, only: %i[index avatar verify show search update]
+    before_action :authenticate_request!, only: %i[index avatar verify show search update push_token]
 
     # GET /users
     def index
