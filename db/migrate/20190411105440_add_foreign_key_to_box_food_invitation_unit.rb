@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddForeignKeyToBoxFoodInvitationUnit < ActiveRecord::Migration[5.2]
   def change
     add_foreign_key :boxes, :users, column: :owner_id

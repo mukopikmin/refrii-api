@@ -87,6 +87,8 @@ module V1
 
       if !accessible?
         forbidden('You can only update self.')
+      elsif @push_token.exists?
+        bad_request('The token already exists.')
       elsif @push_token.save
         render json: current_user
       else
