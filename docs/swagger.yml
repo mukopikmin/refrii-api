@@ -155,6 +155,17 @@ components:
       - unit
       - created_user
       - updated_user
+    Error:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+      required:
+      - status
+      - message
     Version:
       type: object
       additionalProperties: false
@@ -614,11 +625,18 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Box"
-            image/*:
+        '400':
+          description: Error message
+          content:
+            application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Box"
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
       security:
       - BearerAuth: []
     post:
@@ -633,26 +651,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Box"
-            image/*:
-              schema:
-                "$ref": "#/components/schemas/Box"
-      security:
-      - BearerAuth: []
-    put:
-      tags:
-      - Boxes
-      requestBody:
-        "$ref": "#/components/requestBodies/postBoxes"
-      responses:
-        '202':
-          description: Created box
+        '400':
+          description: Error message
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Box"
-            image/*:
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
               schema:
-                "$ref": "#/components/schemas/Box"
+                "$ref": "#/components/schemas/Error"
       security:
       - BearerAuth: []
   "/boxes/owns":
@@ -668,11 +678,18 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Box"
-            image/*:
+        '400':
+          description: Error message
+          content:
+            application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Box"
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
       security:
       - BearerAuth: []
   "/boxes/invited":
@@ -688,11 +705,18 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Box"
-            image/*:
+        '400':
+          description: Error message
+          content:
+            application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Box"
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
       security:
       - BearerAuth: []
   "/boxes/{id}":
@@ -712,9 +736,24 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Box"
-            image/*:
+        '400':
+          description: Error message
+          content:
+            application/json:
               schema:
-                "$ref": "#/components/schemas/Box"
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '404':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
       security:
       - BearerAuth: []
     put:
@@ -733,9 +772,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Box"
-            image/*:
+        '400':
+          description: Error message
+          content:
+            application/json:
               schema:
-                "$ref": "#/components/schemas/Box"
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
       security:
       - BearerAuth: []
     delete:
@@ -750,6 +798,18 @@ paths:
       responses:
         '204':
           description: Invalid username supplied
+        '400':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
       security:
       - BearerAuth: []
   "/boxes/{id}/versions":
@@ -771,11 +831,18 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Version"
-            image/*:
+        '400':
+          description: Error message
+          content:
+            application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Version"
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
       security:
       - BearerAuth: []
   "/boxes/{id}/image":
@@ -812,11 +879,24 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Unit"
-            image/*:
+        '400':
+          description: Error message
+          content:
+            application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Unit"
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '404':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
       security:
       - BearerAuth: []
   "/boxes/{id}/invite":
@@ -836,9 +916,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Invitation"
-            image/*:
+        '400':
+          description: Error message
+          content:
+            application/json:
               schema:
-                "$ref": "#/components/schemas/Invitation"
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
       security:
       - BearerAuth: []
     delete:
@@ -853,6 +942,18 @@ paths:
       responses:
         '204':
           description: List of box
+        '400':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
       security:
       - BearerAuth: []
   "/auth":
