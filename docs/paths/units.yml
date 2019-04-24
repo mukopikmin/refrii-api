@@ -2,63 +2,100 @@ paths:
   /units:
     get:
       tags:
-      - Units
+        - Units
       responses:
-        200:
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/Unit"
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Unit"
+            image/*:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Unit"
     post:
       tags:
-      - Units
-      parameters:
-      - in: formData
-        name: label
-        type: string
-      - in: formData
-        name: step
-        type: number
+        - Units
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                label:
+                  type: string
+                step:
+                  type: number
       responses:
-        201:
-          schema:
-            $ref: "#/definitions/Unit"
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unit"
+            image/*:
+              schema:
+                $ref: "#/components/schemas/Unit"
   /units/{id}:
     get:
       tags:
-      - Units
+        - Units
       parameters:
-      - in: path
-        name: id
-        type: integer
-        required: true
-      responses:
-        200:
+        - in: path
+          name: id
+          required: true
           schema:
-            $ref: "#/definitions/Unit"
+            type: integer
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unit"
+            image/*:
+              schema:
+                $ref: "#/components/schemas/Unit"
     put:
       tags:
-      - Units
+        - Units
       parameters:
-      - in: path
-        name: id
-        type: integer
-        required: true
-      - in: formData
-        name: label
-        type: string
-      responses:
-        200:
+        - in: path
+          name: id
+          required: true
           schema:
-            $ref: "#/definitions/Unit"
+            type: integer
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                label:
+                  type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unit"
+            image/*:
+              schema:
+                $ref: "#/components/schemas/Unit"
     delete:
       tags:
-      - Units
+        - Units
       parameters:
-      - in: path
-        name: id
-        type: integer
-        required: true
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
       responses:
-        204:
+        "204":
           description: No content

@@ -1,6 +1,7 @@
-definitions:
+schemas:
   User:
     type: object
+    nullable: true
     additionalProperties: false
     properties:
       id:
@@ -16,9 +17,8 @@ definitions:
       provider:
         type: string
       avatar_url:
-        oneOf:
-        - type: string
-        - type: null
+        type: string
+        nullable: true
       created_at:
         type: string
         format: date-time
@@ -26,12 +26,12 @@ definitions:
         type: string
         format: date-time
     required:
-    - id
-    - name
-    - email
-    - admin
-    - disabled
-    - provider
-    - avatar_url
-    - created_at
-    - updated_at
+      - id
+      - name
+      - email
+      - admin
+      - disabled
+      - provider
+      - avatar_url
+      - created_at
+      - updated_at

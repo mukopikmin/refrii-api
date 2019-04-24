@@ -1,4 +1,4 @@
-definitions:
+schemas:
   Food:
     type: object
     additionalProperties: false
@@ -12,9 +12,8 @@ definitions:
       notice:
         type: string
       image_url:
-        oneOf:
-        - type: string
-        - type: null
+        type: string
+        nullable: true
       expiration_date:
         type: string
         format: date
@@ -26,24 +25,24 @@ definitions:
       updated_at:
         type: string
         format: date-time
-      box: 
-        $ref: "#/definitions/Box"
-      unit: 
-        $ref: "#/definitions/Unit"
+      box:
+        $ref: "#/components/schemas/Box"
+      unit:
+        $ref: "#/components/schemas/Unit"
       created_user:
-        $ref: "#/definitions/User"
+        $ref: "#/components/schemas/User"
       updated_user:
-        $ref: "#/definitions/User"
+        $ref: "#/components/schemas/User"
     required:
-    - id
-    - name
-    - amount
-    - notice
-    - image_url
-    - expiration_date
-    - created_at
-    - updated_at
-    - box
-    - unit
-    - created_user
-    - updated_user
+      - id
+      - name
+      - amount
+      - notice
+      - image_url
+      - expiration_date
+      - created_at
+      - updated_at
+      - box
+      - unit
+      - created_user
+      - updated_user

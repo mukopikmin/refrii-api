@@ -2,208 +2,267 @@ paths:
   /boxes:
     get:
       tags:
-      - Boxes
+        - Boxes
       responses:
-        200:
+        "200":
           description: List of box
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/Box"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Box"
+            image/*:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Box"
       security:
-      - BearerAuth: []
+        - BearerAuth:
+            []
     post:
       tags:
-      - Boxes
-      # consumes: 
-      # - application/x-www-form-urlencoded
-      # - multipart/form-data
-      parameters:
-      - in: formData
-        name: name
-        type: string
-        required: true
-      - in: formData
-        name: notice
-        type: string
+        - Boxes
+      requestBody:
+        $ref: "#/components/requestBodies/postBoxes"
       responses:
-        201:
+        "201":
           description: Created box
-          schema:
-            $ref: "#/definitions/Box"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Box"
+            image/*:
+              schema:
+                $ref: "#/components/schemas/Box"
       security:
-      - BearerAuth: []
+        - BearerAuth:
+            []
     put:
       tags:
-      - Boxes
-      # consumes:
-      # - application/x-www-form-urlencoded
-      # - multipart/form-data
-      # produces:
-      # - application/json
-      parameters:
-      - in: formData
-        name: name
-        type: string
-        required: true
-      - in: formData
-        name: notice
-        type: string
+        - Boxes
+      requestBody:
+        $ref: "#/components/requestBodies/postBoxes"
       responses:
-        202:
+        "202":
           description: Created box
-          schema:
-            $ref: "#/definitions/Box"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Box"
+            image/*:
+              schema:
+                $ref: "#/components/schemas/Box"
       security:
-      - BearerAuth: []
+        - BearerAuth:
+            []
   /boxes/owns:
     get:
       tags:
-      - Boxes
+        - Boxes
       responses:
-        200:
+        "200":
           description: List of box
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/Box"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Box"
+            image/*:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Box"
       security:
-      - BearerAuth: []
+        - BearerAuth:
+            []
   /boxes/invited:
     get:
       tags:
-      - Boxes
+        - Boxes
       responses:
-        200:
+        "200":
           description: List of box
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/Box"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Box"
+            image/*:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Box"
       security:
-      - BearerAuth: []
+        - BearerAuth:
+            []
   /boxes/{id}:
     get:
       tags:
-      - Boxes
+        - Boxes
       parameters:
-      - in: path
-        name: id
-        type: string
-        required: true
-      responses:
-        200:
-          description: List of box
+        - in: path
+          name: id
+          required: true
           schema:
-            $ref: "#/definitions/Box"
+            type: string
+      responses:
+        "200":
+          description: List of box
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Box"
+            image/*:
+              schema:
+                $ref: "#/components/schemas/Box"
       security:
-      - BearerAuth: []
+        - BearerAuth:
+            []
     put:
       tags:
-      - Boxes
+        - Boxes
       parameters:
-      - in: path
-        name: id
-        type: string
-        required: true
-      responses:
-        200:
-          description: List of box
+        - in: path
+          name: id
+          required: true
           schema:
-            $ref: "#/definitions/Box"
+            type: string
+      responses:
+        "200":
+          description: List of box
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Box"
+            image/*:
+              schema:
+                $ref: "#/components/schemas/Box"
       security:
-      - BearerAuth: []
+        - BearerAuth:
+            []
     delete:
       tags:
-      - Boxes
+        - Boxes
       parameters:
-      - in: path
-        name: id
-        type: string
-        required: true
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
       responses:
-        204:
+        "204":
           description: Invalid username supplied
       security:
-      - BearerAuth: []
+        - BearerAuth:
+            []
   /boxes/{id}/versions:
     get:
       tags:
-      - Boxes
+        - Boxes
       parameters:
-      - in: path
-        name: id
-        type: integer
-        required: true
-      responses:
-        200:
-          description: List of box
+        - in: path
+          name: id
+          required: true
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/Version"
+            type: integer
+      responses:
+        "200":
+          description: List of box
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Version"
+            image/*:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Version"
       security:
-      - BearerAuth: []
+        - BearerAuth:
+            []
   /boxes/{id}/image:
     get:
       tags:
-      - Boxes
-      # produces:
-      # - image/*
+        - Boxes
       parameters:
-      - in: path
-        name: id
-        type: integer
-        required: true
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
       responses:
-        200:
+        "200":
           description: List of box
       security:
-      - BearerAuth: []
+        - BearerAuth:
+            []
   /boxes/{id}/units:
     get:
       tags:
-      - Boxes
+        - Boxes
       parameters:
-      - in: path
-        name: id
-        type: string
-        required: true
-      responses:
-        200:
-          description: List of box
+        - in: path
+          name: id
+          required: true
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/Unit"
+            type: string
+      responses:
+        "200":
+          description: List of box
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Unit"
+            image/*:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Unit"
       security:
-      - BearerAuth: []
+        - BearerAuth:
+            []
   /boxes/{id}/invite:
     post:
       tags:
-      - Boxes
+        - Boxes
       parameters:
-      - in: path
-        name: id
-        type: string
-        required: true
-      responses:
-        200:
-          description: List of box
+        - in: path
+          name: id
+          required: true
           schema:
-            $ref: "#/definitions/Invitation"
+            type: string
+      responses:
+        "201":
+          description: List of box
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invitation"
+            image/*:
+              schema:
+                $ref: "#/components/schemas/Invitation"
       security:
-      - BearerAuth: []
+        - BearerAuth:
+            []
     delete:
       tags:
-      - Boxes
+        - Boxes
       parameters:
-      - in: path
-        name: id
-        type: string
-        required: true
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
       responses:
-        204:
+        "204":
           description: List of box
       security:
-      - BearerAuth: []
+        - BearerAuth:
+            []

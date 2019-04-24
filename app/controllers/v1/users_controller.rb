@@ -90,7 +90,7 @@ module V1
       elsif @push_token.exists?
         bad_request('The token already exists.')
       elsif @push_token.save
-        render json: current_user
+        render json: current_user, status: :created
       else
         bad_request
       end

@@ -2,60 +2,96 @@ paths:
   /users:
     get:
       tags:
-      - Users
+        - Users
       responses:
-        200:
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/User"
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+            image/*:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
     post:
       tags:
-      - Users
-      parameters:
-      - in: formData
-        name: email
-        type: string
-        required: true
+        - Users
+      requestBody:
+        $ref: "#/components/requestBodies/postUsers"
       responses:
-        204:
-          schema:
-            $ref: "#/definitions/User"
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+            image/*:
+              schema:
+                $ref: "#/components/schemas/User"
   /users/{id}:
     get:
       tags:
-      - Users
+        - Users
       parameters:
-      - in: path
-        name: id
-        type: integer
-        required: true
-      responses:
-        200:
+        - in: path
+          name: id
+          required: true
           schema:
-            $ref: "#/definitions/User"
+            type: integer
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+            image/*:
+              schema:
+                $ref: "#/components/schemas/User"
     put:
       tags:
-      - Users
+        - Users
       parameters:
-      - in: formData
-        name: email
-        type: string
-        required: true
-      responses:
-        200:
+        - in: path
+          name: id
+          required: true
           schema:
-            $ref: "#/definitions/User"
+            type: integer
+      requestBody:
+        $ref: "#/components/requestBodies/postUsers"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+            image/*:
+              schema:
+                $ref: "#/components/schemas/User"
   /users/{id}/push_token:
     post:
       tags:
-      - Users
+        - Users
       parameters:
-      - in: path
-        name: id
-        type: integer
-        required: true
-      responses:
-        201:
+        - in: path
+          name: id
+          required: true
           schema:
-            $ref: "#/definitions/User"
+            type: integer
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+            image/*:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: erroe

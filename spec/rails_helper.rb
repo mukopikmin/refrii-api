@@ -59,5 +59,9 @@ RSpec.configure do |config|
 
   # Committee request schema spec settings
   config.add_setting :committee_options
-  config.committee_options = { schema_path: Rails.root.join('docs', 'swagger.json').to_s }
+  config.committee_options = {
+    schema_path: Rails.root.join('docs', 'swagger.json').to_s,
+    prefix: '/v1',
+    validate_success_only: true
+  }
 end

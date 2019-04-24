@@ -2,11 +2,16 @@ paths:
   /auth:
     post:
       tags:
-      - Authentication
+        - Authentication
       responses:
-        200:
+        "200":
           description: Success authorization
-          schema:
-            $ref: "#/definitions/Credential"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Credential"
+            image/*:
+              schema:
+                $ref: "#/components/schemas/Credential"
               
 

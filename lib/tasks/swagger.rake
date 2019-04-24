@@ -8,17 +8,23 @@ namespace :swagger do
   task :merge do
     yaml_file = "#{base_dir}/swagger.yml"
     index = YAML.load_file("#{base_dir}/index.yml")
-    security_definitions = YAML.load_file("#{base_dir}/security_definitions.yml")
-    definitions = Dir.glob("#{base_dir}/definitions/*.yml")
-                     .map { |file| YAML.load_file(file)['definitions'] }
-                     .inject(:merge)
+    security_schemas = YAML.load_file("#{base_dir}/security_schemes.yml")['securitySchemes']
+    request_bodies = YAML.load_file("#{base_dir}/request_bodies.yml")['requestBodies']
+    schemas = Dir.glob("#{base_dir}/schemas/*.yml")
+                 .map { |file| YAML.load_file(file)['schemas'] }
+                 .inject(:merge)
     paths = Dir.glob("#{base_dir}/paths/*.yml")
                .map { |file| YAML.load_file(file)['paths'] }
                .inject(:merge)
     targets = [
       index,
-      { 'definitions' => definitions },
-      security_definitions,
+      {
+        'components' => {
+          'securitySchemes' => security_schemas,
+          'requestBodies' => request_bodies,
+          'schemas' => schemas
+        }
+      },
       { 'paths' => paths }
     ]
 

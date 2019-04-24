@@ -1,4 +1,4 @@
-securityDefinitions:
+securitySchemes:
   BearerAuth:
     type: apiKey
     name: Authorization

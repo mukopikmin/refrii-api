@@ -1,5 +1,5 @@
 ---
-swagger: '2.0'
+openapi: 3.0.0
 info:
   description: 'This is a sample server Petstore server.  You can find out more about     Swagger
     at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For
@@ -10,263 +10,292 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-host: api.refrii.com
-basePath: "/v1"
 tags:
 - name: Authentication
 - name: Boxes
 - name: Foods
 - name: Units
 - name: Users
-schemes:
-- https
-- http
-produces:
-- application/json
-- image/*
-consumes:
-- application/x-www-form-urlencoded
-- multipart/form-data
-definitions:
-  Invitation:
-    type: object
-    additionalProperties: false
-    properties:
-      id:
-        type: integer
-      box:
-        "$ref": "#/definitions/Box"
-      user:
-        "$ref": "#/definitions/User"
-      created_at:
-        type: string
-        format: date-time
-      updated_at:
-        type: string
-        format: date-time
-    required:
-    - id
-    - box
-    - user
-    - created_at
-    - updated_at
-  Box:
-    type: object
-    additionalProperties: false
-    properties:
-      id:
-        type: integer
-      name:
-        type: string
-      notice:
-        type: string
-      is_invited:
-        type: boolean
-      image_url:
-        oneOf:
-        - type: string
-        - type: 
-      created_at:
-        type: string
-        format: date-time
-      updated_at:
-        type: string
-        format: date-time
-      owner:
-        "$ref": "#/definitions/User"
-      invited_users:
-        type: array
-        items:
-          "$ref": "#/definitions/User"
-    required:
-    - id
-    - name
-    - notice
-    - is_invited
-    - image_url
-    - created_at
-    - updated_at
-    - owner
-    - invited_users
-  Food:
-    type: object
-    additionalProperties: false
-    properties:
-      id:
-        type: integer
-      name:
-        type: string
-      amount:
-        type: number
-      notice:
-        type: string
-      image_url:
-        oneOf:
-        - type: string
-        - type: 
-      expiration_date:
-        type: string
-        format: date
-      needs_adding:
-        type: boolean
-      created_at:
-        type: string
-        format: date-time
-      updated_at:
-        type: string
-        format: date-time
-      box:
-        "$ref": "#/definitions/Box"
-      unit:
-        "$ref": "#/definitions/Unit"
-      created_user:
-        "$ref": "#/definitions/User"
-      updated_user:
-        "$ref": "#/definitions/User"
-    required:
-    - id
-    - name
-    - amount
-    - notice
-    - image_url
-    - expiration_date
-    - created_at
-    - updated_at
-    - box
-    - unit
-    - created_user
-    - updated_user
-  Version:
-    type: object
-    additionalProperties: false
-    properties:
-      id:
-        type: integer
-      item_id:
-        type: integer
-      event:
-        type: string
-      changes:
-        type: object
-      created_at:
-        type: string
-        format: date-time
-      updated_user:
-        oneOf:
-        - "$ref": "#/definitions/User"
-        - type: 
-    required:
-    - id
-    - item_id
-    - event
-    - changes
-    - created_at
-    - updated_user
-  Credential:
-    type: object
-    additionalProperties: false
-    properties:
-      jwt:
-        type: string
-      expires_at:
-        type: string
-        format: date-time
-      user:
-        "$ref": "#/definitions/User"
-    required:
-    - jwt
-    - expires_at
-    - user
-  User:
-    type: object
-    additionalProperties: false
-    properties:
-      id:
-        type: integer
-      name:
-        type: string
-      email:
-        type: string
-      admin:
-        type: boolean
-      disabled:
-        type: boolean
-      provider:
-        type: string
-      avatar_url:
-        oneOf:
-        - type: string
-        - type: 
-      created_at:
-        type: string
-        format: date-time
-      updated_at:
-        type: string
-        format: date-time
-    required:
-    - id
-    - name
-    - email
-    - admin
-    - disabled
-    - provider
-    - avatar_url
-    - created_at
-    - updated_at
-  Unit:
-    type: object
-    additionalProperties: false
-    properties:
-      id:
-        type: integer
-      label:
-        type: string
-      step:
-        type: number
-      created_at:
-        type: string
-        format: date-time
-      updated_at:
-        type: string
-        format: date-time
-      user:
-        "$ref": "#/definitions/User"
-    required:
-    - id
-    - label
-    - step
-    - created_at
-    - updated_at
-securityDefinitions:
-  BearerAuth:
-    type: apiKey
-    name: Authorization
-    in: header
+servers:
+- url: https://api.refrii.com/v1
+- url: http://api.refrii.com/v1
+components:
+  securitySchemes:
+    BearerAuth:
+      type: apiKey
+      name: Authorization
+      in: header
+  requestBodies:
+    postUsers:
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+            required:
+            - email
+    postBoxes:
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              notice:
+                type: string
+            required:
+            - name
+  schemas:
+    Invitation:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        box:
+          "$ref": "#/components/schemas/Box"
+        user:
+          "$ref": "#/components/schemas/User"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - box
+      - user
+      - created_at
+      - updated_at
+    Box:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        notice:
+          type: string
+        is_invited:
+          type: boolean
+        image_url:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        owner:
+          "$ref": "#/components/schemas/User"
+        invited_users:
+          type: array
+          items:
+            "$ref": "#/components/schemas/User"
+      required:
+      - id
+      - name
+      - notice
+      - is_invited
+      - image_url
+      - created_at
+      - updated_at
+      - owner
+      - invited_users
+    Food:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        amount:
+          type: number
+        notice:
+          type: string
+        image_url:
+          type: string
+          nullable: true
+        expiration_date:
+          type: string
+          format: date
+        needs_adding:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        box:
+          "$ref": "#/components/schemas/Box"
+        unit:
+          "$ref": "#/components/schemas/Unit"
+        created_user:
+          "$ref": "#/components/schemas/User"
+        updated_user:
+          "$ref": "#/components/schemas/User"
+      required:
+      - id
+      - name
+      - amount
+      - notice
+      - image_url
+      - expiration_date
+      - created_at
+      - updated_at
+      - box
+      - unit
+      - created_user
+      - updated_user
+    Version:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        item_id:
+          type: integer
+        event:
+          type: string
+        changes:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        updated_user:
+          "$ref": "#/components/schemas/User"
+      required:
+      - id
+      - item_id
+      - event
+      - changes
+      - created_at
+      - updated_user
+    Credential:
+      type: object
+      additionalProperties: false
+      properties:
+        jwt:
+          type: string
+        expires_at:
+          type: string
+          format: date-time
+        user:
+          "$ref": "#/components/schemas/User"
+      required:
+      - jwt
+      - expires_at
+      - user
+    User:
+      type: object
+      nullable: true
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        admin:
+          type: boolean
+        disabled:
+          type: boolean
+        provider:
+          type: string
+        avatar_url:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - name
+      - email
+      - admin
+      - disabled
+      - provider
+      - avatar_url
+      - created_at
+      - updated_at
+    Unit:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        step:
+          type: number
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        user:
+          "$ref": "#/components/schemas/User"
+      required:
+      - id
+      - label
+      - step
+      - created_at
+      - updated_at
 paths:
   "/units":
     get:
       tags:
       - Units
       responses:
-        200:
-          schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Unit"
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Unit"
+            image/*:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Unit"
     post:
       tags:
       - Units
-      parameters:
-      - in: formData
-        name: label
-        type: string
-      - in: formData
-        name: step
-        type: number
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                label:
+                  type: string
+                step:
+                  type: number
       responses:
-        201:
-          schema:
-            "$ref": "#/definitions/Unit"
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Unit"
+            image/*:
+              schema:
+                "$ref": "#/components/schemas/Unit"
   "/units/{id}":
     get:
       tags:
@@ -274,60 +303,91 @@ paths:
       parameters:
       - in: path
         name: id
-        type: integer
         required: true
+        schema:
+          type: integer
       responses:
-        200:
-          schema:
-            "$ref": "#/definitions/Unit"
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Unit"
+            image/*:
+              schema:
+                "$ref": "#/components/schemas/Unit"
     put:
       tags:
       - Units
       parameters:
       - in: path
         name: id
-        type: integer
         required: true
-      - in: formData
-        name: label
-        type: string
+        schema:
+          type: integer
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                label:
+                  type: string
       responses:
-        200:
-          schema:
-            "$ref": "#/definitions/Unit"
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Unit"
+            image/*:
+              schema:
+                "$ref": "#/components/schemas/Unit"
     delete:
       tags:
       - Units
       parameters:
       - in: path
         name: id
-        type: integer
         required: true
+        schema:
+          type: integer
       responses:
-        204:
+        '204':
           description: No content
   "/users":
     get:
       tags:
       - Users
       responses:
-        200:
-          schema:
-            type: array
-            items:
-              "$ref": "#/definitions/User"
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/User"
+            image/*:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/User"
     post:
       tags:
       - Users
-      parameters:
-      - in: formData
-        name: email
-        type: string
-        required: true
+      requestBody:
+        "$ref": "#/components/requestBodies/postUsers"
       responses:
-        204:
-          schema:
-            "$ref": "#/definitions/User"
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+            image/*:
+              schema:
+                "$ref": "#/components/schemas/User"
   "/users/{id}":
     get:
       tags:
@@ -335,24 +395,40 @@ paths:
       parameters:
       - in: path
         name: id
-        type: integer
         required: true
+        schema:
+          type: integer
       responses:
-        200:
-          schema:
-            "$ref": "#/definitions/User"
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+            image/*:
+              schema:
+                "$ref": "#/components/schemas/User"
     put:
       tags:
       - Users
       parameters:
-      - in: formData
-        name: email
-        type: string
+      - in: path
+        name: id
         required: true
+        schema:
+          type: integer
+      requestBody:
+        "$ref": "#/components/requestBodies/postUsers"
       responses:
-        200:
-          schema:
-            "$ref": "#/definitions/User"
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+            image/*:
+              schema:
+                "$ref": "#/components/schemas/User"
   "/users/{id}/push_token":
     post:
       tags:
@@ -360,55 +436,89 @@ paths:
       parameters:
       - in: path
         name: id
-        type: integer
         required: true
+        schema:
+          type: integer
       responses:
-        201:
-          schema:
-            "$ref": "#/definitions/User"
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+            image/*:
+              schema:
+                "$ref": "#/components/schemas/User"
+        '400':
+          description: erroe
   "/foods":
     get:
       tags:
       - Foods
       responses:
-        200:
+        '200':
           description: List of foods
-          schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Food"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Food"
+            image/*:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Food"
     post:
       tags:
       - Foods
-      parameters:
-      - in: formData
-        name: name
-        description: Food name
-        type: string
-        required: true
-      - in: formData
-        name: box_id
-        description: Box ID that food is created into
-        type: integer
-        required: true
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: Food name
+                  type: string
+                box_id:
+                  description: Box ID that food is created into
+                  type: integer
+              required:
+              - name
+              - box_id
       responses:
-        201:
+        '201':
           description: Created food
-          schema:
-            "$ref": "#/definitions/Food"
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Food"
+            image/*:
+              schema:
+                "$ref": "#/components/schemas/Food"
     put:
       tags:
       - Foods
-      parameters:
-      - in: formData
-        name: name
-        description: Food name
-        type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: Food name
+                  type: string
       responses:
-        204:
+        '204':
           description: Updated food
-          schema:
-            "$ref": "#/definitions/Food"
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Food"
+            image/*:
+              schema:
+                "$ref": "#/components/schemas/Food"
   "/foods/{id}":
     get:
       tags:
@@ -416,39 +526,57 @@ paths:
       parameters:
       - in: path
         name: id
-        type: integer
         required: true
+        schema:
+          type: integer
       responses:
-        200:
+        '200':
           description: Description of the food
-          schema:
-            "$ref": "#/definitions/Food"
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Food"
+            image/*:
+              schema:
+                "$ref": "#/components/schemas/Food"
     put:
       tags:
       - Foods
       parameters:
       - in: path
         name: id
-        type: integer
         required: true
+        schema:
+          type: integer
       responses:
-        200:
+        '200':
           description: Description of the food
-          schema:
-            "$ref": "#/definitions/Food"
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Food"
+            image/*:
+              schema:
+                "$ref": "#/components/schemas/Food"
     delete:
       tags:
       - Foods
       parameters:
       - in: path
         name: id
-        type: integer
         required: true
+        schema:
+          type: integer
       responses:
-        200:
+        '200':
           description: Description of the food
-          schema:
-            "$ref": "#/definitions/Food"
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Food"
+            image/*:
+              schema:
+                "$ref": "#/components/schemas/Food"
   "/foods/{id}/versions":
     get:
       tags:
@@ -456,62 +584,75 @@ paths:
       parameters:
       - in: path
         name: id
-        type: integer
         required: true
+        schema:
+          type: integer
       responses:
-        200:
+        '200':
           description: Past versions of the food
-          schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Version"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Version"
+            image/*:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Version"
   "/boxes":
     get:
       tags:
       - Boxes
       responses:
-        200:
+        '200':
           description: List of box
-          schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Box"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Box"
+            image/*:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Box"
       security:
       - BearerAuth: []
     post:
       tags:
       - Boxes
-      parameters:
-      - in: formData
-        name: name
-        type: string
-        required: true
-      - in: formData
-        name: notice
-        type: string
+      requestBody:
+        "$ref": "#/components/requestBodies/postBoxes"
       responses:
-        201:
+        '201':
           description: Created box
-          schema:
-            "$ref": "#/definitions/Box"
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Box"
+            image/*:
+              schema:
+                "$ref": "#/components/schemas/Box"
       security:
       - BearerAuth: []
     put:
       tags:
       - Boxes
-      parameters:
-      - in: formData
-        name: name
-        type: string
-        required: true
-      - in: formData
-        name: notice
-        type: string
+      requestBody:
+        "$ref": "#/components/requestBodies/postBoxes"
       responses:
-        202:
+        '202':
           description: Created box
-          schema:
-            "$ref": "#/definitions/Box"
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Box"
+            image/*:
+              schema:
+                "$ref": "#/components/schemas/Box"
       security:
       - BearerAuth: []
   "/boxes/owns":
@@ -519,12 +660,19 @@ paths:
       tags:
       - Boxes
       responses:
-        200:
+        '200':
           description: List of box
-          schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Box"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Box"
+            image/*:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Box"
       security:
       - BearerAuth: []
   "/boxes/invited":
@@ -532,12 +680,19 @@ paths:
       tags:
       - Boxes
       responses:
-        200:
+        '200':
           description: List of box
-          schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Box"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Box"
+            image/*:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Box"
       security:
       - BearerAuth: []
   "/boxes/{id}":
@@ -547,13 +702,19 @@ paths:
       parameters:
       - in: path
         name: id
-        type: string
         required: true
+        schema:
+          type: string
       responses:
-        200:
+        '200':
           description: List of box
-          schema:
-            "$ref": "#/definitions/Box"
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Box"
+            image/*:
+              schema:
+                "$ref": "#/components/schemas/Box"
       security:
       - BearerAuth: []
     put:
@@ -562,13 +723,19 @@ paths:
       parameters:
       - in: path
         name: id
-        type: string
         required: true
+        schema:
+          type: string
       responses:
-        200:
+        '200':
           description: List of box
-          schema:
-            "$ref": "#/definitions/Box"
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Box"
+            image/*:
+              schema:
+                "$ref": "#/components/schemas/Box"
       security:
       - BearerAuth: []
     delete:
@@ -577,10 +744,11 @@ paths:
       parameters:
       - in: path
         name: id
-        type: string
         required: true
+        schema:
+          type: string
       responses:
-        204:
+        '204':
           description: Invalid username supplied
       security:
       - BearerAuth: []
@@ -591,15 +759,23 @@ paths:
       parameters:
       - in: path
         name: id
-        type: integer
         required: true
+        schema:
+          type: integer
       responses:
-        200:
+        '200':
           description: List of box
-          schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Version"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Version"
+            image/*:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Version"
       security:
       - BearerAuth: []
   "/boxes/{id}/image":
@@ -609,10 +785,11 @@ paths:
       parameters:
       - in: path
         name: id
-        type: integer
         required: true
+        schema:
+          type: integer
       responses:
-        200:
+        '200':
           description: List of box
       security:
       - BearerAuth: []
@@ -623,15 +800,23 @@ paths:
       parameters:
       - in: path
         name: id
-        type: string
         required: true
+        schema:
+          type: string
       responses:
-        200:
+        '200':
           description: List of box
-          schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Unit"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Unit"
+            image/*:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Unit"
       security:
       - BearerAuth: []
   "/boxes/{id}/invite":
@@ -641,13 +826,19 @@ paths:
       parameters:
       - in: path
         name: id
-        type: string
         required: true
+        schema:
+          type: string
       responses:
-        200:
+        '201':
           description: List of box
-          schema:
-            "$ref": "#/definitions/Invitation"
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Invitation"
+            image/*:
+              schema:
+                "$ref": "#/components/schemas/Invitation"
       security:
       - BearerAuth: []
     delete:
@@ -656,10 +847,11 @@ paths:
       parameters:
       - in: path
         name: id
-        type: string
         required: true
+        schema:
+          type: string
       responses:
-        204:
+        '204':
           description: List of box
       security:
       - BearerAuth: []
@@ -668,7 +860,12 @@ paths:
       tags:
       - Authentication
       responses:
-        200:
+        '200':
           description: Success authorization
-          schema:
-            "$ref": "#/definitions/Credential"
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Credential"
+            image/*:
+              schema:
+                "$ref": "#/components/schemas/Credential"

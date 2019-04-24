@@ -1,23 +1,25 @@
-definitions:
-  Invitation:
+schemas:
+  Unit:
     type: object
     additionalProperties: false
     properties:
       id:
         type: integer
-      box: 
-        $ref: "#/definitions/Box"
-      user: 
-        $ref: "#/definitions/User"
+      label:
+        type: string
+      step:
+        type: number
       created_at:
         type: string
         format: date-time
       updated_at:
         type: string
         format: date-time
+      user:
+        $ref: "#/components/schemas/User"
     required:
-    - id
-    - box
-    - user
-    - created_at
-    - updated_at
+      - id
+      - label
+      - step
+      - created_at
+      - updated_at

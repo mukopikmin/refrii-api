@@ -1,4 +1,4 @@
-definitions:
+schemas:
   Box:
     type: object
     additionalProperties: false
@@ -12,28 +12,27 @@ definitions:
       is_invited:
         type: boolean
       image_url:
-        oneOf:
-        - type: string
-        - type: null
+        type: string
+        nullable: true
       created_at:
         type: string
         format: date-time
       updated_at:
         type: string
         format: date-time
-      owner:  
-        $ref: "#/definitions/User"
+      owner:
+        $ref: "#/components/schemas/User"
       invited_users:
         type: array
         items:
-          $ref: "#/definitions/User"
+          $ref: "#/components/schemas/User"
     required:
-    - id
-    - name
-    - notice
-    - is_invited
-    - image_url
-    - created_at
-    - updated_at
-    - owner
-    - invited_users
+      - id
+      - name
+      - notice
+      - is_invited
+      - image_url
+      - created_at
+      - updated_at
+      - owner
+      - invited_users
