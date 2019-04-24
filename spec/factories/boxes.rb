@@ -20,7 +20,6 @@ FactoryBot.define do
   end
 
   factory :no_name_box, class: Box do
-    name { '' }
     notice { 'this box has no name' }
   end
 end

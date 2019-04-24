@@ -217,7 +217,6 @@ RSpec.describe 'Boxes', type: :request do
 
   describe 'PUT /boxes/:id' do
     let(:params) { attributes_for(:box) }
-    let(:no_name_box) { attributes_for(:no_name_box) }
 
     context 'without authentication' do
       subject { response.status }
@@ -246,10 +245,14 @@ RSpec.describe 'Boxes', type: :request do
       end
 
       context 'with no name params' do
-        it 'returns 200' do
-          put v1_box_path(box1), params: no_name_box, headers: { authorization: "Bearer #{token(user1)}" }
-          assert_schema_conform
-        end
+        subject { response.status }
+
+        let(:no_name_box) { attributes_for(:no_name_box) }
+
+        before { put v1_box_path(box1), params: no_name_box, headers: { authorization: "Bearer #{token(user1)}" } }
+
+        it { is_expected.to eq(200) }
+        it { assert_schema_conform }
       end
     end
   end
@@ -350,10 +353,9 @@ RSpec.describe 'Boxes', type: :request do
       context 'with own box' do
         let(:params) { { email: user1.email } }
 
-        it 'returns 204' do
-          delete invite_v1_box_path(box3), params: params, headers: { authorization: "Bearer #{token(user1)}" }
-          assert_schema_conform
-        end
+        before { delete invite_v1_box_path(box3), params: params, headers: { authorization: "Bearer #{token(user2)}" } }
+
+        it { assert_schema_conform }
       end
 
       context 'with other\'s box' do

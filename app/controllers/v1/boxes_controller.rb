@@ -93,8 +93,12 @@ module V1
       elsif @box.update(box_params)
         render json: @box
       else
+        p box_params
         bad_request
       end
+    rescue StandardError => e
+      p 'ttttttttttttttttttttttttt'
+      p e
     end
 
     # PUT /boxes/1/revert

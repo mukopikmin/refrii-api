@@ -254,6 +254,7 @@ RSpec.describe 'Users', type: :request do
         end
 
         it { is_expected.to eq(400) }
+        # it { assert_schema_conform }
       end
 
       context 'with multiple tokens for a user' do

@@ -62,6 +62,6 @@ RSpec.configure do |config|
   config.committee_options = {
     schema_path: Rails.root.join('docs', 'swagger.json').to_s,
     prefix: '/v1',
-    validate_success_only: true
+    validate_success_only: false
   }
 end
