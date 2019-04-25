@@ -1,0 +1,26 @@
+components:
+  schemas:
+    Unit:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        step:
+          type: number
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        user:
+          $ref: "#/components/schemas/User"
+      required:
+        - id
+        - label
+        - step
+        - created_at
+        - updated_at

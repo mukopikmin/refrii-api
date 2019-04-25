@@ -1,0 +1,26 @@
+components:
+  schemas:
+    Version:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        item_id:
+          type: integer
+        event:
+          type: string
+        changes:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        updated_user:
+          $ref: "#/components/schemas/User"
+      required:
+        - id
+        - item_id
+        - event
+        - changes
+        - created_at
+        - updated_user

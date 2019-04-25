@@ -19,252 +19,6 @@ tags:
 servers:
 - url: https://api.refrii.com/v1
 - url: http://api.refrii.com/v1
-components:
-  securitySchemes:
-    BearerAuth:
-      type: apiKey
-      name: Authorization
-      in: header
-  requestBodies:
-    postUsers:
-      content:
-        multipart/form-data:
-          schema:
-            type: object
-            properties:
-              email:
-                type: string
-            required:
-            - email
-    postBoxes:
-      content:
-        multipart/form-data:
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-              notice:
-                type: string
-            required:
-            - name
-  schemas:
-    Invitation:
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          type: integer
-        box:
-          "$ref": "#/components/schemas/Box"
-        user:
-          "$ref": "#/components/schemas/User"
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-      required:
-      - id
-      - box
-      - user
-      - created_at
-      - updated_at
-    Box:
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        notice:
-          type: string
-        is_invited:
-          type: boolean
-        image_url:
-          type: string
-          nullable: true
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        owner:
-          "$ref": "#/components/schemas/User"
-        invited_users:
-          type: array
-          items:
-            "$ref": "#/components/schemas/User"
-      required:
-      - id
-      - name
-      - notice
-      - is_invited
-      - image_url
-      - created_at
-      - updated_at
-      - owner
-      - invited_users
-    Food:
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        amount:
-          type: number
-        notice:
-          type: string
-        image_url:
-          type: string
-          nullable: true
-        expiration_date:
-          type: string
-          format: date
-        needs_adding:
-          type: boolean
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        box:
-          "$ref": "#/components/schemas/Box"
-        unit:
-          "$ref": "#/components/schemas/Unit"
-        created_user:
-          "$ref": "#/components/schemas/User"
-        updated_user:
-          "$ref": "#/components/schemas/User"
-      required:
-      - id
-      - name
-      - amount
-      - notice
-      - image_url
-      - expiration_date
-      - created_at
-      - updated_at
-      - box
-      - unit
-      - created_user
-      - updated_user
-    Error:
-      type: object
-      additionalProperties: false
-      properties:
-        status:
-          type: integer
-        message:
-          type: string
-      required:
-      - status
-      - message
-    Version:
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          type: integer
-        item_id:
-          type: integer
-        event:
-          type: string
-        changes:
-          type: object
-        created_at:
-          type: string
-          format: date-time
-        updated_user:
-          "$ref": "#/components/schemas/User"
-      required:
-      - id
-      - item_id
-      - event
-      - changes
-      - created_at
-      - updated_user
-    Credential:
-      type: object
-      additionalProperties: false
-      properties:
-        jwt:
-          type: string
-        expires_at:
-          type: string
-          format: date-time
-        user:
-          "$ref": "#/components/schemas/User"
-      required:
-      - jwt
-      - expires_at
-      - user
-    User:
-      type: object
-      nullable: true
-      additionalProperties: false
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        email:
-          type: string
-        admin:
-          type: boolean
-        disabled:
-          type: boolean
-        provider:
-          type: string
-        avatar_url:
-          type: string
-          nullable: true
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-      required:
-      - id
-      - name
-      - email
-      - admin
-      - disabled
-      - provider
-      - avatar_url
-      - created_at
-      - updated_at
-    Unit:
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          type: integer
-        label:
-          type: string
-        step:
-          type: number
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        user:
-          "$ref": "#/components/schemas/User"
-      required:
-      - id
-      - label
-      - step
-      - created_at
-      - updated_at
 paths:
   "/units":
     get:
@@ -625,12 +379,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Box"
-        '400':
-          description: Error message
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
         '401':
           description: Error message
           content:
@@ -970,3 +718,268 @@ paths:
             image/*:
               schema:
                 "$ref": "#/components/schemas/Credential"
+components:
+  securitySchemes:
+    BearerAuth:
+      type: apiKey
+      name: Authorization
+      in: header
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/Error"
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/Error"
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/Error"
+  schemas:
+    Invitation:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        box:
+          "$ref": "#/components/schemas/Box"
+        user:
+          "$ref": "#/components/schemas/User"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - box
+      - user
+      - created_at
+      - updated_at
+    Box:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        notice:
+          type: string
+        is_invited:
+          type: boolean
+        image_url:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        owner:
+          "$ref": "#/components/schemas/User"
+        invited_users:
+          type: array
+          items:
+            "$ref": "#/components/schemas/User"
+      required:
+      - id
+      - name
+      - notice
+      - is_invited
+      - image_url
+      - created_at
+      - updated_at
+      - owner
+      - invited_users
+    Food:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        amount:
+          type: number
+        notice:
+          type: string
+        image_url:
+          type: string
+          nullable: true
+        expiration_date:
+          type: string
+          format: date
+        needs_adding:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        box:
+          "$ref": "#/components/schemas/Box"
+        unit:
+          "$ref": "#/components/schemas/Unit"
+        created_user:
+          "$ref": "#/components/schemas/User"
+        updated_user:
+          "$ref": "#/components/schemas/User"
+      required:
+      - id
+      - name
+      - amount
+      - notice
+      - image_url
+      - expiration_date
+      - created_at
+      - updated_at
+      - box
+      - unit
+      - created_user
+      - updated_user
+    Error:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+      required:
+      - status
+      - message
+    Version:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        item_id:
+          type: integer
+        event:
+          type: string
+        changes:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        updated_user:
+          "$ref": "#/components/schemas/User"
+      required:
+      - id
+      - item_id
+      - event
+      - changes
+      - created_at
+      - updated_user
+    Credential:
+      type: object
+      additionalProperties: false
+      properties:
+        jwt:
+          type: string
+        expires_at:
+          type: string
+          format: date-time
+        user:
+          "$ref": "#/components/schemas/User"
+      required:
+      - jwt
+      - expires_at
+      - user
+    User:
+      type: object
+      nullable: true
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        admin:
+          type: boolean
+        disabled:
+          type: boolean
+        provider:
+          type: string
+        avatar_url:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - name
+      - email
+      - admin
+      - disabled
+      - provider
+      - avatar_url
+      - created_at
+      - updated_at
+    Unit:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        step:
+          type: number
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        user:
+          "$ref": "#/components/schemas/User"
+      required:
+      - id
+      - label
+      - step
+      - created_at
+      - updated_at
+  requestBodies:
+    postUsers:
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+            required:
+            - email
+    postBoxes:
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              notice:
+                type: string
+            required:
+            - name

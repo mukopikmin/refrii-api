@@ -8,28 +8,20 @@ namespace :swagger do
   task :merge do
     yaml_file = "#{base_dir}/swagger.yml"
     index = YAML.load_file("#{base_dir}/index.yml")
-    security_schemas = YAML.load_file("#{base_dir}/security_schemes.yml")['securitySchemes']
-    request_bodies = YAML.load_file("#{base_dir}/request_bodies.yml")['requestBodies']
-    schemas = Dir.glob("#{base_dir}/schemas/*.yml")
-                 .map { |file| YAML.load_file(file)['schemas'] }
-                 .inject(:merge)
     paths = Dir.glob("#{base_dir}/paths/*.yml")
-               .map { |file| YAML.load_file(file)['paths'] }
-               .inject(:merge)
+               .map { |file| YAML.load_file(file) }
+               .inject(&:deep_merge)
+    components = Dir.glob("#{base_dir}/components/**/*.yml")
+                    .map { |file| YAML.load_file(file) }
+                    .inject(&:deep_merge)
     targets = [
       index,
-      {
-        'components' => {
-          'securitySchemes' => security_schemas,
-          'requestBodies' => request_bodies,
-          'schemas' => schemas
-        }
-      },
-      { 'paths' => paths }
+      paths,
+      components
     ]
 
     File.open(yaml_file, 'w') do |file|
-      YAML.dump(targets.inject(:merge), file)
+      YAML.dump(targets.inject(&:deep_merge), file)
     end
 
     logger.info "Successfully merged to #{yaml_file}"

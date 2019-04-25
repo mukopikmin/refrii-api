@@ -1,0 +1,24 @@
+components:
+  schemas:
+    Invitation:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        box:
+          $ref: "#/components/schemas/Box"
+        user:
+          $ref: "#/components/schemas/User"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - box
+        - user
+        - created_at
+        - updated_at

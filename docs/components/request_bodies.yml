@@ -1,0 +1,24 @@
+components:
+  requestBodies:
+    postUsers:
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+            required:
+              - email
+    postBoxes:
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              notice:
+                type: string
+            required:
+              - name

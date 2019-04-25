@@ -1,0 +1,13 @@
+components:
+  schemas:
+    Error:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+      required:
+        - status
+        - message
