@@ -12,11 +12,18 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Unit"
-            image/*:
+        "400":
+          description: Error message
+          content:
+            application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Unit"
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
     post:
       tags:
         - Units
@@ -37,9 +44,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Unit"
-            image/*:
+        "400":
+          description: Error message
+          content:
+            application/json:
               schema:
-                $ref: "#/components/schemas/Unit"
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /units/{id}:
     get:
       tags:
@@ -57,9 +73,24 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Unit"
-            image/*:
+        "400":
+          description: Error message
+          content:
+            application/json:
               schema:
-                $ref: "#/components/schemas/Unit"
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
     put:
       tags:
         - Units
@@ -84,9 +115,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Unit"
-            image/*:
+        "400":
+          description: Error message
+          content:
+            application/json:
               schema:
-                $ref: "#/components/schemas/Unit"
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
     delete:
       tags:
         - Units
@@ -99,3 +139,15 @@ paths:
       responses:
         "204":
           description: No content
+        "400":
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"

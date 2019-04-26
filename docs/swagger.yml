@@ -33,11 +33,18 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Unit"
-            image/*:
+        '400':
+          description: Error message
+          content:
+            application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Unit"
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
     post:
       tags:
       - Units
@@ -58,9 +65,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Unit"
-            image/*:
+        '400':
+          description: Error message
+          content:
+            application/json:
               schema:
-                "$ref": "#/components/schemas/Unit"
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
   "/units/{id}":
     get:
       tags:
@@ -78,9 +94,24 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Unit"
-            image/*:
+        '400':
+          description: Error message
+          content:
+            application/json:
               schema:
-                "$ref": "#/components/schemas/Unit"
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '404':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
     put:
       tags:
       - Units
@@ -105,9 +136,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Unit"
-            image/*:
+        '400':
+          description: Error message
+          content:
+            application/json:
               schema:
-                "$ref": "#/components/schemas/Unit"
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
     delete:
       tags:
       - Units
@@ -120,6 +160,18 @@ paths:
       responses:
         '204':
           description: No content
+        '400':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
   "/users":
     get:
       tags:
@@ -133,11 +185,24 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/User"
-            image/*:
+        '400':
+          description: Error message
+          content:
+            application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '403':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
     post:
       tags:
       - Users
@@ -150,9 +215,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/User"
-            image/*:
+        '400':
+          description: Error message
+          content:
+            application/json:
               schema:
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
   "/users/{id}":
     get:
       tags:
@@ -170,9 +244,24 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/User"
-            image/*:
+        '400':
+          description: Error message
+          content:
+            application/json:
               schema:
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '404':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
     put:
       tags:
       - Users
@@ -191,9 +280,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/User"
-            image/*:
+        '400':
+          description: Error message
+          content:
+            application/json:
               schema:
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
   "/users/{id}/push_token":
     post:
       tags:
@@ -211,11 +309,24 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/User"
-            image/*:
-              schema:
-                "$ref": "#/components/schemas/User"
         '400':
-          description: erroe
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '403':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
   "/foods":
     get:
       tags:
@@ -229,11 +340,12 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Food"
-            image/*:
+        '401':
+          description: Error message
+          content:
+            application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Food"
+                "$ref": "#/components/schemas/Error"
     post:
       tags:
       - Foods
@@ -259,9 +371,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Food"
-            image/*:
+        '400':
+          description: Error message
+          content:
+            application/json:
               schema:
-                "$ref": "#/components/schemas/Food"
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
     put:
       tags:
       - Foods
@@ -281,9 +402,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Food"
-            image/*:
-              schema:
-                "$ref": "#/components/schemas/Food"
   "/foods/{id}":
     get:
       tags:
@@ -301,9 +419,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Food"
-            image/*:
+        '401':
+          description: Error message
+          content:
+            application/json:
               schema:
-                "$ref": "#/components/schemas/Food"
+                "$ref": "#/components/schemas/Error"
+        '404':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
     put:
       tags:
       - Foods
@@ -320,9 +447,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Food"
-            image/*:
+        '400':
+          description: Error message
+          content:
+            application/json:
               schema:
-                "$ref": "#/components/schemas/Food"
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
     delete:
       tags:
       - Foods
@@ -339,9 +475,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Food"
-            image/*:
+        '400':
+          description: Error message
+          content:
+            application/json:
               schema:
-                "$ref": "#/components/schemas/Food"
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
   "/foods/{id}/versions":
     get:
       tags:
@@ -361,11 +506,12 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Version"
-            image/*:
+        '401':
+          description: Error message
+          content:
+            application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Version"
+                "$ref": "#/components/schemas/Error"
   "/boxes":
     get:
       tags:
@@ -379,12 +525,8 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Box"
-        '401':
-          description: Error message
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
+        default:
+          "$ref": "#/components/responses/Unauthorized"
       security:
       - BearerAuth: []
     post:

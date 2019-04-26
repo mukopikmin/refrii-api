@@ -52,13 +52,25 @@
                     "$ref": "#/components/schemas/Unit"
                   }
                 }
-              },
-              "image/*": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Unit"
-                  }
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -94,10 +106,25 @@
                 "schema": {
                   "$ref": "#/components/schemas/Unit"
                 }
-              },
-              "image/*": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Unit"
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -128,10 +155,35 @@
                 "schema": {
                   "$ref": "#/components/schemas/Unit"
                 }
-              },
-              "image/*": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Unit"
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -174,10 +226,25 @@
                 "schema": {
                   "$ref": "#/components/schemas/Unit"
                 }
-              },
-              "image/*": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Unit"
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -201,6 +268,26 @@
         "responses": {
           "204": {
             "description": "No content"
+          },
+          "400": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -221,13 +308,35 @@
                     "$ref": "#/components/schemas/User"
                   }
                 }
-              },
-              "image/*": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/User"
-                  }
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -249,10 +358,25 @@
                 "schema": {
                   "$ref": "#/components/schemas/User"
                 }
-              },
-              "image/*": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -283,10 +407,35 @@
                 "schema": {
                   "$ref": "#/components/schemas/User"
                 }
-              },
-              "image/*": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -318,10 +467,25 @@
                 "schema": {
                   "$ref": "#/components/schemas/User"
                 }
-              },
-              "image/*": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -352,16 +516,38 @@
                 "schema": {
                   "$ref": "#/components/schemas/User"
                 }
-              },
-              "image/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
               }
             }
           },
           "400": {
-            "description": "erroe"
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -382,13 +568,15 @@
                     "$ref": "#/components/schemas/Food"
                   }
                 }
-              },
-              "image/*": {
+              }
+            }
+          },
+          "401": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Food"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -430,10 +618,25 @@
                 "schema": {
                   "$ref": "#/components/schemas/Food"
                 }
-              },
-              "image/*": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Food"
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -467,11 +670,6 @@
                 "schema": {
                   "$ref": "#/components/schemas/Food"
                 }
-              },
-              "image/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Food"
-                }
               }
             }
           }
@@ -501,10 +699,25 @@
                 "schema": {
                   "$ref": "#/components/schemas/Food"
                 }
-              },
-              "image/*": {
+              }
+            }
+          },
+          "401": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Food"
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -533,10 +746,25 @@
                 "schema": {
                   "$ref": "#/components/schemas/Food"
                 }
-              },
-              "image/*": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Food"
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -565,10 +793,25 @@
                 "schema": {
                   "$ref": "#/components/schemas/Food"
                 }
-              },
-              "image/*": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Food"
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -602,13 +845,15 @@
                     "$ref": "#/components/schemas/Version"
                   }
                 }
-              },
-              "image/*": {
+              }
+            }
+          },
+          "401": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Version"
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -635,15 +880,8 @@
               }
             }
           },
-          "401": {
-            "description": "Error message",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+          "default": {
+            "$ref": "#/components/responses/Unauthorized"
           }
         },
         "security": [

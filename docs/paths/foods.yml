@@ -12,11 +12,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Food"
-            image/*:
+        "401":
+          description: Error message
+          content:
+            application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Food"
+                $ref: "#/components/schemas/Error"
     post:
       tags:
         - Foods
@@ -42,9 +43,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Food"
-            image/*:
+        "400":
+          description: Error message
+          content:
+            application/json:
               schema:
-                $ref: "#/components/schemas/Food"
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
     put:
       tags:
         - Foods
@@ -64,9 +74,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Food"
-            image/*:
-              schema:
-                $ref: "#/components/schemas/Food"
   /foods/{id}:
     get:
       tags:
@@ -84,9 +91,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Food"
-            image/*:
+        "401":
+          description: Error message
+          content:
+            application/json:
               schema:
-                $ref: "#/components/schemas/Food"
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
     put:
       tags:
         - Foods
@@ -103,9 +119,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Food"
-            image/*:
+        "400":
+          description: Error message
+          content:
+            application/json:
               schema:
-                $ref: "#/components/schemas/Food"
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
     delete:
       tags:
         - Foods
@@ -122,9 +147,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Food"
-            image/*:
+        "400":
+          description: Error message
+          content:
+            application/json:
               schema:
-                $ref: "#/components/schemas/Food"
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /foods/{id}/versions:
     get:
       tags:
@@ -144,8 +178,9 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Version"
-            image/*:
+        "401":
+          description: Error message
+          content:
+            application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Version"
+                $ref: "#/components/schemas/Error"
