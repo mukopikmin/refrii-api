@@ -1,0 +1,27 @@
+components:
+  schemas:
+    ShopPlan:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        notice:
+          type: string
+        done:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        food:
+          $ref: "#/components/schemas/Food"
+      required:
+        - id
+        - notice
+        - done
+        - created_at
+        - updated_at
+        - food

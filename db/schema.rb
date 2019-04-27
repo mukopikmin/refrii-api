@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_190_411_151_555) do
+ActiveRecord::Schema.define(version: 20_190_426_234_951) do
   create_table 'boxes', force: :cascade do |t|
     t.string 'name', null: false
     t.text 'notice'
@@ -62,6 +62,16 @@ ActiveRecord::Schema.define(version: 20_190_411_151_555) do
     t.datetime 'updated_at', null: false
     t.index ['token'], name: 'index_push_tokens_on_token', unique: true
     t.index ['user_id'], name: 'index_push_tokens_on_user_id'
+  end
+
+  create_table 'shop_plans', force: :cascade do |t|
+    t.string 'notice'
+    t.boolean 'done', default: false, null: false
+    t.date 'date', null: false
+    t.integer 'food_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['food_id'], name: 'index_shop_plans_on_food_id'
   end
 
   create_table 'units', force: :cascade do |t|

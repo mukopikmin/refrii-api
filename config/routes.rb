@@ -43,6 +43,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :shop_plans
+
     post 'auth/local', to: 'authentication#local'
     get 'auth/google/callback', to: 'authentication#google'
     get 'auth/google/token', to: 'authentication#google_token'

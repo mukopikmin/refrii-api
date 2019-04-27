@@ -12,8 +12,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Box"
-        default:
-          $ref: "#/components/responses/Unauthorized"
+        "401":
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
       security:
         - BearerAuth:
             []

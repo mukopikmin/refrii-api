@@ -20,6 +20,117 @@ servers:
 - url: https://api.refrii.com/v1
 - url: http://api.refrii.com/v1
 paths:
+  "/shop_plans":
+    get:
+      tags:
+      - ShopPlans
+      responses:
+        '200':
+          description: List of shop plan
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ShopPlan"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+    post:
+      tags:
+      - ShopPlans
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                notice:
+                  description: Food name
+                  type: string
+                done:
+                  description: ''
+                  type: boolean
+                date:
+                  description: date
+                  type: string
+                  format: date-time
+                food_id:
+                  description: Box ID that food is created into
+                  type: integer
+              required:
+              - date
+              - food_id
+  "/shop_plans/{id}":
+    get:
+      tags:
+      - ShopPlans
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: List of shop plan
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ShopPlan"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+    put:
+      tags:
+      - ShopPlans
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: List of shop plan
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ShopPlan"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+    delete:
+      tags:
+      - ShopPlans
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: List of shop plan
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ShopPlan"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
   "/units":
     get:
       tags:
@@ -525,8 +636,12 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Box"
-        default:
-          "$ref": "#/components/responses/Unauthorized"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
       security:
       - BearerAuth: []
     post:
@@ -908,6 +1023,31 @@ components:
       - user
       - created_at
       - updated_at
+    ShopPlan:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        notice:
+          type: string
+        done:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        food:
+          "$ref": "#/components/schemas/Food"
+      required:
+      - id
+      - notice
+      - done
+      - created_at
+      - updated_at
+      - food
     Box:
       type: object
       additionalProperties: false
