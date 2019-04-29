@@ -21,7 +21,7 @@ RSpec.describe V1::ShopPlansController, type: :controller do
 
   describe 'GET #index' do
     it 'returns a success response' do
-      # shop_plan = ShopPlan.create! valid_attributes
+      ShopPlan.create! valid_attributes
       get :index, params: {}, session: valid_session
       expect(response).to be_successful
     end
