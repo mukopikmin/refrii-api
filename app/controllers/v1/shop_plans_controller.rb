@@ -66,7 +66,7 @@ module V1
     end
 
     def shop_plan_params
-      params.permit(:notice, :done, :date, :food_id)
+      params.permit(:notice, :done, :date, :amount, :food_id)
     end
 
     def accessible?

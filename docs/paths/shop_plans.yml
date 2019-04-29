@@ -43,6 +43,25 @@ paths:
               required:
                 - date
                 - food_id
+      responses:
+        "201":
+          description: List of shop plan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShopPlan"
+        "400":
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /shop_plans/{id}:
     get:
       tags:

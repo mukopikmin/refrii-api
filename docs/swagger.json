@@ -102,6 +102,38 @@
               }
             }
           }
+        },
+        "responses": {
+          "201": {
+            "description": "List of shop plan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShopPlan"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1793,6 +1825,9 @@
           "done": {
             "type": "boolean"
           },
+          "amount": {
+            "type": "number"
+          },
           "created_at": {
             "type": "string",
             "format": "date-time"
@@ -1809,6 +1844,7 @@
           "id",
           "notice",
           "done",
+          "amount",
           "created_at",
           "updated_at",
           "food"

@@ -5,5 +5,6 @@ FactoryBot.define do
     notice { 'sample comment' }
     done { false }
     date { Date.today }
+    amount { rand(0.0..100.0) }
   end
 end
