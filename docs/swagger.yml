@@ -87,6 +87,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Error"
+        '404':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
     put:
       tags:
       - ShopPlans
@@ -109,6 +115,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Error"
+        '404':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
     delete:
       tags:
       - ShopPlans
@@ -126,6 +138,12 @@ paths:
               schema:
                 "$ref": "#/components/schemas/ShopPlan"
         '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '404':
           description: Error message
           content:
             application/json:

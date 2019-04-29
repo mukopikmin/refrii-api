@@ -7,6 +7,7 @@ class Food < ApplicationRecord
   belongs_to :unit
   belongs_to :created_user, class_name: 'User'
   belongs_to :updated_user, class_name: 'User'
+  has_many :shop_plans
 
   validates_presence_of :name
   validates_presence_of :box
@@ -18,6 +19,10 @@ class Food < ApplicationRecord
 
   def assignable_units
     box.owner.units
+  end
+
+  def accessible_for?(user)
+    box.accessible_for?(user)
   end
 
   def self.all_with_invited(user)
