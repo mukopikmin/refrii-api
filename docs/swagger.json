@@ -1835,9 +1835,6 @@
           "updated_at": {
             "type": "string",
             "format": "date-time"
-          },
-          "food": {
-            "$ref": "#/components/schemas/Food"
           }
         },
         "required": [
@@ -1846,8 +1843,7 @@
           "done",
           "amount",
           "created_at",
-          "updated_at",
-          "food"
+          "updated_at"
         ]
       },
       "Box": {
@@ -1941,6 +1937,12 @@
           "unit": {
             "$ref": "#/components/schemas/Unit"
           },
+          "shop_plans": {
+            "type": "array",
+            "item": {
+              "$ref": "#/components/schemas/ShopPlan"
+            }
+          },
           "created_user": {
             "$ref": "#/components/schemas/User"
           },
@@ -1959,6 +1961,7 @@
           "updated_at",
           "box",
           "unit",
+          "shop_plans",
           "created_user",
           "updated_user"
         ]

@@ -18,8 +18,6 @@ components:
         updated_at:
           type: string
           format: date-time
-        food:
-          $ref: "#/components/schemas/Food"
       required:
         - id
         - notice
@@ -27,4 +25,3 @@ components:
         - amount
         - created_at
         - updated_at
-        - food

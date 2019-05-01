@@ -1078,8 +1078,6 @@ components:
         updated_at:
           type: string
           format: date-time
-        food:
-          "$ref": "#/components/schemas/Food"
       required:
       - id
       - notice
@@ -1087,7 +1085,6 @@ components:
       - amount
       - created_at
       - updated_at
-      - food
     Box:
       type: object
       additionalProperties: false
@@ -1155,6 +1152,10 @@ components:
           "$ref": "#/components/schemas/Box"
         unit:
           "$ref": "#/components/schemas/Unit"
+        shop_plans:
+          type: array
+          item:
+            "$ref": "#/components/schemas/ShopPlan"
         created_user:
           "$ref": "#/components/schemas/User"
         updated_user:
@@ -1170,6 +1171,7 @@ components:
       - updated_at
       - box
       - unit
+      - shop_plans
       - created_user
       - updated_user
     Error:
