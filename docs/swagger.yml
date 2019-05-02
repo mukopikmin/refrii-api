@@ -1072,6 +1072,9 @@ components:
           type: boolean
         amount:
           type: number
+        date:
+          type: string
+          format: date
         created_at:
           type: string
           format: date-time
