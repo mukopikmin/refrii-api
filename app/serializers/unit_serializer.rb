@@ -8,5 +8,4 @@ class UnitSerializer < ActiveModel::Serializer
              :updated_at
 
   belongs_to :user
-  # has_many :foods
 end

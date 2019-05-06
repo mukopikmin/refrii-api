@@ -1,5 +1,6 @@
 .git
 .bundle
+.env
 db
 coverage
 log

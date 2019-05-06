@@ -7,9 +7,7 @@ RUN bundle install
 
 ADD . .
 
-ENV RACK_ENV production
-ENV RAILS_ENV production
-
 EXPOSE 3000
 
+ENTRYPOINT [ "rails", "db:migrate" ]
 CMD ["rails", "server"]

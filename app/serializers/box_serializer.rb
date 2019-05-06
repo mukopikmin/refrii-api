@@ -9,10 +9,8 @@ class BoxSerializer < ActiveModel::Serializer
              :updated_at,
              :is_invited,
              :invited_users
-  #  :change_sets
 
   belongs_to :owner
-  # has_many :foods
 
   # rubocop:disable Naming/PredicateName
   def is_invited
@@ -29,8 +27,4 @@ class BoxSerializer < ActiveModel::Serializer
   def image_url
     "#{ENV['HOSTNAME']}/boxes/#{object.id}/image" if object.image_exists?
   end
-
-  # def change_sets
-  #   object.versions.map(&:changeset).reverse
-  # end
 end
