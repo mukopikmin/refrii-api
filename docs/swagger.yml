@@ -1075,6 +1075,8 @@ components:
         date:
           type: string
           format: date
+        food:
+          "$ref": "#/components/schemas/Food"
         created_at:
           type: string
           format: date-time
@@ -1086,6 +1088,7 @@ components:
       - notice
       - done
       - amount
+      - food
       - created_at
       - updated_at
     Box:
@@ -1155,10 +1158,6 @@ components:
           "$ref": "#/components/schemas/Box"
         unit:
           "$ref": "#/components/schemas/Unit"
-        shop_plans:
-          type: array
-          item:
-            "$ref": "#/components/schemas/ShopPlan"
         created_user:
           "$ref": "#/components/schemas/User"
         updated_user:
@@ -1174,7 +1173,6 @@ components:
       - updated_at
       - box
       - unit
-      - shop_plans
       - created_user
       - updated_user
     Error:

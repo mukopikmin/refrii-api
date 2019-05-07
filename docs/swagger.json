@@ -1832,6 +1832,9 @@
             "type": "string",
             "format": "date"
           },
+          "food": {
+            "$ref": "#/components/schemas/Food"
+          },
           "created_at": {
             "type": "string",
             "format": "date-time"
@@ -1846,6 +1849,7 @@
           "notice",
           "done",
           "amount",
+          "food",
           "created_at",
           "updated_at"
         ]
@@ -1941,12 +1945,6 @@
           "unit": {
             "$ref": "#/components/schemas/Unit"
           },
-          "shop_plans": {
-            "type": "array",
-            "item": {
-              "$ref": "#/components/schemas/ShopPlan"
-            }
-          },
           "created_user": {
             "$ref": "#/components/schemas/User"
           },
@@ -1965,7 +1963,6 @@
           "updated_at",
           "box",
           "unit",
-          "shop_plans",
           "created_user",
           "updated_user"
         ]

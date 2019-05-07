@@ -8,4 +8,6 @@ class ShopPlanSerializer < ActiveModel::Serializer
              :amount,
              :created_at,
              :updated_at
+  
+  belongs_to :food
 end

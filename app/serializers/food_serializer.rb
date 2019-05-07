@@ -13,7 +13,6 @@ class FoodSerializer < ActiveModel::Serializer
 
   belongs_to :box
   belongs_to :unit
-  belongs_to :shop_plans
   belongs_to :created_user
   belongs_to :updated_user
 

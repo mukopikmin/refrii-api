@@ -8,7 +8,7 @@ module V1
 
     # GET /shop_plans
     def index
-      @shop_plans = ShopPlan.all_with_invited(User.all.first)
+      @shop_plans = ShopPlan.all_with_invited(current_user)
 
       render json: @shop_plans
     end
