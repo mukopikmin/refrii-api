@@ -86,12 +86,90 @@ RSpec.describe 'Foods', type: :request do
     end
 
     context 'with authentication' do
+      context 'with own foods' do
+        subject { response.status }
+
+        let(:headers) { { authorization: "Bearer #{token(user1)}" } }
+
+        before { get versions_v1_food_path(food1), headers: headers }
+
+        it { is_expected.to eq(200) }
+        it { assert_schema_conform }
+      end
+
+      context 'with other\'s food' do
+        subject { response.status }
+
+        let(:headers) { { authorization: "Bearer #{token(user1)}" } }
+
+        before { get versions_v1_food_path(food2), headers: headers }
+
+        it { is_expected.to eq(404) }
+        it { assert_schema_conform }
+      end
+
+      context 'with food in invited box' do
+        subject { response.status }
+
+        let(:headers) { { authorization: "Bearer #{token(user1)}" } }
+
+        before do
+          Invitation.create(box: box2, user: user1)
+          get versions_v1_food_path(food2), headers: headers
+        end
+
+        it { is_expected.to eq(200) }
+        it { assert_schema_conform }
+      end
+    end
+  end
+
+  describe 'GET /foods/:id/shop_plans' do
+    context 'without authentication' do
       subject { response.status }
 
-      before { get versions_v1_food_path(food1), headers: { authorization: "Bearer #{token(user1)}" } }
+      before { get shop_plans_v1_food_path(food1) }
 
-      it { is_expected.to eq(200) }
+      it { is_expected.to eq(401) }
       it { assert_schema_conform }
+    end
+
+    context 'with authentication' do
+      context 'with own foods' do
+        subject { response.status }
+
+        let(:headers) { { authorization: "Bearer #{token(user1)}" } }
+
+        before { get shop_plans_v1_food_path(food1), headers: headers }
+
+        it { is_expected.to eq(200) }
+        it { assert_schema_conform }
+      end
+
+      context 'with other\'s food' do
+        subject { response.status }
+
+        let(:headers) { { authorization: "Bearer #{token(user1)}" } }
+
+        before { get shop_plans_v1_food_path(food2), headers: headers }
+
+        it { is_expected.to eq(404) }
+        it { assert_schema_conform }
+      end
+
+      context 'with food in invited box' do
+        subject { response.status }
+
+        let(:headers) { { authorization: "Bearer #{token(user1)}" } }
+
+        before do
+          Invitation.create(box: box2, user: user1)
+          get shop_plans_v1_food_path(food2), headers: headers
+        end
+
+        it { is_expected.to eq(200) }
+        it { assert_schema_conform }
+      end
     end
   end
 

@@ -654,6 +654,43 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Version"
+        '404':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/foods/{id}/shop_plans":
+    get:
+      tags:
+      - Foods
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Past versions of the food
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ShopPlan"
+        '404':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
         '401':
           description: Error message
           content:

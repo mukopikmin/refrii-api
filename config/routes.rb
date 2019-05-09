@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :foods do
       member do
         get :versions
+        get :shop_plans
         get :image
         put :revert
       end

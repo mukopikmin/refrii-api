@@ -7,6 +7,14 @@ class ShopPlan < ApplicationRecord
     Food.all_with_invited(user).map(&:shop_plans).flatten
   end
 
+  # def self.done(user)
+  #   all_with_invited(user).select(&:done)
+  # end
+
+  # def self.undone(user)
+  #   all_with_invited(user).select { |p| !p.done }
+  # end
+
   def accessible_for?(user)
     food.box.accessible_for?(user)
   end
