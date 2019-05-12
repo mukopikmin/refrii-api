@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class BoxSerializer < ActiveModel::Serializer
+class BoxSerializer < ApplicationRecordSerializer
   attributes :id,
              :name,
              :notice,

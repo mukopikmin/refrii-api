@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class HttpErrorSerializer < ActiveModel::Serializer
+class HttpErrorSerializer < ApplicationRecordSerializer
   attributes :status,
              :message
 end

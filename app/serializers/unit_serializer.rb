@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UnitSerializer < ActiveModel::Serializer
+class UnitSerializer < ApplicationRecordSerializer
   attributes :id,
              :label,
              :step,

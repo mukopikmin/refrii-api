@@ -111,15 +111,6 @@ module V1
 
     # Only allow a trusted parameter "white list" through.
     def food_params
-      image = params[:image]
-
-      if image_attached?(image)
-        original = Magick::Image.from_blob(image.read).first
-        params[:image_file] = original.resize_to_fit(Settings.rmagick.width, Settings.rmagick.height).to_blob
-        params[:image_size] = params[:image_file].size
-        params[:image_content_type] = image.content_type
-      end
-
       params[:updated_user_id] = current_user.id
 
       params.permit(:name,
@@ -130,9 +121,7 @@ module V1
                     :box_id,
                     :unit_id,
                     :updated_user_id,
-                    :image_file,
-                    :image_size,
-                    :image_content_type)
+                    :image)
     end
 
     def box_accessible?

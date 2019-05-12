@@ -8,6 +8,7 @@ class Food < ApplicationRecord
   belongs_to :created_user, class_name: 'User'
   belongs_to :updated_user, class_name: 'User'
   has_many :shop_plans
+  has_one_attached :image
 
   validates_presence_of :name
   validates_presence_of :box

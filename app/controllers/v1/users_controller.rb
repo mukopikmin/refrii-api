@@ -64,7 +64,7 @@ module V1
       @user = User.new(user_params)
 
       if @user.save
-        render json: @user, status: :created, location: v1_users_path(@user)
+        render json: @user, status: :created
       else
         bad_request
       end
@@ -103,22 +103,11 @@ module V1
     end
 
     def user_params
-      avatar = params[:avatar]
-
-      if avatar_attached?(avatar)
-        original = Magick::Image.from_blob(avatar.read).first
-        params[:avatar_file] = original.resize_to_fit(Settings.rmagick.width, Settings.rmagick.height).to_blob
-        params[:avatar_size] = params[:avatar_file].size
-        params[:avatar_content_type] = avatar.content_type
-      end
-
       params.permit(:name,
                     :email,
                     :password,
                     :password_confirmation,
-                    :avatar_file,
-                    :avatar_size,
-                    :avatar_content_type)
+                    :avatar)
     end
 
     def push_token_params

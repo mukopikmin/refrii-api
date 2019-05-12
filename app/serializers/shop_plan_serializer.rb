@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ShopPlanSerializer < ActiveModel::Serializer
+class ShopPlanSerializer < ApplicationRecordSerializer
   attributes :id,
              :notice,
              :done,

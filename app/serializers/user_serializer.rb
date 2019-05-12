@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UserSerializer < ActiveModel::Serializer
+class UserSerializer < ApplicationRecordSerializer
   attributes :id,
              :name,
              :email,
@@ -12,6 +12,6 @@ class UserSerializer < ActiveModel::Serializer
              :updated_at
 
   def avatar_url
-    "#{ENV['HOSTNAME']}/users/#{object.id}/avatar" if object.avatar_exists?
+    object.avatar.attached? ? url_for(object.avatar) : nil
   end
 end
