@@ -2,9 +2,7 @@
 
 10.times do |i|
   User.create(name: FFaker::Name.name,
-              email: "test#{i}@test.com",
-              password: 'password',
-              password_confirmation: 'password')
+              email: "test#{i}@test.com")
 end
 
 20.times do

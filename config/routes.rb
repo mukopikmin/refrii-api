@@ -45,17 +45,10 @@ Rails.application.routes.draw do
       end
 
       member do
-        get :avatar
         post :push_token
       end
     end
 
     resources :shop_plans
-
-    post 'auth/local', to: 'authentication#local'
-    get 'auth/google/callback', to: 'authentication#google'
-    get 'auth/google/token', to: 'authentication#google_token'
-    get 'auth/auth0/callback', to: 'authentication#auth0'
-    get 'auth/failure', to: 'authentication#failure'
   end
 end

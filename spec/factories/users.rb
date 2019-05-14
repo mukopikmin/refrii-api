@@ -4,8 +4,6 @@ FactoryBot.define do
   factory :user do
     sequence(:name) { |n| "user#{n}" }
     sequence(:email) { |_n| "#{name}@test.com" }
-    password { 'secret' }
-    password_confirmation { 'secret' }
     disabled { false }
     admin { false }
 
@@ -38,8 +36,6 @@ FactoryBot.define do
   factory :no_email_user, class: User do
     name { 'no email user' }
     email { '' }
-    password { 'secret' }
-    password_confirmation { 'secret' }
     disabled { false }
     admin { false }
   end
@@ -47,8 +43,6 @@ FactoryBot.define do
   factory :no_name_user, class: User do
     name { '' }
     email { 'noname@test.com' }
-    password { 'secret' }
-    password_confirmation { 'secret' }
     disabled { false }
     admin { false }
   end
@@ -56,8 +50,6 @@ FactoryBot.define do
   trait 'with_avatar' do
     file = File.new(File.join('spec', 'resources', 'avatar.jpg'), 'rb')
 
-    avatar_file { file }
-    avatar_size { file.size }
-    avatar_content_type { 'image/jpeg' }
+    avatar { file }
   end
 end

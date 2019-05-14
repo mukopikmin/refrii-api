@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  has_secure_password
-
   has_many :boxes, class_name: 'Box', foreign_key: 'owner_id'
   has_many :units
   has_many :invitations
@@ -13,21 +11,12 @@ class User < ApplicationRecord
 
   validates_presence_of :name
   validates_presence_of :email
-  validates_presence_of :password_confirmation, if: :local_user?
   validates :email, presence: true,
                     format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
   validates_uniqueness_of :email, scope: :provider
 
-  def valid_password?(unencrypted_password)
-    BCrypt::Password.new(password_digest) == unencrypted_password && self
-  end
-
   def local_user?
     provider == 'local'
-  end
-
-  def avatar_exists?
-    !(avatar_file.nil? || avatar_size.nil? || avatar_content_type.nil?)
   end
 
   def invited_boxes
@@ -36,16 +25,6 @@ class User < ApplicationRecord
 
   def unit_owns?(label)
     units.map(&:label).include?(label)
-  end
-
-  def base64_avatar
-    return nil unless avatar_exists?
-
-    {
-      content_type: avatar_content_type,
-      size: avatar_size,
-      base64: Base64.strict_encode64(avatar_file)
-    }
   end
 
   def self.download_image(url)

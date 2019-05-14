@@ -34,19 +34,6 @@ module V1
       end
     end
 
-    # GET /users/1/avatar
-    def avatar
-      if @user.avatar_exists? && accessible?
-        if requested_base64?
-          render json: @user.base64_avatar
-        else
-          send_data @user.avatar_file, type: @user.avatar_content_type, disposition: 'inline'
-        end
-      else
-        not_found('Avatar does not exist.')
-      end
-    end
-
     # GET /users/search
     def search
       email = params[:email]
@@ -103,11 +90,7 @@ module V1
     end
 
     def user_params
-      params.permit(:name,
-                    :email,
-                    :password,
-                    :password_confirmation,
-                    :avatar)
+      params.permit(:name, :email, :avatar)
     end
 
     def push_token_params
@@ -122,10 +105,6 @@ module V1
 
     def requested_base64?
       params[:base64] == 'true'
-    end
-
-    def avatar_attached?(param)
-      !(param == 'null' || param == '' || param.nil?)
     end
   end
 end
