@@ -30,20 +30,6 @@ class Food < ApplicationRecord
     Box.all_with_invited(user).map(&:foods).flatten
   end
 
-  def image_exists?
-    !(image_file.nil? || image_size.nil? || image_content_type.nil?)
-  end
-
-  def base64_image
-    return nil unless image_exists?
-
-    {
-      content_type: image_content_type,
-      size: image_size,
-      base64: Base64.strict_encode64(image_file)
-    }
-  end
-
   def revert
     previous = paper_trail.previous_version
     unless previous.nil?

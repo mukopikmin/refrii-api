@@ -22,10 +22,6 @@ RSpec.describe "#{version.upcase}::FoodsController", type: :routing do
       expect(get: '/foods/1/shop_plans').to route_to("#{version}/foods#shop_plans", id: '1')
     end
 
-    it 'routes to #image' do
-      expect(get: '/foods/1/image').to route_to("#{version}/foods#image", id: '1')
-    end
-
     it 'routes to #create' do
       expect(post: '/foods').to route_to("#{version}/foods#create")
     end

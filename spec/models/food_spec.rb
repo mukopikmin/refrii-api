@@ -35,50 +35,6 @@ RSpec.describe Food, type: :model do
     it { is_expected.to eq([unit1, unit2]) }
   end
 
-  describe '#image_exists?' do
-    let(:user) { create(:user) }
-    let(:box) { create(:box, owner: user) }
-    let(:unit) { create(:unit, user: user) }
-
-    context 'when image exists' do
-      subject { food.image_exists? }
-
-      let(:food) { create(:food, :with_image, box: box, unit: unit, created_user: user, updated_user: user) }
-
-      it { is_expected.to be_truthy }
-    end
-
-    context 'when no image exists' do
-      subject { no_image_food.image_exists? }
-
-      let(:no_image_food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user) }
-
-      it { is_expected.to be_falsey }
-    end
-  end
-
-  describe '#base64_image' do
-    let(:user) { create(:user) }
-    let(:box) { create(:box, :with_image, owner: user) }
-    let(:unit) { create(:unit, user: user) }
-
-    context 'when image exists' do
-      let(:food) { create(:food, :with_image, box: box, unit: unit, created_user: user, updated_user: user) }
-
-      it 'returns image encoded by base64' do
-        expect(food.base64_image[:base64]).to be_a(String)
-      end
-    end
-
-    context 'when no image exists' do
-      let(:no_image_food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user) }
-
-      it 'returns nil' do
-        expect(no_image_food.base64_image).to be_nil
-      end
-    end
-  end
-
   describe '#revert' do
     let(:user) { create(:user) }
     let(:box) { create(:box, name: name_before, owner: user) }

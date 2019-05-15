@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemoveAvatarPasswordFromUsers < ActiveRecord::Migration[5.2]
   def change
     remove_column :users, :avatar_file, :binary

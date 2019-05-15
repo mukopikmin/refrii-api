@@ -16,7 +16,6 @@ Rails.application.routes.draw do
       member do
         get :versions
         get :shop_plans
-        get :image
         put :revert
       end
     end

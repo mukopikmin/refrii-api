@@ -56,19 +56,6 @@ module V1
       end
     end
 
-    # GET /foods/1/image
-    def image
-      if @food.image_exists? && box_accessible?
-        if requested_base64?
-          render json: @food.base64_image
-        else
-          send_data @food.image_file, type: @food.image_content_type, disposition: 'inline'
-        end
-      else
-        not_found('Image does not exist.')
-      end
-    end
-
     # PATCH/PUT /foods/1
     def update
       if !box_accessible?
@@ -117,7 +104,6 @@ module V1
                     :notice,
                     :amount,
                     :expiration_date,
-                    :needs_adding,
                     :box_id,
                     :unit_id,
                     :updated_user_id,
@@ -136,14 +122,6 @@ module V1
       else
         @food.assignable_units.map(&:id).include?(unit_id)
       end
-    end
-
-    def requested_base64?
-      params[:base64] == 'true'
-    end
-
-    def image_attached?(param)
-      !(param == 'null' || param == '' || param.nil?)
     end
   end
 end

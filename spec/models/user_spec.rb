@@ -41,7 +41,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-
   describe '#invited_boxes' do
     let(:boxes) { user2.invited_boxes }
     let(:user1) { create(:user) }

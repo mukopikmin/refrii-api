@@ -173,48 +173,6 @@ RSpec.describe 'Foods', type: :request do
     end
   end
 
-  describe 'GET /foods/:id/image' do
-    let(:user) { create(:user) }
-    let(:box) { create(:box, owner: user) }
-    let(:unit) { create(:unit, user: user) }
-    let(:food) { create(:food, :with_image, box: box, unit: unit, created_user: user, updated_user: user) }
-    let(:no_image_food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user) }
-
-    context 'without authentication' do
-      subject { response.status }
-
-      before { get image_v1_food_path(food) }
-
-      it { is_expected.to eq(401) }
-    end
-
-    context 'with authentication' do
-      context 'with image' do
-        subject { response.status }
-
-        before { get image_v1_food_path(food), headers: { authorization: "Bearer #{token(user)}" } }
-
-        it { is_expected.to eq(200) }
-      end
-
-      context 'with no image' do
-        subject { response.status }
-
-        before { get image_v1_food_path(no_image_food), headers: { authorization: "Bearer #{token(user)}" } }
-
-        it { is_expected.to eq(404) }
-      end
-
-      context 'with base64 requested param' do
-        subject { response.status }
-
-        before { get image_v1_food_path(food), headers: { authorization: "Bearer #{token(user)}" }, params: { base64: true } }
-
-        it { is_expected.to eq(200) }
-      end
-    end
-  end
-
   describe 'POST /foods' do
     context 'without authentication' do
       subject { response.status }

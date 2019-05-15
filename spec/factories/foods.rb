@@ -18,9 +18,7 @@ FactoryBot.define do
     trait :with_image do
       file = File.new(File.join('spec', 'resources', 'eggs.jpg'), 'rb')
 
-      image_file { file }
-      image_size { file.size }
-      image_content_type { 'image/jpg' }
+      image { file }
     end
   end
 

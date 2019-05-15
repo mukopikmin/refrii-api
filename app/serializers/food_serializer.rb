@@ -7,7 +7,6 @@ class FoodSerializer < ApplicationRecordSerializer
              :amount,
              :expiration_date,
              :image_url,
-             :needs_adding,
              :created_at,
              :updated_at
 
