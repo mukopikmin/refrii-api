@@ -18,4 +18,11 @@ class ShopPlan < ApplicationRecord
   def accessible_for?(user)
     food.box.accessible_for?(user)
   end
+
+  def complete
+    ActiveRecord::Base.transaction do
+      update(done: true)
+      food.update(amount: food.amount + amount)
+    end
+  end
 end
