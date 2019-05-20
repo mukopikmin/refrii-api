@@ -25,7 +25,7 @@ production:
   encoding: utf8
   reconnect: false
   pool: 5
-  host: ENV['MYSQL_HOSTNAME']
-  database: ENV['MYSQL_DATABASE']
-  username: ENV['MYSQL_USERNAME']
-  password: ENV['MYSQL_PASSWORD']
+  host: <%= ENV['MYSQL_HOSTNAME'] %>
+  database: <%= ENV['MYSQL_DATABASE'] %>
+  username: <%= ENV['MYSQL_USERNAME'] %>
+  password: <%= ENV['MYSQL_PASSWORD'] %>

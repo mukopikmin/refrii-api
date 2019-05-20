@@ -1,9 +1,9 @@
 .git
 .bundle
 .env
-db
 coverage
 log
 storage
 tmp
 vendor/bundle
+*.sqlite3

@@ -323,6 +323,9 @@ GEM
     websocket-driver (0.7.0)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
+    yaml_db (0.7.0)
+      rails (>= 3.0)
+      rake (>= 0.8.7)
     yard (0.9.19)
 
 PLATFORMS
@@ -362,6 +365,7 @@ DEPENDENCIES
   sqlite3
   tzinfo-data
   versionist (~> 1.7.0)
+  yaml_db (~> 0.7.0)
 
 BUNDLED WITH
    1.17.3

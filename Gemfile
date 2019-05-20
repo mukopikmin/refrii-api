@@ -52,3 +52,5 @@ group :production do
   gem 'mysql2', '~> 0.5.2'
   gem 'rails_12factor', '~> 0.0.3'
 end
+
+gem "yaml_db", "~> 0.7.0"

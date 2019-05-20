@@ -6,8 +6,12 @@ services:
       - 3000:3000
     depends_on:
       - db
+    volumes:
+      - ./db/data.yml:/app/db/data.yml
     environment:
       - SECRET_KEY_BASE
+      - RAILS_ENV=production
+      - RACK_ENV=production
       - MYSQL_DATABASE=refrii
       - MYSQL_USERNAME=root
       - MYSQL_PASSWORD=password
@@ -15,6 +19,8 @@ services:
     restart: unless-stopped
   db:
     image: mysql:5.7
+    ports:
+      - 3306:3306
     volumes:
       - ./db/data:/var/lib/mysql
     environment:
