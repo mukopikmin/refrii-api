@@ -5,9 +5,8 @@ WORKDIR /app
 ADD Gemfile Gemfile.lock ./
 RUN bundle install
 
-ADD . .
+COPY . /app
 
 EXPOSE 3000
 
-ENTRYPOINT [ "rails", "db:migrate" ]
-CMD ["rails", "server"]
+CMD ["bundle", "exec", "rails", "server"]

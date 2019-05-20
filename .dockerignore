@@ -4,5 +4,6 @@
 db
 coverage
 log
+storage
 tmp
 vendor/bundle

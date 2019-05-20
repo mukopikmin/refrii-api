@@ -5,21 +5,19 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      - postgres
+      - db
     environment:
       - SECRET_KEY_BASE
-      - POSTGRESQL_HOST=postgres
-      - POSTGRESQL_DATABASE
-      - POSTGRESQL_PORT=5432
-      - POSTGRESQL_USERNAME
-      - POSTGRESQL_PASSWORD
+      - MYSQL_DATABASE=refrii
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_HOSTNAME=db
     restart: unless-stopped
-  postgres:
-    image: postgres:9.6
+  db:
+    image: mysql:5.7
     volumes:
-      - ./db/data:/var/lib/postgresql/data
+      - ./db/data:/var/lib/mysql
     environment:
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
-      - POSTGRES_DB
+      - MYSQL_DATABASE=refrii
+      - MYSQL_ROOT_PASSWORD=password
     restart: unless-stopped
