@@ -7,3 +7,4 @@ storage
 tmp
 vendor/bundle
 *.sqlite3
+db/data
