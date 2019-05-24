@@ -103,45 +103,6 @@ RSpec.describe 'Users', type: :request do
     end
   end
 
-  describe 'GET /users/:id/avatar' do
-    let(:user) { create(:user, :with_avatar) }
-    let(:no_avatar_user) { create(:user) }
-
-    context 'without authentication' do
-      subject { response.status }
-
-      before { get avatar_v1_user_path(user) }
-
-      it { is_expected.to eq(401) }
-    end
-
-    context 'with authentication' do
-      context 'with image' do
-        subject { response.status }
-
-        before { get avatar_v1_user_path(user), headers: { authorization: "Bearer #{token(user)}" } }
-
-        it { is_expected.to eq(200) }
-      end
-
-      context 'with no image' do
-        subject { response.status }
-
-        before { get avatar_v1_user_path(no_avatar_user), headers: { authorization: "Bearer #{token(user)}" } }
-
-        it { is_expected.to eq(404) }
-      end
-
-      context 'with base64 requested param' do
-        subject { response.status }
-
-        before { get avatar_v1_user_path(user), headers: { authorization: "Bearer #{token(user)}" }, params: { base64: true } }
-
-        it { is_expected.to eq(200) }
-      end
-    end
-  end
-
   describe 'POST /users' do
     context 'with valid params' do
       subject { response.status }

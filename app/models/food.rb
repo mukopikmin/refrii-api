@@ -8,6 +8,7 @@ class Food < ApplicationRecord
   belongs_to :created_user, class_name: 'User'
   belongs_to :updated_user, class_name: 'User'
   has_many :shop_plans
+  has_one_attached :image
 
   validates_presence_of :name
   validates_presence_of :box
@@ -27,20 +28,6 @@ class Food < ApplicationRecord
 
   def self.all_with_invited(user)
     Box.all_with_invited(user).map(&:foods).flatten
-  end
-
-  def image_exists?
-    !(image_file.nil? || image_size.nil? || image_content_type.nil?)
-  end
-
-  def base64_image
-    return nil unless image_exists?
-
-    {
-      content_type: image_content_type,
-      size: image_size,
-      base64: Base64.strict_encode64(image_file)
-    }
   end
 
   def revert

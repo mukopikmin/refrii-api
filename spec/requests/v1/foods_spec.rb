@@ -86,53 +86,89 @@ RSpec.describe 'Foods', type: :request do
     end
 
     context 'with authentication' do
-      subject { response.status }
+      context 'with own foods' do
+        subject { response.status }
 
-      before { get versions_v1_food_path(food1), headers: { authorization: "Bearer #{token(user1)}" } }
+        let(:headers) { { authorization: "Bearer #{token(user1)}" } }
 
-      it { is_expected.to eq(200) }
-      it { assert_schema_conform }
+        before { get versions_v1_food_path(food1), headers: headers }
+
+        it { is_expected.to eq(200) }
+        it { assert_schema_conform }
+      end
+
+      context 'with other\'s food' do
+        subject { response.status }
+
+        let(:headers) { { authorization: "Bearer #{token(user1)}" } }
+
+        before { get versions_v1_food_path(food2), headers: headers }
+
+        it { is_expected.to eq(404) }
+        it { assert_schema_conform }
+      end
+
+      context 'with food in invited box' do
+        subject { response.status }
+
+        let(:headers) { { authorization: "Bearer #{token(user1)}" } }
+
+        before do
+          Invitation.create(box: box2, user: user1)
+          get versions_v1_food_path(food2), headers: headers
+        end
+
+        it { is_expected.to eq(200) }
+        it { assert_schema_conform }
+      end
     end
   end
 
-  describe 'GET /foods/:id/image' do
-    let(:user) { create(:user) }
-    let(:box) { create(:box, owner: user) }
-    let(:unit) { create(:unit, user: user) }
-    let(:food) { create(:food, :with_image, box: box, unit: unit, created_user: user, updated_user: user) }
-    let(:no_image_food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user) }
-
+  describe 'GET /foods/:id/shop_plans' do
     context 'without authentication' do
       subject { response.status }
 
-      before { get image_v1_food_path(food) }
+      before { get shop_plans_v1_food_path(food1) }
 
       it { is_expected.to eq(401) }
+      it { assert_schema_conform }
     end
 
     context 'with authentication' do
-      context 'with image' do
+      context 'with own foods' do
         subject { response.status }
 
-        before { get image_v1_food_path(food), headers: { authorization: "Bearer #{token(user)}" } }
+        let(:headers) { { authorization: "Bearer #{token(user1)}" } }
+
+        before { get shop_plans_v1_food_path(food1), headers: headers }
 
         it { is_expected.to eq(200) }
+        it { assert_schema_conform }
       end
 
-      context 'with no image' do
+      context 'with other\'s food' do
         subject { response.status }
 
-        before { get image_v1_food_path(no_image_food), headers: { authorization: "Bearer #{token(user)}" } }
+        let(:headers) { { authorization: "Bearer #{token(user1)}" } }
+
+        before { get shop_plans_v1_food_path(food2), headers: headers }
 
         it { is_expected.to eq(404) }
+        it { assert_schema_conform }
       end
 
-      context 'with base64 requested param' do
+      context 'with food in invited box' do
         subject { response.status }
 
-        before { get image_v1_food_path(food), headers: { authorization: "Bearer #{token(user)}" }, params: { base64: true } }
+        let(:headers) { { authorization: "Bearer #{token(user1)}" } }
+
+        before do
+          Invitation.create(box: box2, user: user1)
+          get shop_plans_v1_food_path(food2), headers: headers
+        end
 
         it { is_expected.to eq(200) }
+        it { assert_schema_conform }
       end
     end
   end

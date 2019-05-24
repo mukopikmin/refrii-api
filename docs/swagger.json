@@ -280,6 +280,55 @@
         }
       }
     },
+    "/shop_plans/{id}/complete": {
+      "put": {
+        "tags": [
+          "ShopPlans"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of shop plan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShopPlan"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/units": {
       "get": {
         "tags": [
@@ -1092,6 +1141,68 @@
               }
             }
           },
+          "404": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/foods/{id}/shop_plans": {
+      "get": {
+        "tags": [
+          "Foods"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Past versions of the food",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ShopPlan"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Error message",
             "content": {
@@ -1828,6 +1939,13 @@
           "amount": {
             "type": "number"
           },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "food": {
+            "$ref": "#/components/schemas/Food"
+          },
           "created_at": {
             "type": "string",
             "format": "date-time"
@@ -1842,6 +1960,7 @@
           "notice",
           "done",
           "amount",
+          "food",
           "created_at",
           "updated_at"
         ]
@@ -1937,12 +2056,6 @@
           "unit": {
             "$ref": "#/components/schemas/Unit"
           },
-          "shop_plans": {
-            "type": "array",
-            "item": {
-              "$ref": "#/components/schemas/ShopPlan"
-            }
-          },
           "created_user": {
             "$ref": "#/components/schemas/User"
           },
@@ -1961,7 +2074,6 @@
           "updated_at",
           "box",
           "unit",
-          "shop_plans",
           "created_user",
           "updated_user"
         ]

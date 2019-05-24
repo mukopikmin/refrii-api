@@ -12,6 +12,11 @@ components:
           type: boolean
         amount:
           type: number
+        date:
+          type: string
+          format: date
+        food:
+          $ref: "#/components/schemas/Food"
         created_at:
           type: string
           format: date-time
@@ -23,5 +28,6 @@ components:
         - notice
         - done
         - amount
+        - food
         - created_at
         - updated_at

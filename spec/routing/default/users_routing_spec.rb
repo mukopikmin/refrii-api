@@ -14,10 +14,6 @@ RSpec.describe "#{version.upcase}::UsersController", type: :routing do
       expect(get: '/users/1').to route_to("#{version}/users#show", id: '1')
     end
 
-    it 'routes to #avatar' do
-      expect(get: '/users/1/avatar').to route_to("#{version}/users#avatar", id: '1')
-    end
-
     it 'routes to #create' do
       expect(post: '/users').to route_to("#{version}/users#create")
     end

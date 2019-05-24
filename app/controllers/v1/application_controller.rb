@@ -38,7 +38,6 @@ module V1
           user = User.new(name: payload['name'],
                           email: email,
                           provider: 'google',
-                          password_digest: 'no password',
                           avatar_file: avatar[:file],
                           avatar_size: avatar[:size],
                           avatar_content_type: avatar[:content_type])

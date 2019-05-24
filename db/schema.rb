@@ -12,7 +12,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_190_426_234_951) do
+ActiveRecord::Schema.define(version: 20_190_515_121_816) do
+  create_table 'active_storage_attachments', force: :cascade do |t|
+    t.string 'name', null: false
+    t.string 'record_type', null: false
+    t.integer 'record_id', null: false
+    t.integer 'blob_id', null: false
+    t.datetime 'created_at', null: false
+    t.index ['blob_id'], name: 'index_active_storage_attachments_on_blob_id'
+    t.index %w[record_type record_id name blob_id], name: 'index_active_storage_attachments_uniqueness', unique: true
+  end
+
+  create_table 'active_storage_blobs', force: :cascade do |t|
+    t.string 'key', null: false
+    t.string 'filename', null: false
+    t.string 'content_type'
+    t.text 'metadata'
+    t.bigint 'byte_size', null: false
+    t.string 'checksum', null: false
+    t.datetime 'created_at', null: false
+    t.index ['key'], name: 'index_active_storage_blobs_on_key', unique: true
+  end
+
   create_table 'boxes', force: :cascade do |t|
     t.string 'name', null: false
     t.text 'notice'
@@ -30,16 +51,12 @@ ActiveRecord::Schema.define(version: 20_190_426_234_951) do
     t.text 'notice'
     t.float 'amount'
     t.date 'expiration_date'
-    t.binary 'image_file'
-    t.integer 'image_size'
-    t.string 'image_content_type'
     t.integer 'box_id', null: false
     t.integer 'unit_id'
     t.integer 'created_user_id'
     t.integer 'updated_user_id'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
-    t.boolean 'needs_adding', default: false
     t.index ['box_id'], name: 'index_foods_on_box_id'
     t.index ['created_user_id'], name: 'index_foods_on_created_user_id'
     t.index ['unit_id'], name: 'index_foods_on_unit_id'
@@ -87,13 +104,9 @@ ActiveRecord::Schema.define(version: 20_190_426_234_951) do
   create_table 'users', force: :cascade do |t|
     t.string 'name', null: false
     t.string 'email', null: false
-    t.string 'password_digest'
     t.boolean 'disabled', default: false, null: false
     t.boolean 'admin', default: false, null: false
     t.string 'provider', default: 'local', null: false
-    t.integer 'avatar_size'
-    t.string 'avatar_content_type'
-    t.binary 'avatar_file'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
     t.index ['email'], name: 'index_users_on_email'

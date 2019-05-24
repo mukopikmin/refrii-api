@@ -3,12 +3,12 @@
 module V1
   class ShopPlansController < V1::ApplicationController
     before_action :authenticate_request!
-    before_action :set_shop_plan, only: %i[show update destroy]
+    before_action :set_shop_plan, only: %i[show update complete destroy]
     before_action :set_food, only: %i[create]
 
     # GET /shop_plans
     def index
-      @shop_plans = ShopPlan.all_with_invited(User.all.first)
+      @shop_plans = ShopPlan.all_with_invited(current_user)
 
       render json: @shop_plans
     end
@@ -40,6 +40,17 @@ module V1
       if !accessible?
         not_found
       elsif !@shop_plan.update(shop_plan_params)
+        bad_request
+      else
+        render json: @shop_plan
+      end
+    end
+
+    # PATCH/PUT /shop_plans/1/complete
+    def complete
+      if !accessible?
+        not_found
+      elsif !@shop_plan.complete
         bad_request
       else
         render json: @shop_plan

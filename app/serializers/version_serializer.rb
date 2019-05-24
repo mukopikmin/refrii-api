@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class VersionSerializer < ActiveModel::Serializer
+class VersionSerializer < ApplicationRecordSerializer
   attributes :id,
              :item_id,
              :event,

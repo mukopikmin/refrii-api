@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UnitSerializer < ActiveModel::Serializer
+class UnitSerializer < ApplicationRecordSerializer
   attributes :id,
              :label,
              :step,
@@ -8,5 +8,4 @@ class UnitSerializer < ActiveModel::Serializer
              :updated_at
 
   belongs_to :user
-  # has_many :foods
 end

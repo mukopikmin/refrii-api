@@ -34,19 +34,6 @@ module V1
       end
     end
 
-    # GET /users/1/avatar
-    def avatar
-      if @user.avatar_exists? && accessible?
-        if requested_base64?
-          render json: @user.base64_avatar
-        else
-          send_data @user.avatar_file, type: @user.avatar_content_type, disposition: 'inline'
-        end
-      else
-        not_found('Avatar does not exist.')
-      end
-    end
-
     # GET /users/search
     def search
       email = params[:email]
@@ -64,7 +51,7 @@ module V1
       @user = User.new(user_params)
 
       if @user.save
-        render json: @user, status: :created, location: v1_users_path(@user)
+        render json: @user, status: :created
       else
         bad_request
       end
@@ -103,22 +90,7 @@ module V1
     end
 
     def user_params
-      avatar = params[:avatar]
-
-      if avatar_attached?(avatar)
-        original = Magick::Image.from_blob(avatar.read).first
-        params[:avatar_file] = original.resize_to_fit(Settings.rmagick.width, Settings.rmagick.height).to_blob
-        params[:avatar_size] = params[:avatar_file].size
-        params[:avatar_content_type] = avatar.content_type
-      end
-
-      params.permit(:name,
-                    :email,
-                    :password,
-                    :password_confirmation,
-                    :avatar_file,
-                    :avatar_size,
-                    :avatar_content_type)
+      params.permit(:name, :email, :avatar)
     end
 
     def push_token_params
@@ -133,10 +105,6 @@ module V1
 
     def requested_base64?
       params[:base64] == 'true'
-    end
-
-    def avatar_attached?(param)
-      !(param == 'null' || param == '' || param.nil?)
     end
   end
 end
