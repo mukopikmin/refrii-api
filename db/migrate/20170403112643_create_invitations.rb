@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreateInvitations < ActiveRecord::Migration[5.0]
+class CreateInvitations < ActiveRecord::Migration[5.2]
   def change
     create_table :invitations do |t|
       t.references :box, null: false

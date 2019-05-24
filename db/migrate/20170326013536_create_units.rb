@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreateUnits < ActiveRecord::Migration[5.0]
+class CreateUnits < ActiveRecord::Migration[5.2]
   def change
     create_table :units do |t|
       t.string :label, null: false, unique: true
