@@ -5,24 +5,45 @@ steps:
       - -t
       - gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
       - .
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
   - name: gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
     args: 
       - bundle
       - exec
-      - rake
+      - rails
       - spec
   - name: gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
     args: 
       - bundle
       - exec
-      - rake
+      - rails
       - rubocop
+  - name: gcr.io/cloud-builders/gcloud
+    args:
+      - kms
+      - decrypt
+      - --ciphertext-file=credentials.staging.json.enc
+      - --plaintext-file=/kms/credentials.staging.json
+      - --location=global
+      - --keyring=refrii-api
+      - --key=$BRANCH_NAME
+    volumes:
+      - name: kms
+        path: /kms
   - name: gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
-    args: 
-      - bundle
-      - exec
-      - rake
-      - db:migrate
+    args:
+      - sh
+      - migrate.sh
+      - $BRANCH_NAME
+    volumes:
+      - name: kms
+        path: /kms
+    env:
+      - RAILS_ENV=production
+      - RACK_ENV=production
     secretEnv:
       - GOOGLE_CLIENT_EMAIL
       - GOOGLE_CLIENT_ID
@@ -37,22 +58,14 @@ steps:
       - FIREBASE_PROJECT_ID
       - SECRET_KEY_BASE
   - name: gcr.io/cloud-builders/gcloud
+    entrypoint: sh
     args: 
-      - gcloud
-      - beta
-      - run
-      - deploy
-      - refrii-api-production
-      - --image
-      - asia.gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
-      - --add-cloudsql-instances
-      - refrii-api
-      - --allow-unauthenticated
-      - --region
-      - us-central1
-      - --memory
-      - 512Mi
-    # entrypoint: bash
+      - deploy.sh
+      - refrii-api-staging
+      - gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
+    env:
+      - RAILS_ENV=production
+      - RACK_ENV=production
     secretEnv:
       - GOOGLE_CLIENT_EMAIL
       - GOOGLE_CLIENT_ID
@@ -67,19 +80,19 @@ steps:
       - FIREBASE_PROJECT_ID
       - SECRET_KEY_BASE
 secrets:
-  - kmsKeyName: projects/refrii-169906/locations/global/keyRings/refrii-api/cryptoKeys/production
+  - kmsKeyName: projects/refrii-169906/locations/global/keyRings/refrii-api/cryptoKeys/staging
     secretEnv:
-      GOOGLE_CLIENT_EMAIL: CiQAupArw+Tuz86wEc6fon+TvSLnt9dmpTu12Ee1wY4Y4cfiaVESQAD/p2USDc36bt4FZcIgK0bNLOyMGSu/6jJuBCJVYonQFYDYA6UrWYiWpQ8zFZdE6949xwv9yTucRHp3p02WUZE=
-      GOOGLE_CLIENT_ID: CiQAupArw+HwbkZ1i60oZnYmSxRXxd3IiIIOvUTjcwM20N+JIXESPQD/p2USCh79POapT7sz81+iJcCTcHBigV+58d0b0Wvtk3i9MdBXmhghjFv0ShHTaY0CbVqySaoOY7RpUW4=
-      GOOGLE_CLOUD_STORAGE_BUCKET: CiQAupArwxTZtI0ztuq2U2YMRr0SwHJ6PkvNWBd3IZx3hwN+KkESSAD/p2US9ndx27MtpT/Bzx61mXns5FvsQvfn8Xmz6/WBHHpv9A0WXFydGddTUz0ViVcfOnzXKAAkgAiuVLJYTTaxS/iXhANmkw==
-      GOOGLE_PRIVATE_KEY: CiQAupArw+Nmh9mvcjaiPKBFN3jl8E/5aW8PDaLh3m0pNNsZJR0SPwD/p2USC0B9ncdBFCzXvSKDrlSUM1sGWSJZxinYDnDgFjhPAxID8tSbDRDaNg47+gIhgbH3X92ujqCkIRQtZg==
-      GOOGLE_PRIVATE_KEY_ID: CiQAupArw1yalK7Qm1lTdw9zXpEqQ6WXXHfNeWBmJwzCKxWTsF4SQgD/p2USdlPawORtg7W8zea/ll7v7Ryw1JIawZ/OVuhZvO324iL0rhIaOfwWmEaPmBb5GGHuGek9k5V+flc9aUnCsQ==
-      GOOGLE_X509_CERT_URL: CiQAupArw0eTjj5fHdTWRBRfs4/UKayZUf2qGvnWJX5836LaQB0SQQD/p2USvN0rLmRpGsa9MMTLYG9n+nyfMi57FkXMmF6AZMJ2WnuFUluEOfhoOrmm4nL4TMkH4gB13xcAjhyg+1tZ
-      MYSQL_SOCKET: CiQAupArw56YmCiw8TAcFnORlADSV1im8FsEfWi82f6RbMvqs/QSOQD/p2USymWZZV2TdxeL0g6z3uCIreAV481LnPBM/rvRgiEMbwaxN3fgmtOygL0SrjPEN0OzC7a9Xg==
-      MYSQL_DATABASE: CiQAupArw22lC+c/fReuBcW8cQBwqvCqe/E0YB7vql3gwr3HHG8SOwD/p2USM1LpG7MZrmR3DcYwJwsSw5muAwcYgh9dZvlGIlJJ9QFE8Q44e+6Wq7RDfiVtCipYYU9gjFjk
-      MYSQL_USERNAME: CiQAupArwwIACVbla6F2QLgcRR6JlM015pFMhqSNCfAGQW3qkOoSOwD/p2USbMzPgaMij0dnSsD1o4cIp0NqfsOYvJaUKSksJRUNXIL/5ijRr05x0hQo3APIqZv5Ii91+ZIh
-      MYSQL_PASSWORD: CiQAupArwx0DMaafskCy0c19EmBwJ06gkOiOsby8MBMvDSpsiVASOwD/p2USG95gLBzdLe4XAN5pDceZQRwS2n4YYYlzOkF1uVrVIRDyPlJuS/zzyW1CAVgiQU5YO3jMJfXX
-      FIREBASE_PROJECT_ID: CiQAupArw3DD1wpKmXe7GlgazIHMkc77e8t9kcFeg1W0FPjAljoSQAD/p2USTUydPpUOLrCeJ5os90JHnDELfyAbvDjQ0cuSwr5hp46rgmNW7JIQY6kqbHH+lP82dNya9zEg0+Td3Eg=
-      SECRET_KEY_BASE: CiQAupArw8V5541Zywi5nmnGWF0PHS8drlgDLJdoIUj9Ic91M0wSPAD/p2USx/dJdbouBFS6Xwx/z/VZK/P4qTLbQt61nDnFX0VK4TRhcBABiSqiX9cCjzyepRGVnQ8gUEW07Q==
+      GOOGLE_CLIENT_EMAIL: CiQAeSpaetP7JQvjvsR0QSWoHtJvEcUYYOpzrFe6hRylFl6OcMcSYQCCQeAU+5v722eTr16mxYTJeeHge602INIiyT51d+YAokUNbLUZgNuAzTMX+YAAc7QdP25/9TarytEL7ovxrLhcQE4LJCa3AHhKc13puehRaNCcTCviX1QAxWQxpFzHajg=
+      GOOGLE_CLIENT_ID: CiQAeSpaekzpay1y9tianZZZVvz+VtKbOziQBpbkaDJYqfuOwL4SPwCCQeAUjWEyatKyBq8bCWG9QeMSAcHhFNp8POYDXjJBCx+CsGDoGWI9hssxoLOzWBO9l+I/Z5WECQb2yByIow==
+      GOOGLE_CLOUD_STORAGE_BUCKET: CiQAeSpaeq41haN+gBwEWWkm2SbkpVM0oRd2N0VcVUrPlsMVrfISPwCCQeAUYnHlQCKfh8emNzIG8rahZlfn2b3PEZmd0Q6OwPzTog1jynLKW0AB4PKNEgHm4sAomAWdiRtqO7TxEg==
+      GOOGLE_PRIVATE_KEY: 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
+      GOOGLE_PRIVATE_KEY_ID: CiQAeSpaejPFKnb5MMRetAzsb4k3DT5ZrtKWUlSGl4VSFfJu9UASUgCCQeAU64PGbY1Afjo+gLCQW6rN4M1m3FdwRoVnm0aglumtQuthK0Q84pahXYfNt7tKGuV3l8uMcsBbs9V0y/ntX4AupB7doMMPYZZyNCYrxII=
+      GOOGLE_X509_CERT_URL: CiQAeSpaeu3Xfne1nEU8oatyetQY7eE+YKEaV60LBm7nkpI4KQYSlQEAgkHgFM1zcnAaBUurZn/qD80LsFPynGYRV4J+alUO1WKegemTKfFtywjkxKJX6nVerY3QNkQf9OFulJLjkyjY9GkvCnkicnvzOoWgvCAZ65oCK1mUVALgOKhBRAAewdNrDz3zrfl9290xfSbP/W90l/XCK+dBRwsmZ1TBi5Y+EfU3XyxG9dJrD+PdqLACVWTrW76jHw==
+      MYSQL_SOCKET: CiQAeSpaeqgDAcmbndIee6Wehr0tMRNqhtppBwnxaWGVKzGhkUoSWACCQeAUHLWEW1kLj6JaCJl8A7t+AY0coeqD5XWHKAa+eLrRTrBzsvSz/86WQN2EIjuWy6g144lHvVP7NNiBTCdEvZbbmqtwaQXIklD9GTstPw9o73VMUTg=
+      MYSQL_DATABASE: CiQAeSpaemhUl7vdoBsX9xlh6Nf2aBtHp/N/WumG+pGjjmp0oLcSOACCQeAUaYAknChNUAR2VjXq/lzyEam52weg7DRvK2nDhxXf+Ef0q+N6l4KC4F+jVxZLjBRps4pw
+      MYSQL_USERNAME: CiQAeSpaeonbfVojGnVEig7fcpG9mKFoQPWgKwy4CUGhrHdnEqcSLgCCQeAU4YJ4F4/60VRZapaZDwgvnUSAKfAkOLZwLWvJN5LOtx1CbocCbum+4Ms=
+      MYSQL_PASSWORD: CiQAeSpaeuundpa8tvDSdJ7WRYfJNievzBbceFQBqvaPskdA3CoSOgCCQeAUt7MCdISdtvziBjuHi/QuEW2bvl+34DdEC1plrWti3uUhtJQfI830Q49vTQasINnWZiPwh1U=
+      FIREBASE_PROJECT_ID: CiQAeSpaeiamQoKYTHKOdIPy4OG9HzGJJpDb+JIHW+HaT6o/nJoSNwCCQeAUx/T9QiqxBp3FndFTFQf59YzbB0PQZpUUvwidGaeHRlQm8QVakxztMTepxSttYaq+P7o=
+      SECRET_KEY_BASE: CiQAeSpaeuQSN0XCV/GZ1hJWrpk/wjN4317zIp12GPM/EJadfjUSqwEAgkHgFFYKdlRsNxhuByQVPUurwu6JkooXV4CGUngsbdJisBdfgwbMRm+byg1KZR6hAYIBFX9gW0MeG1vGEqtvb1gmzhUv8Jjn3ibv2+r1LhYOXEFewKFxirw4gOzVXEuZ7Kf7wM2vuCS8VcHBUSSmYdJ6zqVAybmcGyjvLnB6oDTwY3fMD0zRaDtK17F4j+i8kZTbnfstQ30bdgNiyaYYtDZdFO1AF1UkBuE=
 images:
   - gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
