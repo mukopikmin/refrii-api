@@ -25,7 +25,8 @@ production:
   encoding: utf8
   reconnect: false
   pool: 5
-  host: <%= ENV['MYSQL_HOSTNAME'] %>
+  # host: <%= ENV['MYSQL_HOSTNAME'] %>
+  socket: <%= ENV['MYSQL_SOCKET'] %>
   database: <%= ENV['MYSQL_DATABASE'] %>
   username: <%= ENV['MYSQL_USERNAME'] %>
   password: <%= ENV['MYSQL_PASSWORD'] %>

@@ -1,0 +1,21 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args: 
+      - build
+      - -t
+      - gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
+      - .
+  - name: gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
+    args: 
+      - bundle
+      - exec
+      - rake
+      - spec
+  - name: gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
+    args: 
+      - bundle
+      - exec
+      - rake
+      - rubocop
+images:
+  - gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME

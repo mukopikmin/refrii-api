@@ -1,0 +1,85 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args: 
+      - build
+      - -t
+      - gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
+      - .
+  - name: gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
+    args: 
+      - bundle
+      - exec
+      - rake
+      - spec
+  - name: gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
+    args: 
+      - bundle
+      - exec
+      - rake
+      - rubocop
+  - name: gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
+    args: 
+      - bundle
+      - exec
+      - rake
+      - db:migrate
+    secretEnv:
+      - GOOGLE_CLIENT_EMAIL
+      - GOOGLE_CLIENT_ID
+      - GOOGLE_CLOUD_STORAGE_BUCKET
+      - GOOGLE_PRIVATE_KEY
+      - GOOGLE_PRIVATE_KEY_ID
+      - GOOGLE_X509_CERT_URL
+      - MYSQL_SOCKET
+      - MYSQL_DATABASE
+      - MYSQL_USERNAME
+      - MYSQL_PASSWORD
+      - FIREBASE_PROJECT_ID
+      - SECRET_KEY_BASE
+  - name: gcr.io/cloud-builders/gcloud
+    args: 
+      - gcloud
+      - beta
+      - run
+      - deploy
+      - refrii-api-production
+      - --image
+      - asia.gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
+      - --add-cloudsql-instances
+      - refrii-api
+      - --allow-unauthenticated
+      - --region
+      - us-central1
+      - --memory
+      - 512Mi
+    # entrypoint: bash
+    secretEnv:
+      - GOOGLE_CLIENT_EMAIL
+      - GOOGLE_CLIENT_ID
+      - GOOGLE_CLOUD_STORAGE_BUCKET
+      - GOOGLE_PRIVATE_KEY
+      - GOOGLE_PRIVATE_KEY_ID
+      - GOOGLE_X509_CERT_URL
+      - MYSQL_SOCKET
+      - MYSQL_DATABASE
+      - MYSQL_USERNAME
+      - MYSQL_PASSWORD
+      - FIREBASE_PROJECT_ID
+      - SECRET_KEY_BASE
+secrets:
+  - kmsKeyName: projects/refrii-169906/locations/global/keyRings/refrii-api/cryptoKeys/production
+    secretEnv:
+      GOOGLE_CLIENT_EMAIL: CiQAupArwyCm+TNcs5xqNcJhGF5A1mD1jPAzMVTuqDXkYdWKb7sSQAD/p2USm0eYjhINsVkfIAF+fOcLNXUQpV/5tmnW5S+uxJBYGu6bRWg0Vqm5poZ06G4EPIOj6QNM3rYVfv/Mwg4=
+      GOOGLE_CLIENT_ID: CiQAupArw2xHjCuBiX+/bvEJhYmMzzrt3cT0b9yASef13Wm5PF8SPQD/p2USCTQ5oPoXJ6lZBZYw9rl69aUXFV5p3wPQN5P3IqAolRkh6o+aFB8opC9Li+RY5A7ZetqqSto4uNQ=
+      GOOGLE_CLOUD_STORAGE_BUCKET: CiQAupArw1vZR2k60VDIARovN7yw91WR6lZFCaVp9x8ecu5c2UoSSAD/p2USeCaA18JaeY4l11rBOtgFfnPDPKOGycA79CbMln7Dey2JifuKMl5n0/drxKnNFBblvuL2l3b6cQ3R2ksKLSh7y4wqOQ==
+      GOOGLE_PRIVATE_KEY: CiQAupArw/RYS2EHp0pc4W0hUZuIrOSBArIkiiL/YPYBGcdjNecSPwD/p2USO3fk2Z2HRRE19oTlN82gFdVu00IT8B5vzFews3Dxlt+1E0BGzeCMSK2SFIznJmJsuuqhI2adtl9U3Q==
+      GOOGLE_PRIVATE_KEY_ID: CiQAupArw3nQ0AIn+IURiR4kuQBbo01F7UTydWKFswLVli9j4fMSQgD/p2USu2Ly+Gx2W77Nt8mJA6h43KZwHHlLZetufPy2NkHeYZLZA5YYpYDfnIgvP4Zb+pp8mgVBJZvzNqf/qY5/cg==
+      GOOGLE_X509_CERT_URL: CiQAupArwyYBadssD8TCnc4zKCc1p3lBusbPcaudw6afek5j+goSQQD/p2USnOCp8HGTr9bbHhs+cdDlGgH7DniXMgySDNArK/XreDEcu10rYzyKCYIzYQXcAkviA7HuKpxUWF68wtD1
+      MYSQL_SOCKET: CiQAupArw9hF4xN8BecTrj9WE1wJNWHv94O3NjvTUvF+VwSwWRkSOQD/p2USL/ZeV0ONMIQLE6+s6LFKa9udHPCTXKD7TuvB+3/ztlcANRO1bZrTQBw6iHPlDGoxEQi28g==
+      MYSQL_DATABASE: CiQAupArw+XodggABDLKsn/7+q4TD7SdquxazpAKieLdoCexdJESOwD/p2USFWXVHReBtjR2Pbe0iCdO1zE1AaKtaT9wOPC5Ub3Y1xf/41wSHqqIAPrv8RJ17dRcKifwICHa
+      MYSQL_USERNAME: CiQAupArw8+F7FyM/Yx8RnOVHUqHH14vl844OfMw/Y555lw5h7ISOwD/p2USU0siiTARsOWMKAclhhOnLoBEeMJJlsrlBjfbeAa+KG2ruhPlcvik3ToE4W7b4c7mFn9h/906
+      MYSQL_PASSWORD: CiQAupArw7lCJDCn57pOAxhtsoBMgLUra9kujvjKhnsmnYyZ+rYSOwD/p2USNo57Ao11V6D5ACwmC1F9/31vRppn709dTNOCKcksqpNBdncDVJlj3uYg6u2smDtGJScBedqb
+      FIREBASE_PROJECT_ID: CiQAupArw8SXLO4axRBqZN4cmQ/H3OPxBvXGD5EHXM7bvyEIZsQSQAD/p2USSpVL4oAyfqHff9ioAZc4obhyI4K8WWHfsLfz5UfijaBjsJBKg+OXan3Ee/oGnRemQe0kq/mLTxVUa24=
+      SECRET_KEY_BASE: CiQAupArwwDfKS94JfXiiO98ZuCYdgiFDIEaDDmpULxctoenga0SPAD/p2USvjIzDM/0f80aEQYlKhR2Ratv2L2RL8X6gJAuvn/yftZ4UP5YkiBTNsWvk1slyr3JMRSsmPFfMw==
+images:
+  - gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
