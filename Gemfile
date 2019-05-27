@@ -49,6 +49,8 @@ group :test do
 end
 
 group :production do
-  gem 'pg', '~> 1.1.4'
+  gem 'mysql2', '~> 0.5.2'
   gem 'rails_12factor', '~> 0.0.3'
 end
+
+gem "yaml_db", "~> 0.7.0"
