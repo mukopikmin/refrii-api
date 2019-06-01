@@ -29,7 +29,7 @@ steps:
       - --plaintext-file=/kms/credentials.production.json
       - --location=global
       - --keyring=refrii-api
-      - --key=$BRANCH_NAME
+      - --key=production
     volumes:
       - name: kms
         path: /kms

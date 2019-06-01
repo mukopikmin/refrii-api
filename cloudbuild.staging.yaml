@@ -29,7 +29,7 @@ steps:
       - --plaintext-file=/kms/credentials.staging.json
       - --location=global
       - --keyring=refrii-api
-      - --key=$BRANCH_NAME
+      - --key=staging
     volumes:
       - name: kms
         path: /kms
