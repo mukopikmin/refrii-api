@@ -34,14 +34,10 @@ module V1
         if User.exists?(email: email)
           true
         else
-          avatar = User.download_image(payload['picture'])
-          user = User.new(name: payload['name'],
-                          email: email,
-                          provider: 'google',
-                          avatar_file: avatar[:file],
-                          avatar_size: avatar[:size],
-                          avatar_content_type: avatar[:content_type])
-          user.save
+          name = payload['name']
+          picture_url = payload['picture']
+          
+          User.register_from_google(name, email, picture_url)
         end
       else
         false

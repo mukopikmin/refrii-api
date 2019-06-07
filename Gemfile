@@ -53,4 +53,4 @@ group :production do
   gem 'rails_12factor', '~> 0.0.3'
 end
 
-gem "yaml_db", "~> 0.7.0"
+gem 'yaml_db', '~> 0.7.0'

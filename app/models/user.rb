@@ -27,20 +27,23 @@ class User < ApplicationRecord
     units.map(&:label).include?(label)
   end
 
-  def self.download_image(url)
+  def self.register_from_google(name, email, avatar_url)
     Tempfile.open do |tempfile|
-      response = RestClient.get(url)
+      response = RestClient.get(avatar_url)
       image = response.body
       content_type = response.headers[:content_type]
 
       tempfile.binmode
       tempfile.write(image)
 
-      {
-        file: tempfile.open.read,
-        size: tempfile.size,
-        content_type: content_type
-      }
+      user = User.create(name: name,
+                         email: email,
+                         provider: 'google')
+      user.avatar.attach(io: tempfile.open,
+                         filename: File.basename(tempfile.path),
+                         content_type: content_type)
+      
+      user.persisted?
     end
   end
 end
