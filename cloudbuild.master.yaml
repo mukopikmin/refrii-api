@@ -25,7 +25,7 @@ steps:
     args:
       - kms
       - decrypt
-      - --ciphertext-file=credentials.master.json.enc
+      - --ciphertext-file=credentials/credentials.master.json.enc
       - --plaintext-file=/kms/credentials.master.json
       - --location=global
       - --keyring=refrii-api
@@ -34,9 +34,9 @@ steps:
       - name: kms
         path: /kms
   - name: gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
+    entrypoint: sh
     args:
-      - sh
-      - migrate.sh
+      - scripts/migrate.sh
       - $BRANCH_NAME
     volumes:
       - name: kms
@@ -60,7 +60,7 @@ steps:
   - name: gcr.io/cloud-builders/gcloud
     entrypoint: sh
     args: 
-      - deploy.sh
+      - scripts/deploy.sh
       - refrii-api-production
       - gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
     env:
