@@ -1,6 +1,6 @@
 .git
 .bundle
-.env
+.env*
 coverage
 log
 storage
@@ -8,3 +8,4 @@ tmp
 vendor/bundle
 *.sqlite3
 db/data
+credentials/*.json
