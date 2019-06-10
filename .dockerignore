@@ -1,11 +1,13 @@
-.git
 .bundle
 .env*
+.git
 coverage
+credentials/*.json
+db/data
 log
 storage
 tmp
 vendor/bundle
+
 *.sqlite3
-db/data
-credentials/*.json
+cloud_sql_proxy
