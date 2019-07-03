@@ -326,7 +326,7 @@ GEM
     yaml_db (0.7.0)
       rails (>= 3.0)
       rake (>= 0.8.7)
-    yard (0.9.19)
+    yard (0.9.20)
 
 PLATFORMS
   ruby
