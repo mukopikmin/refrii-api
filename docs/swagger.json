@@ -635,14 +635,13 @@
             }
           }
         }
-      },
+      }
+    },
+    "/users/google": {
       "post": {
         "tags": [
           "Users"
         ],
-        "requestBody": {
-          "$ref": "#/components/requestBodies/postUsers"
-        },
         "responses": {
           "201": {
             "description": "",
@@ -655,16 +654,6 @@
             }
           },
           "400": {
-            "description": "Error message",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "401": {
             "description": "Error message",
             "content": {
               "application/json": {
@@ -1825,30 +1814,6 @@
             ]
           }
         ]
-      }
-    },
-    "/auth": {
-      "post": {
-        "tags": [
-          "Authentication"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success authorization",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Credential"
-                }
-              },
-              "image/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Credential"
-                }
-              }
-            }
-          }
-        }
       }
     }
   },

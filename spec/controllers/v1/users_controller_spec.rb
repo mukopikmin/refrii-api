@@ -42,24 +42,52 @@ RSpec.describe V1::UsersController, type: :controller do
     end
   end
 
-  describe 'POST #create' do
+  describe 'POST #createwith_google' do
     context 'with valid params' do
+      let(:params) do
+        {
+          email: 'test@test.com',
+          name: 'test',
+          avatar_url: nil
+        }
+      end
+
+      before do
+        allow_any_instance_of(V1::UsersController)
+          .to receive(:google_signup_params)
+          .and_return(params)
+      end
+
       it 'creates a new User' do
         expect do
-          post :create, params: attributes_for(:user)
+          post :create_with_google
         end.to change(User, :count).by(1)
       end
 
       it 'assigns a newly created user as @user' do
-        post :create, params: attributes_for(:user)
+        post :create_with_google
         expect(assigns(:user)).to be_a(User)
         expect(assigns(:user)).to be_persisted
       end
     end
 
     context 'with invalid params' do
+      let(:params) do
+        {
+          email: nil,
+          name: 'test',
+          avatar_url: nil
+        }
+      end
+
+      before do
+        allow_any_instance_of(V1::UsersController)
+          .to receive(:google_signup_params)
+          .and_return(params)
+      end
+
       it 'assigns a newly created but unsaved user as @user' do
-        post :create, params: attributes_for(:no_email_user)
+        post :create_with_google
         expect(assigns(:user)).to be_a(User)
         expect(assigns(:user)).not_to be_persisted
       end

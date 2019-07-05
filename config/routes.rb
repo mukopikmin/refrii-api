@@ -41,6 +41,7 @@ Rails.application.routes.draw do
       collection do
         get :verify
         get :search
+        post 'google' => :create_with_google
       end
 
       member do
