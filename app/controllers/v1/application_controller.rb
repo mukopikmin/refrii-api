@@ -31,14 +31,7 @@ module V1
         payload = auth_token['decoded_token'][:payload]
         email = payload['email']
 
-        if User.exists?(email: email)
-          true
-        else
-          name = payload['name']
-          picture_url = payload['picture']
-          
-          User.register_from_google(name, email, picture_url)
-        end
+        User.exists?(email: email)
       else
         false
       end

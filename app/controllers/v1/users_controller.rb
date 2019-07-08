@@ -21,7 +21,7 @@ module V1
       if @user.nil?
         not_found
       else
-        render json: @user, include: []
+        render json: @user
       end
     end
 
@@ -47,10 +47,23 @@ module V1
     end
 
     # POST /users
-    def create
-      @user = User.new(user_params)
+    # def create
+    #   @user = User.new(user_params)
 
-      if @user.save
+    #   if @user.save
+    #     render json: @user, status: :created
+    #   else
+    #     bad_request
+    #   end
+    # end
+
+    # POST /users/google
+    def create_with_google
+      params = google_signup_params
+
+      if User.where(email: params[:email]).exists?
+        bad_request('Specidied email address is already in use.')
+      elsif (@user = User.register_from_google(params)).persisted?
         render json: @user, status: :created
       else
         bad_request
@@ -91,6 +104,19 @@ module V1
 
     def user_params
       params.permit(:name, :email, :avatar)
+    end
+
+    def google_signup_params
+      token = request.headers['Authorization']
+      http_token = token.split(' ').last if token.present?
+      auth_token = FirebaseUtils::Auth.verify_id_token(http_token)
+      payload = auth_token['decoded_token'][:payload]
+
+      {
+        email: payload['email'],
+        name: payload['name'],
+        avatar_url: payload['picture']
+      }
     end
 
     def push_token_params

@@ -96,9 +96,6 @@ module V1
         p box_params
         bad_request
       end
-    rescue StandardError => e
-      p 'ttttttttttttttttttttttttt'
-      p e
     end
 
     # PUT /boxes/1/revert
