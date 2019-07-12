@@ -51,19 +51,6 @@ module V1
       end
     end
 
-    # GET /boxes/1/image
-    def image
-      if @box.image_exists? && accessible?
-        if requested_base64?
-          render json: @box.base64_image
-        else
-          send_data @box.image_file, type: @box.image_content_type, disposition: 'inline'
-        end
-      else
-        not_found('Image does not exist.')
-      end
-    end
-
     # GET /boxes/1/units
     def units
       @units = @box.owner.units
@@ -153,18 +140,15 @@ module V1
 
     # Only allow a trusted parameter "white list" through.
     def box_params
-      image = params[:image]
-
-      if image_attached?(image)
-        original = Magick::Image.from_blob(image.read).first
-        params[:image_file] = original.resize_to_fit(Settings.rmagick.width, Settings.rmagick.height).to_blob
-        params[:image_size] = params[:image_file].size
-        params[:image_content_type] = image.content_type
-      end
-
       params[:owner_id] = current_user.id
 
-      params.permit(:name, :notice, :owner_id, :image_file, :image_size, :image_content_type)
+      params.permit(:name,
+                    :notice,
+                    :owner_id,
+                    :image_file,
+                    :image_size,
+                    :image,
+                    :image_content_type)
     end
 
     def set_invitation
@@ -196,10 +180,6 @@ module V1
 
     def requested_base64?
       params[:base64] == 'true'
-    end
-
-    def image_attached?(param)
-      !(param == 'null' || param == '' || param.nil?)
     end
   end
 end

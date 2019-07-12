@@ -30,10 +30,6 @@ RSpec.describe "#{version.upcase}::BoxesController", type: :routing do
       expect(get: '/boxes/1/foods').to route_to("#{version}/boxes#foods", id: '1')
     end
 
-    it 'routes to #image' do
-      expect(get: '/boxes/1/image').to route_to("#{version}/boxes#image", id: '1')
-    end
-
     it 'routes to #units' do
       expect(get: '/boxes/1/units').to route_to("#{version}/boxes#units", id: '1')
     end

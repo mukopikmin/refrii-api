@@ -30,7 +30,6 @@ Rails.application.routes.draw do
         get :versions
         get :foods
         get :units
-        get :image
         post :invite
         put :revert
         delete 'invite' => :uninvite

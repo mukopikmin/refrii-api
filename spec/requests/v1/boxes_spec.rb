@@ -126,52 +126,6 @@ RSpec.describe 'Boxes', type: :request do
     end
   end
 
-  describe 'GET /boxes/:id/image' do
-    let(:user) { create(:user) }
-    let(:box) { create(:box, :with_image, owner: user) }
-    let(:no_image_box) { create(:box, owner: user) }
-
-    context 'without authentication' do
-      subject { response.status }
-
-      before { get image_v1_box_path(box) }
-
-      it { is_expected.to eq(401) }
-    end
-
-    context 'with authentication' do
-      context 'with image' do
-        subject { response.status }
-
-        before do
-          get image_v1_box_path(box), headers: { authorization: "Bearer #{token(user)}" }
-        end
-
-        it { is_expected.to eq(200) }
-      end
-
-      context 'with no image' do
-        subject { response.status }
-
-        before do
-          get image_v1_box_path(no_image_box), headers: { authorization: "Bearer #{token(user)}" }
-        end
-
-        it { is_expected.to eq(404) }
-      end
-
-      context 'with base64 requested param' do
-        subject { response.status }
-
-        before do
-          get image_v1_box_path(box), params: { base64: true }, headers: { authorization: "Bearer #{token(user)}" }
-        end
-
-        it { is_expected.to eq(200) }
-      end
-    end
-  end
-
   describe 'GET /boxes/:id/units' do
     context 'without authentication' do
       subject { response.status }

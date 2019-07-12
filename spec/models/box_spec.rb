@@ -84,46 +84,6 @@ RSpec.describe Box, type: :model do
     end
   end
 
-  describe '#image_exists?' do
-    let(:user) { create(:user) }
-
-    context 'when image exists' do
-      subject { box.image_exists? }
-
-      let(:box) { create(:box, :with_image, owner: user) }
-
-      it { is_expected.to be_truthy }
-    end
-
-    context 'when no image exists' do
-      subject { no_image_box.image_exists? }
-
-      let(:no_image_box) { create(:box, owner: user) }
-
-      it { is_expected.to be_falsey }
-    end
-  end
-
-  describe '#base64_image' do
-    let(:user) { create(:user) }
-
-    context 'when image exists' do
-      let(:box) { create(:box, :with_image, owner: user) }
-
-      it 'returns image encoded by base64' do
-        expect(box.base64_image[:base64]).to be_a(String)
-      end
-    end
-
-    context 'when no image exists' do
-      let(:no_image_box) { create(:box, owner: user) }
-
-      it 'returns nil' do
-        expect(no_image_box.base64_image).to be_nil
-      end
-    end
-  end
-
   describe '#revert' do
     let(:user) { create(:user) }
     let(:box) { create(:box, name: name_before, owner: user) }

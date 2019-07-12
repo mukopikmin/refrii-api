@@ -25,6 +25,6 @@ class BoxSerializer < ApplicationRecordSerializer
   end
 
   def image_url
-    "#{ENV['HOSTNAME']}/boxes/#{object.id}/image" if object.image_exists?
+    object.image.attached? ? url_for(object.image) : nil
   end
 end

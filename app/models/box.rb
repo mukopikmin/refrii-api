@@ -6,6 +6,7 @@ class Box < ApplicationRecord
   belongs_to :owner, class_name: 'User'
   has_many :foods
   has_many :invitations
+  has_one_attached :image
 
   validates_presence_of :name
   validates_presence_of :owner
@@ -29,20 +30,6 @@ class Box < ApplicationRecord
 
   def accessible_for?(user)
     owned_by?(user) || inviting?(user)
-  end
-
-  def image_exists?
-    !(image_file.nil? || image_size.nil? || image_content_type.nil?)
-  end
-
-  def base64_image
-    return nil unless image_exists?
-
-    {
-      content_type: image_content_type,
-      size: image_size,
-      base64: Base64.strict_encode64(image_file)
-    }
   end
 
   def revert
