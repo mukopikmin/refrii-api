@@ -1,7 +1,17 @@
 # frozen_string_literal: true
 
+host = 'localhost:3000'
+
+if Rails.env == 'production'
+  if ENV['STAGING_ENABLED'] == 'true'
+    host = 'staging.api.refrii.com'
+  else
+    host = 'api.refrii.com'
+  end
+end
+
 Rails.application.routes.default_url_options = {
-  host: Rails.env == 'production' ? 'api.refrii.com' : 'localhost:3000',
+  host: host,
   only_path: false,
   protocol: Rails.env == 'production' ? 'https' : 'http'
 }
