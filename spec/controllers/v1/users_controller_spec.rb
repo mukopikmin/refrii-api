@@ -96,15 +96,16 @@ RSpec.describe V1::UsersController, type: :controller do
 
   describe 'PUT #update' do
     let(:user) { create(:user) }
+    let(:params) { { id: user.to_param }.merge!(attributes_for(:updated_user)) }
 
     before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
     end
 
     it 'assigns the requested user as @user' do
-      put :update, params: { id: user.to_param }.merge!(attributes_for(:updated_user))
+      put :update, params: params
       user.reload
-      expect(assigns(:user).email).to eq(build(:updated_user).email)
+      expect(assigns(:user).name).to eq(params[:name])
     end
   end
 

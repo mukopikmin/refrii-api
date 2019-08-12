@@ -75,6 +75,8 @@ module V1
       if !accessible?
         forbidden('You can only update self.')
       elsif @user.update(user_params)
+        @user.avatar.attach(avatar_params) if avatar_in_params?
+
         render json: @user
       else
         bad_request
@@ -103,7 +105,28 @@ module V1
     end
 
     def user_params
-      params.permit(:name, :email, :avatar)
+      params.permit(:name)
+    end
+
+    def avatar_in_params?
+      !params[:avatar].nil?
+    end
+
+    def avatar_params
+      image = params[:avatar]
+      content_type = image[%r/(image\/[a-z]{3,4})|(application\/[a-z]{3,4})/][%r{\b(?!.*\/).*}]
+      contents = image.sub %r/data:((image|application)\/.{3,}),/, ''
+      decoded_data = Base64.decode64(contents)
+      filename = Time.zone.now.to_s + '.' + content_type
+      File.open("#{Rails.root}/tmp/#{filename}", 'wb') do |f|
+        f.write(decoded_data)
+      end
+
+      {
+        io: File.open("#{Rails.root}/tmp/#{filename}", 'rb'),
+        filename: File.basename(filename),
+        content_type: content_type
+      }
     end
 
     def google_signup_params

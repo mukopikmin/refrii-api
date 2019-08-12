@@ -12,8 +12,6 @@ class UserSerializer < ApplicationRecordSerializer
              :updated_at
 
   def avatar_url
-    # p object.avatar
-    # p  url_for(object.avatar)
     object.avatar.attached? ? url_for(object.avatar) : nil
   end
 end

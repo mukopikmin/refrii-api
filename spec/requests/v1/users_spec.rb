@@ -248,24 +248,6 @@ RSpec.describe 'Users', type: :request do
         it { assert_schema_conform }
       end
 
-      context 'with already used email' do
-        subject { response.status }
-
-        before { put v1_user_path(user1), params: inused_params, headers: { authorization: "Bearer #{token(user1)}" } }
-
-        it { is_expected.to eq(400) }
-        it { assert_schema_conform }
-      end
-
-      context 'with no email user' do
-        subject { response.status }
-
-        before { put v1_user_path(user1), params: no_email_user, headers: { authorization: "Bearer #{token(user1)}" } }
-
-        it { is_expected.to eq(400) }
-        it { assert_schema_conform }
-      end
-
       context 'with no name user' do
         subject { response.status }
 
