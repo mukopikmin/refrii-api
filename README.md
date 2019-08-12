@@ -5,4 +5,22 @@
 
 ## Requirement
 
- * Ruby 2.3+
+ * Ruby 2.5+
+
+## Setup
+
+Set environment variables.
+
+    export FIREBASE_PROJECT_ID=xxxxxxxxx
+
+Instead, you can create `.env` file.
+
+Start server with following command.
+
+    bundle exec rails server
+
+## Test
+
+Run RSpec with following command.
+
+    bundle exec rake spec
