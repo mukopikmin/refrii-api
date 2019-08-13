@@ -50,6 +50,8 @@ module V1
       elsif !unit_assignable?
         bad_request('The unit is not assignable to the food.')
       elsif @food.save
+        @food.image.attach(attachment_param(params[:image])) if image_in_params?
+
         render json: @food, status: :created, location: v1_foods_path(@food)
       else
         bad_request
@@ -63,6 +65,8 @@ module V1
       elsif !unit_assignable?
         bad_request('The unit is not assignable to the food.')
       elsif @food.update(food_params)
+        @food.image.attach(attachment_param(params[:image])) if image_in_params?
+
         render json: @food
       else
         bad_request
@@ -108,6 +112,10 @@ module V1
                     :unit_id,
                     :updated_user_id,
                     :image)
+    end
+
+    def image_in_params?
+      !params[:image].nil?
     end
 
     def box_accessible?

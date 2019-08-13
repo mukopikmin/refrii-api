@@ -3,11 +3,11 @@
 host = 'localhost:3000'
 
 if Rails.env == 'production'
-  if ENV['STAGING_ENABLED'] == 'true'
-    host = 'staging.api.refrii.com'
-  else
-    host = 'api.refrii.com'
-  end
+  host = if ENV['STAGING_ENABLED'] == 'true'
+           'staging.api.refrii.com'
+         else
+           'api.refrii.com'
+         end
 end
 
 Rails.application.routes.default_url_options = {

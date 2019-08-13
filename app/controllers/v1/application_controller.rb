@@ -37,6 +37,23 @@ module V1
       end
     end
 
+    def attachment_param(attachment)
+      content_type = attachment[%r/(image\/[a-z]{3,4})|(application\/[a-z]{3,4})/][%r{\b(?!.*\/).*}]
+      contents = attachment.sub(%r/data:((image|application)\/.{3,}),/, '')
+      decoded_data = Base64.decode64(contents)
+      filename = Time.zone.now.to_s + '.' + content_type
+
+      File.open("#{Rails.root}/tmp/#{filename}", 'wb') do |file|
+        file.write(decoded_data)
+      end
+
+      {
+        io: File.open("#{Rails.root}/tmp/#{filename}", 'rb'),
+        filename: File.basename(filename),
+        content_type: content_type
+      }
+    end
+
     def token_not_expired?
       Time.zone.at(auth_token['decoded_token'][:payload]['exp']) > Time.zone.now
     end
