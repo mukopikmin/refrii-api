@@ -19,10 +19,24 @@ RSpec.describe V1::ShopPlansController, type: :controller do
   # ShopPlansController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
+  let(:user) { create(:user) }
+  let(:box) { create(:box, owner: user) }
+  let(:unit) { create(:unit, user: user) }
+  let!(:food) do
+    create(:food, box: box,
+                  unit: unit,
+                  created_user: box.owner,
+                  updated_user: box.owner)
+  end
+  let(:shop_plan) { create(:shop_plan, food: food) }
+
   describe 'GET #index' do
+    before do
+      request.headers['Authorization'] = "Bearer #{token(user)}"
+      get :index
+    end
+
     it 'returns a success response' do
-      ShopPlan.create! valid_attributes
-      get :index, params: {}, session: valid_session
       expect(response).to be_successful
     end
   end

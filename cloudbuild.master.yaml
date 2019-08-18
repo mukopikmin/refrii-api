@@ -54,7 +54,7 @@ steps:
     entrypoint: sh
     args: 
       - scripts/deploy.sh
-      - refrii-api-production
+      - refrii-api
       - gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
     env:
       - RAILS_ENV=production
@@ -62,10 +62,10 @@ steps:
 secrets:
   - kmsKeyName: projects/refrii-169906/locations/global/keyRings/refrii-api/cryptoKeys/production
     secretEnv:
-      MYSQL_SOCKET: CiQAupArw1bnpfLHlOwKVnS6h7YIAP0Vl3o8kxm+EWri+pJ6N/sSWAD/p2USYbChqgURanchU5XKkZ1gBDqzq4QdkTqsueZAGkYAhiU18JHrYfHldSopYzhOxoz4VOEMxOidy1KihSuRNa7vCS0Z6IbN0kqLHvV2xWeRhZ+5WJE=
+      MYSQL_SOCKET: CiQAupArwx49ZHAtzyfRtL6txKJoQ8rWjyms9akIa7Guu8Zq6yoSYgD/p2US3sIJPSvKtrCjDI70plxsOj8jBPLpU6AqYBUQ4IjIaAgWacScGuCDD0ti4pHGnx/rWAY2VNL16E35MWOHQo3MK76ElXufjireMcwYe3NLvPwagri0U+mwjTAXGvjH
       MYSQL_DATABASE: CiQAupArw/fK9Nip+n6LvYL2SUgPPUblXj8qIUT7vIVPU3zsrrsSOwD/p2USDhiWSrZA7A8wM/ohfZ1nHVfOZZlNcdXpT38Td5Qu6ahVkQpxasoEDlSfs08kC4RzhvfpfWoC
       MYSQL_USERNAME: CiQAupArwzIrk9hzhRPEeCmcuij98kFQZLjrdzzIaba5xiDGdRcSLgD/p2USYlQbngAgGF39LYMs3voTnMTLC5fSYEqEboGbO6oS8kqNGf2zX07yJ/8=
-      MYSQL_PASSWORD: CiQAupArw9KfeoAJTXRga121BBh53t1TnH58xeRBUQtUMX1uAMISOgD/p2USOt1NkJfro6ZVzM/qxnGt1FZ9cUEil3EnDnsjSA2TQryz7CjxTcpxBsNJz06KLSy2ISkRJN4=
+      MYSQL_PASSWORD: CiQAupArwxhw0KP3agRoCkFMuXK55d8gsytV0A+sPgTowEs31bcSOgD/p2US/YBBjkqIEa/Sl9d0lkmOdz2nT4X7j7Fisoprm1ZvQDXGxqJ1t9kQtMZZGnjptw21Vzt6Ei0=
       SECRET_KEY_BASE: CiQAupArwxsqiomrEZgs2xtkDWukISTDtbQhMIxg7RxTttlyacISqwEA/6dlEsgU5E85nezRz8srm5QsIaqkaY9VwgzarutfKXy6huDey6K4tmGmdRoB4wY0W1TpC9vd5ncoPCEFRn+c6fGNnyBj3ldWeFDzx6MK/Onaobti7db7odnREtlc5OzM7p+py1p8vcq6paMBCGO8vjxWAVqPJD7I9zKjedT3aBhArQmNU4m34uMU8T17XdLAKXQZbyLs2tFBHDcNNtytQV7BiAVgiN3WJlY=
 images:
   - gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
