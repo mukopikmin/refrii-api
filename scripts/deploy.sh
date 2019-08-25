@@ -8,6 +8,6 @@ image=$2
 gcloud beta run deploy $service \
   --image $image \
   --allow-unauthenticated \
-  --region us-central1 \
+  --region asia-northeast1 \
   --platform managed \
   --memory 512Mi
