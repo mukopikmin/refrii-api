@@ -1,8 +1,8 @@
-FROM ruby:2.5
+FROM ruby:2.6.3
 
 WORKDIR /app
 
-ADD Gemfile Gemfile.lock ./
+COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
 COPY . /app
