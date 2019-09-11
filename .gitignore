@@ -66,3 +66,6 @@ Temporary Items
 /credentials/*
 !/credentials/*.enc
 cloud_sql_proxy
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
