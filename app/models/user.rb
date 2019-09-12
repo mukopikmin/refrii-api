@@ -13,7 +13,7 @@ class User < ApplicationRecord
   validates_presence_of :email
   validates :email, presence: true,
                     format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
-  validates_uniqueness_of :email, scope: :provider
+  validates_uniqueness_of :email, on: :create, scope: :provider
 
   def local_user?
     provider == 'local'
