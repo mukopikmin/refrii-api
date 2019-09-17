@@ -10,8 +10,6 @@ components:
           type: string
         amount:
           type: number
-        notice:
-          type: string
         image_url:
           type: string
           nullable: true
@@ -30,6 +28,10 @@ components:
           $ref: "#/components/schemas/Box"
         unit:
           $ref: "#/components/schemas/Unit"
+        notices:
+          type: array
+          items:
+            $ref: "#/components/schemas/Notice"
         created_user:
           $ref: "#/components/schemas/User"
         updated_user:
@@ -38,12 +40,12 @@ components:
         - id
         - name
         - amount
-        - notice
         - image_url
         - expiration_date
         - created_at
         - updated_at
         - box
         - unit
+        - notices
         - created_user
         - updated_user

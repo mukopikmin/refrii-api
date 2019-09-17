@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_11_172634) do
+ActiveRecord::Schema.define(version: 2019_09_16_144218) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -44,7 +44,6 @@ ActiveRecord::Schema.define(version: 2019_07_11_172634) do
 
   create_table "foods", force: :cascade do |t|
     t.string "name", null: false
-    t.text "notice"
     t.float "amount"
     t.date "expiration_date"
     t.integer "box_id", null: false
@@ -66,6 +65,14 @@ ActiveRecord::Schema.define(version: 2019_07_11_172634) do
     t.datetime "updated_at", null: false
     t.index ["box_id"], name: "index_invitations_on_box_id"
     t.index ["user_id"], name: "index_invitations_on_user_id"
+  end
+
+  create_table "notices", force: :cascade do |t|
+    t.string "text", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "food_id"
+    t.index ["food_id"], name: "index_notices_on_food_id"
   end
 
   create_table "push_tokens", force: :cascade do |t|

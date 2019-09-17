@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :food do
     name { 'test food' }
-    notice { 'this is test' }
+    notices { [Notice.create(text: 'this is test')] }
     amount { 10.5 }
     expiration_date { '2017-01-01' }
 

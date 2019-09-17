@@ -1083,6 +1083,25 @@ components:
           schema:
             "$ref": "#/components/schemas/Error"
   schemas:
+    Notice:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        text:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - text
+      - created_at
+      - updated_at
     Invitation:
       type: object
       additionalProperties: false
@@ -1183,8 +1202,6 @@ components:
           type: string
         amount:
           type: number
-        notice:
-          type: string
         image_url:
           type: string
           nullable: true
@@ -1203,6 +1220,10 @@ components:
           "$ref": "#/components/schemas/Box"
         unit:
           "$ref": "#/components/schemas/Unit"
+        notices:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Notice"
         created_user:
           "$ref": "#/components/schemas/User"
         updated_user:
@@ -1211,13 +1232,13 @@ components:
       - id
       - name
       - amount
-      - notice
       - image_url
       - expiration_date
       - created_at
       - updated_at
       - box
       - unit
+      - notices
       - created_user
       - updated_user
     Error:

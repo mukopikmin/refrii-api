@@ -1858,6 +1858,32 @@
       }
     },
     "schemas": {
+      "Notice": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "text": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "created_at",
+          "updated_at"
+        ]
+      },
       "Invitation": {
         "type": "object",
         "additionalProperties": false,
@@ -1993,9 +2019,6 @@
           "amount": {
             "type": "number"
           },
-          "notice": {
-            "type": "string"
-          },
           "image_url": {
             "type": "string",
             "nullable": true
@@ -2021,6 +2044,12 @@
           "unit": {
             "$ref": "#/components/schemas/Unit"
           },
+          "notices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Notice"
+            }
+          },
           "created_user": {
             "$ref": "#/components/schemas/User"
           },
@@ -2032,13 +2061,13 @@
           "id",
           "name",
           "amount",
-          "notice",
           "image_url",
           "expiration_date",
           "created_at",
           "updated_at",
           "box",
           "unit",
+          "notices",
           "created_user",
           "updated_user"
         ]

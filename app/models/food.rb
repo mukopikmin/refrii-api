@@ -7,6 +7,7 @@ class Food < ApplicationRecord
   belongs_to :unit
   belongs_to :created_user, class_name: 'User'
   belongs_to :updated_user, class_name: 'User'
+  has_many :notices
   has_many :shop_plans
   has_one_attached :image
 
@@ -34,7 +35,6 @@ class Food < ApplicationRecord
     previous = paper_trail.previous_version
     unless previous.nil?
       update(name: previous.name,
-             notice: previous.notice,
              amount: previous.amount,
              expiration_date: previous.expiration_date)
     end
