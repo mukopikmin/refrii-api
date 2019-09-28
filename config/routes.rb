@@ -28,6 +28,10 @@ Rails.application.routes.draw do
         get :shop_plans
         put :revert
       end
+
+      scope module: :foods do
+        resources :notices, only: %i[create destroy]
+      end
     end
 
     resources :boxes do
