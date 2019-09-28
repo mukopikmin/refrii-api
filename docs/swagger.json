@@ -1868,6 +1868,9 @@
           "text": {
             "type": "string"
           },
+          "created_user": {
+            "$ref": "#/components/schemas/User"
+          },
           "created_at": {
             "type": "string",
             "format": "date-time"
@@ -1880,6 +1883,7 @@
         "required": [
           "id",
           "text",
+          "created_user",
           "created_at",
           "updated_at"
         ]
@@ -2067,7 +2071,6 @@
           "updated_at",
           "box",
           "unit",
-          "notices",
           "created_user",
           "updated_user"
         ]

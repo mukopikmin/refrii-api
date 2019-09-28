@@ -14,6 +14,7 @@ RSpec.describe 'Foods', type: :request do
   let(:food1) do
     create(:food, box: box1,
                   unit: unit1,
+                  notices: [notice],
                   created_user: box1.owner,
                   updated_user: box1.owner)
   end
@@ -23,6 +24,7 @@ RSpec.describe 'Foods', type: :request do
                   created_user: box2.owner,
                   updated_user: box2.owner)
   end
+  let(:notice) { create(:notice, created_user: user1) }
 
   describe 'GET /foods' do
     context 'without authentication' do

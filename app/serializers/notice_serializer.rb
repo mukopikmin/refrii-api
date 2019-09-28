@@ -5,4 +5,6 @@ class NoticeSerializer < ApplicationRecordSerializer
              :text,
              :created_at,
              :updated_at
+
+  belongs_to :created_user
 end

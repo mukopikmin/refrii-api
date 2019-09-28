@@ -46,6 +46,5 @@ components:
         - updated_at
         - box
         - unit
-        - notices
         - created_user
         - updated_user
