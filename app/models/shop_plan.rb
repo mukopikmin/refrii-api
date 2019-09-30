@@ -3,6 +3,8 @@
 class ShopPlan < ApplicationRecord
   belongs_to :food
 
+  validates_presence_of :amount
+
   def self.all_with_invited(user)
     Food.all_with_invited(user).map(&:shop_plans).flatten
   end

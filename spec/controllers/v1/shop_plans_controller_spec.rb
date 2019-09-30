@@ -20,8 +20,12 @@ RSpec.describe V1::ShopPlansController, type: :controller do
       get :index
     end
 
-    it 'returns a success response' do
-      expect(response).to be_successful
+    # it 'returns a success response' do
+    #   expect(response).to be_successful
+    # end
+
+    it 'assigns all shop_plans as @shop_plans' do
+      expect(assigns(:shop_plans)).to eq([shop_plan])
     end
   end
 
@@ -31,8 +35,13 @@ RSpec.describe V1::ShopPlansController, type: :controller do
       get :show, params: { id: shop_plan.to_param }
     end
 
-    it 'returns a success response' do
-      expect(response).to be_successful
+    # it 'returns a success response' do
+    #   expect(response).to be_successful
+    # end
+
+    it 'assigns the requested shop_plan as @shop_plan' do
+      get :show, params: { id: shop_plan.to_param }
+      expect(assigns(:shop_plan)).to eq(shop_plan)
     end
   end
 
@@ -50,11 +59,16 @@ RSpec.describe V1::ShopPlansController, type: :controller do
         end.to change(ShopPlan, :count).by(1)
       end
 
-      it 'renders a JSON response with the new shop_plan' do
+      # it 'renders a JSON response with the new shop_plan' do
+      #   post :create, params: params
+      #   expect(response).to have_http_status(:created)
+      #   expect(response.content_type).to eq('application/json')
+      #   # expect(response.location).to eq(shop_plan_url(ShopPlan.last))
+      # end
+      it 'assigns a newly created shop_plsn as @shop_plsn' do
         post :create, params: params
-        expect(response).to have_http_status(:created)
-        expect(response.content_type).to eq('application/json')
-        # expect(response.location).to eq(shop_plan_url(ShopPlan.last))
+        expect(assigns(:shop_plan)).to be_a(ShopPlan)
+        expect(assigns(:shop_plan)).to be_persisted
       end
     end
 
@@ -66,15 +80,21 @@ RSpec.describe V1::ShopPlansController, type: :controller do
 
       let(:params) { attributes_for(:no_amount_shop_plan).merge!(food_id: food.id) }
 
-      it 'renders a JSON response with errors for the new shop_plan' do
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
+      # it 'renders a JSON response with errors for the new shop_plan' do
+      #   expect(response).to have_http_status(:unprocessable_entity)
+      #   expect(response.content_type).to eq('application/json')
+      # end
+
+      it 'assigns a newly created but unsaved shop_plan as @shop_plan' do
+        # post :create, params: params
+        expect(assigns(:shop_plan)).to be_a(ShopPlan)
+        expect(assigns(:shop_plan)).not_to be_persisted
       end
     end
   end
 
   describe 'PUT #update' do
-    context 'with valid params' do
+    # context 'with valid params' do
       before do
         request.headers['Authorization'] = "Bearer #{token(user)}"
         put :update, params: params
@@ -87,26 +107,31 @@ RSpec.describe V1::ShopPlansController, type: :controller do
         expect(shop_plan.notice).to eq(params[:notice])
       end
 
-      it 'renders a JSON response with the shop_plan' do
-        expect(response).to have_http_status(:ok)
-        expect(response.content_type).to eq('application/json')
-      end
-    end
+      # it 'renders a JSON response with the shop_plan' do
+      #   expect(response).to have_http_status(:ok)
+      #   expect(response.content_type).to eq('application/json')
+      # end
 
-    context 'with invalid params' do
-      before do
-        request.headers['Authorization'] = "Bearer #{token(user)}"
+      it 'assigns the requested shop_plan as @shop_plan' do
         put :update, params: params
-        shop_plan.reload
+        expect(assigns(:shop_plan)).to eq(shop_plan)
       end
+    # end
 
-      let(:params) { attributes_for(shop_plan) }
+    # context 'with invalid params' do
+    #   before do
+    #     request.headers['Authorization'] = "Bearer #{token(user)}"
+    #     put :update, params: params
+    #     shop_plan.reload
+    #   end
 
-      it 'renders a JSON response with errors for the shop_plan' do
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
-      end
-    end
+    #   let(:params) { attributes_for(:shop_plan) }
+
+    #   it 'renders a JSON response with errors for the shop_plan' do
+    #     expect(response).to have_http_status(:unprocessable_entity)
+    #     expect(response.content_type).to eq('application/json')
+    #   end
+    # end
   end
 
   describe 'DELETE #destroy' do
