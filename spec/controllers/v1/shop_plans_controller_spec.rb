@@ -3,22 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe V1::ShopPlansController, type: :controller do
-  # This should return the minimal set of attributes required to create a valid
-  # ShopPlan. As you add validations to ShopPlan, be sure to
-  # adjust the attributes here as well.
-  let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
-  end
-
-  let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
-  end
-
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # ShopPlansController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
-
   let(:user) { create(:user) }
   let(:box) { create(:box, owner: user) }
   let(:unit) { create(:unit, user: user) }
@@ -28,7 +12,7 @@ RSpec.describe V1::ShopPlansController, type: :controller do
                   created_user: box.owner,
                   updated_user: box.owner)
   end
-  let(:shop_plan) { create(:shop_plan, food: food) }
+  let!(:shop_plan) { create(:shop_plan, food: food) }
 
   describe 'GET #index' do
     before do
@@ -36,82 +20,87 @@ RSpec.describe V1::ShopPlansController, type: :controller do
       get :index
     end
 
-    it 'returns a success response' do
-      expect(response).to be_successful
+    it 'assigns all shop_plans as @shop_plans' do
+      expect(assigns(:shop_plans)).to eq([shop_plan])
     end
   end
 
   describe 'GET #show' do
-    it 'returns a success response' do
-      shop_plan = ShopPlan.create! valid_attributes
-      get :show, params: { id: shop_plan.to_param }, session: valid_session
-      expect(response).to be_successful
+    before do
+      request.headers['Authorization'] = "Bearer #{token(user)}"
+      get :show, params: { id: shop_plan.to_param }
+    end
+
+    it 'assigns the requested shop_plan as @shop_plan' do
+      get :show, params: { id: shop_plan.to_param }
+      expect(assigns(:shop_plan)).to eq(shop_plan)
     end
   end
 
   describe 'POST #create' do
     context 'with valid params' do
+      before do
+        request.headers['Authorization'] = "Bearer #{token(user)}"
+      end
+
+      let(:params) { attributes_for(:shop_plan).merge!(food_id: food.id) }
+
       it 'creates a new ShopPlan' do
         expect do
-          post :create, params: { shop_plan: valid_attributes }, session: valid_session
+          post :create, params: params
         end.to change(ShopPlan, :count).by(1)
       end
 
-      it 'renders a JSON response with the new shop_plan' do
-        post :create, params: { shop_plan: valid_attributes }, session: valid_session
-        expect(response).to have_http_status(:created)
-        expect(response.content_type).to eq('application/json')
-        expect(response.location).to eq(shop_plan_url(ShopPlan.last))
+      it 'assigns a newly created shop_plsn as @shop_plsn' do
+        post :create, params: params
+        expect(assigns(:shop_plan)).to be_a(ShopPlan)
+        expect(assigns(:shop_plan)).to be_persisted
       end
     end
 
     context 'with invalid params' do
-      it 'renders a JSON response with errors for the new shop_plan' do
-        post :create, params: { shop_plan: invalid_attributes }, session: valid_session
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
+      before do
+        request.headers['Authorization'] = "Bearer #{token(user)}"
+        post :create, params: params
+      end
+
+      let(:params) { attributes_for(:no_amount_shop_plan).merge!(food_id: food.id) }
+
+      it 'assigns a newly created but unsaved shop_plan as @shop_plan' do
+        # post :create, params: params
+        expect(assigns(:shop_plan)).to be_a(ShopPlan)
+        expect(assigns(:shop_plan)).not_to be_persisted
       end
     end
   end
 
   describe 'PUT #update' do
-    context 'with valid params' do
-      let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
-      end
-
-      it 'updates the requested shop_plan' do
-        shop_plan = ShopPlan.create! valid_attributes
-        put :update, params: { id: shop_plan.to_param, shop_plan: new_attributes }, session: valid_session
-        shop_plan.reload
-        skip('Add assertions for updated state')
-      end
-
-      it 'renders a JSON response with the shop_plan' do
-        shop_plan = ShopPlan.create! valid_attributes
-
-        put :update, params: { id: shop_plan.to_param, shop_plan: valid_attributes }, session: valid_session
-        expect(response).to have_http_status(:ok)
-        expect(response.content_type).to eq('application/json')
-      end
+    before do
+      request.headers['Authorization'] = "Bearer #{token(user)}"
+      put :update, params: params
+      shop_plan.reload
     end
 
-    context 'with invalid params' do
-      it 'renders a JSON response with errors for the shop_plan' do
-        shop_plan = ShopPlan.create! valid_attributes
+    let(:params) { attributes_for(:shop_plan).merge!(id: shop_plan.to_param, food_id: food.id) }
 
-        put :update, params: { id: shop_plan.to_param, shop_plan: invalid_attributes }, session: valid_session
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
-      end
+    it 'updates the requested shop_plan' do
+      expect(shop_plan.notice).to eq(params[:notice])
+    end
+
+    it 'assigns the requested shop_plan as @shop_plan' do
+      put :update, params: params
+      expect(assigns(:shop_plan)).to eq(shop_plan)
     end
   end
 
   describe 'DELETE #destroy' do
+    before do
+      request.headers['Authorization'] = "Bearer #{token(user)}"
+    end
+
     it 'destroys the requested shop_plan' do
-      shop_plan = ShopPlan.create! valid_attributes
       expect do
-        delete :destroy, params: { id: shop_plan.to_param }, session: valid_session
+        delete :destroy, params: { id: shop_plan.to_param }
       end.to change(ShopPlan, :count).by(-1)
     end
   end

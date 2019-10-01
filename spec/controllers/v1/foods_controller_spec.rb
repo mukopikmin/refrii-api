@@ -114,7 +114,12 @@ RSpec.describe V1::FoodsController, type: :controller do
     let(:box) { create(:box, owner: user) }
     let(:unit1) { create(:unit, user: user) }
     let(:unit2) { create(:unit, user: user) }
-    let(:food) { create(:food, box: box, unit: unit1, created_user: box.owner, updated_user: box.owner) }
+    let(:food) do
+      create(:food, box: box,
+                    unit: unit1,
+                    created_user: box.owner,
+                    updated_user: box.owner)
+    end
 
     before do
       request.headers['Authorization'] = "Bearer #{token(user)}"
