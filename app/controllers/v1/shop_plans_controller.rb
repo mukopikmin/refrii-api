@@ -25,7 +25,6 @@ module V1
     # POST /shop_plans
     def create
       @shop_plan = ShopPlan.new(shop_plan_params)
-# p @shop_plan.validate
       if !accessible_food?
         bad_request
       elsif @shop_plan.save
