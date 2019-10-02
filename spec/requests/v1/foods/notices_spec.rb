@@ -69,10 +69,9 @@ RSpec.describe 'Notices', type: :request do
     let(:user) { create(:user) }
     let(:box) { create(:box, owner: user) }
     let(:unit) { create(:unit, user: user) }
-    let(:notice) { create(:notice, created_user: user) }
+    let(:notice) { create(:notice, food: food, created_user: user) }
     let(:food) do
-      create(:food, notices: [notice],
-                    unit: unit,
+      create(:food, unit: unit,
                     box: box,
                     created_user: user,
                     updated_user: user)

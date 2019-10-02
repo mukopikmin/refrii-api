@@ -14,6 +14,8 @@ class Food < ApplicationRecord
   validates_presence_of :name
   validates_presence_of :box
   validates_presence_of :unit
+  validates_presence_of :created_user
+  validates_presence_of :updated_user
   validates :amount, numericality: { greater_than_or_equal_to: 0 }
 
   scope :owned_by, ->(user) { joins(:box).where(boxes: { owner: user }) }
