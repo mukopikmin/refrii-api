@@ -73,7 +73,7 @@ ActiveRecord::Schema.define(version: 2019_10_02_145112) do
     t.datetime "updated_at", null: false
     t.integer "food_id", null: false
     t.integer "created_user_id", null: false
-    t.integer "updated_user_id", null: false
+    t.bigint "updated_user_id", null: false
     t.index ["created_user_id"], name: "index_notices_on_created_user_id"
     t.index ["food_id"], name: "index_notices_on_food_id"
     t.index ["updated_user_id"], name: "index_notices_on_updated_user_id"
