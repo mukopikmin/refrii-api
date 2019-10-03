@@ -10,6 +10,7 @@ class Box < ApplicationRecord
 
   validates_presence_of :name
   validates_presence_of :owner
+  validates_presence_of :owner
 
   scope :owned_by, ->(user) { where(owner: user) }
   scope :inviting, ->(user) { joins(:invitations).where(invitations: { user: user }) }

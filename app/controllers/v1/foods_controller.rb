@@ -105,7 +105,6 @@ module V1
       params[:updated_user_id] = current_user.id
 
       params.permit(:name,
-                    :notice,
                     :amount,
                     :expiration_date,
                     :box_id,

@@ -719,6 +719,60 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Error"
+  "/foods/{food_id}/notices":
+    post:
+      tags:
+      - Food
+      parameters:
+      - in: path
+        name: food_id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '201':
+          description: Past versions of the food
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Food"
+        '404':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/foods/{food_id}/notices/{id}":
+    delete:
+      tags:
+      - Food
+      parameters:
+      - in: path
+        name: food_id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: Past versions of the food
+        '404':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
   "/boxes":
     get:
       tags:
@@ -1091,6 +1145,8 @@ components:
           type: integer
         text:
           type: string
+        created_user:
+          "$ref": "#/components/schemas/User"
         created_at:
           type: string
           format: date-time
@@ -1100,6 +1156,7 @@ components:
       required:
       - id
       - text
+      - created_user
       - created_at
       - updated_at
     Invitation:

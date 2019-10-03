@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :user do
     sequence(:name) { |n| "user#{n}" }
     sequence(:email) { |_n| "#{name}@test.com" }
-    disabled { false }
+    disabled { true }
     admin { false }
 
     factory :another_user, class: User do
