@@ -9,6 +9,7 @@ class V1::Foods::NoticesController < V1::ApplicationController
   def create
     @notice = Notice.new(notice_params)
     @notice.created_user = current_user
+    @notice.updated_user = current_user
 
     if @food.nil? || !accessible?
       not_found('Food does not exist')

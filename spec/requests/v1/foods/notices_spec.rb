@@ -23,7 +23,7 @@ RSpec.describe 'Notices', type: :request do
     end
 
     context 'with authentication' do
-      context   'with  own food' do
+      context 'with  own food' do
         subject { response.status }
 
         let(:headers) { { authorization: "Bearer #{token(user)}" } }
@@ -69,7 +69,7 @@ RSpec.describe 'Notices', type: :request do
     let(:user) { create(:user) }
     let(:box) { create(:box, owner: user) }
     let(:unit) { create(:unit, user: user) }
-    let(:notice) { create(:notice, food: food, created_user: user) }
+    let(:notice) { create(:notice, food: food, created_user: user, updated_user: user) }
     let(:food) do
       create(:food, unit: unit,
                     box: box,
