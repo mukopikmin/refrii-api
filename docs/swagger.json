@@ -1962,6 +1962,9 @@
           "created_user": {
             "$ref": "#/components/schemas/User"
           },
+          "updated_user": {
+            "$ref": "#/components/schemas/User"
+          },
           "created_at": {
             "type": "string",
             "format": "date-time"
@@ -1975,6 +1978,7 @@
           "id",
           "text",
           "created_user",
+          "updated_user",
           "created_at",
           "updated_at"
         ]

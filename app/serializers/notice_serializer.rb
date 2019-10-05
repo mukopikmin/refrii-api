@@ -7,4 +7,5 @@ class NoticeSerializer < ApplicationRecordSerializer
              :updated_at
 
   belongs_to :created_user
+  belongs_to :updated_user
 end
