@@ -34,7 +34,8 @@ end
 
 100.times do
   food = Food.find(rand(Food.first.id..Food.last.id))
-  notice = Notice.new(text: FFaker::BaconIpsum.phrase)
-
-  food.notices << notice
+  notice = Notice.create(text: FFaker::BaconIpsum.phrase,
+                         food: food,
+                         created_user: food.box.owner,
+                         updated_user: food.box.owner)
 end

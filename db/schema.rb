@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 2019_10_02_145112) do
     t.integer "box_id", null: false
     t.integer "unit_id", null: false
     t.integer "created_user_id", null: false
-    t.integer "updated_user_id", null: false
+    t.bigint "updated_user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["box_id"], name: "index_foods_on_box_id"
