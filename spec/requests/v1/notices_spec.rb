@@ -2,36 +2,42 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Foods/Notices', type: :request do
+RSpec.describe 'Notices', type: :request do
   include Committee::Rails::Test::Methods
 
-  describe 'POST /foods/:food_id/notices' do
+  describe 'DELETE /notices/:id' do
     let(:user) { create(:user) }
     let(:box) { create(:box, owner: user) }
     let(:unit) { create(:unit, user: user) }
-    let(:food) { create(:food, unit: unit, box: box, created_user: user, updated_user: user) }
+    let(:notice) { create(:notice, food: food, created_user: user, updated_user: user) }
+    let(:food) do
+      create(:food, unit: unit,
+                    box: box,
+                    created_user: user,
+                    updated_user: user)
+    end
 
     context 'without authentication' do
       subject { response.status }
 
       let(:params) { attributes_for(:notice) }
 
-      before { post v1_food_notices_path(food) }
+      before { delete v1_notice_path(id: notice) }
 
       it { is_expected.to eq(401) }
       it { assert_schema_conform }
     end
 
     context 'with authentication' do
-      context 'with  own food' do
+      context   'with  own food' do
         subject { response.status }
 
         let(:headers) { { authorization: "Bearer #{token(user)}" } }
         let(:params) { attributes_for(:notice).merge(food_id: food.to_param) }
 
-        before { post v1_food_notices_path(food), headers: headers, params: params }
+        before { delete v1_notice_path(id: notice), headers: headers, params: params }
 
-        it { is_expected.to eq(201) }
+        it { is_expected.to eq(204) }
         it { assert_schema_conform }
       end
 
@@ -42,7 +48,7 @@ RSpec.describe 'Foods/Notices', type: :request do
         let(:headers) { { authorization: "Bearer #{token(other_user)}" } }
         let(:params) { attributes_for(:notice).merge(food_id: food.to_param) }
 
-        before { post v1_food_notices_path(food), headers: headers, params: params }
+        before { delete v1_notice_path(id: notice), headers: headers, params: params }
 
         it { is_expected.to eq(404) }
         it { assert_schema_conform }
@@ -57,9 +63,9 @@ RSpec.describe 'Foods/Notices', type: :request do
 
         before { Invitation.create(box: box, user: other_user) }
 
-        before { post v1_food_notices_path(food), headers: headers, params: params }
+        before { delete v1_notice_path(id: notice), headers: headers, params: params }
 
-        it { is_expected.to eq(201) }
+        it { is_expected.to eq(204) }
         it { assert_schema_conform }
       end
     end

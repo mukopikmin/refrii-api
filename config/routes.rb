@@ -30,9 +30,11 @@ Rails.application.routes.draw do
       end
 
       scope module: :foods do
-        resources :notices, only: %i[create destroy]
+        resources :notices, only: %i[create]
       end
     end
+
+    resources :notices, only: %i[destroy]
 
     resources :boxes do
       collection do
