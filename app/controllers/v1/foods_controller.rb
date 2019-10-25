@@ -109,8 +109,7 @@ module V1
                     :expiration_date,
                     :box_id,
                     :unit_id,
-                    :updated_user_id,
-                    :image)
+                    :updated_user_id)
     end
 
     def image_in_params?
