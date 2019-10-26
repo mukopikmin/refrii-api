@@ -53,7 +53,7 @@ RSpec.describe V1::UsersController, type: :controller do
       end
 
       before do
-        allow_any_instance_of(V1::UsersController)
+        allow_any_instance_of(described_class)
           .to receive(:google_signup_params)
           .and_return(params)
       end
@@ -81,7 +81,7 @@ RSpec.describe V1::UsersController, type: :controller do
       end
 
       before do
-        allow_any_instance_of(V1::UsersController)
+        allow_any_instance_of(described_class)
           .to receive(:google_signup_params)
           .and_return(params)
       end

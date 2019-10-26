@@ -7,44 +7,44 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'active_model_serializers', '~> 0.10.9'
-gem 'bcrypt', '~> 3.1.12'
-gem 'config', '~> 1.7.1'
-gem 'dotenv-rails', '~> 2.7.2'
-gem 'ffaker', '~> 2.11.0'
-gem 'google-cloud-storage', '~> 1.18'
-gem 'jwt', '~> 2.1.0'
-gem 'mini_magick', '~> 4.9'
-gem 'paper_trail', '~> 10.3.0'
+gem 'active_model_serializers', '~> 0.10.10'
+gem 'bcrypt', '~> 3.1.13'
+gem 'config', '~> 2.0.0'
+gem 'dotenv-rails', '~> 2.7.5'
+gem 'ffaker', '~> 2.13.0'
+gem 'google-cloud-storage', '~> 1.21.1'
+gem 'jwt', '~> 2.2.1'
+gem 'mini_magick', '~> 4.9.5'
+gem 'paper_trail', '~> 10.3.1'
 gem 'paper_trail-association_tracking', '~> 2.0.0'
-gem 'puma', '~> 3.12.1'
+gem 'puma', '~> 4.2.1'
 gem 'rack-cors', '~> 1.0.3'
-gem 'rails', '~> 5.2.3'
-gem 'rest-client', '~> 2.0.2'
-gem 'rubocop', '~> 0.67.2', require: false
-gem 'rubocop-rspec', '~> 1.32.0'
+gem 'rails', '~> 6.0.0'
+gem 'rest-client', '~> 2.1.0'
+gem 'rubocop', '~> 0.75.1', require: false
+gem 'rubocop-rspec', '~> 1.36.0'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
-gem 'versionist', '~> 1.7.0'
+gem 'versionist', '~> 2.0.1'
 
 group :development do
-  gem 'listen', '~> 3.1.5'
+  gem 'listen', '~> 3.2.0'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.1'
 end
 
 group :development, :test do
   gem 'byebug', '~> 11.0.1', platform: :mri
-  gem 'rspec-rails', '~> 3.8.2'
+  gem 'rspec-rails', '~> 3.9.0'
   gem 'sqlite3'
 end
 
 group :test do
-  gem 'brakeman', '~> 4.5.0', require: false
+  gem 'brakeman', '~> 4.7.0', require: false
   gem 'codeclimate-test-reporter', '~> 1.0.9', require: false
-  gem 'committee', '~> 3.0.1'
+  gem 'committee', '~> 3.2.1'
   gem 'committee-rails', '~> 0.4.0'
   gem 'database_cleaner', '~> 1.7.0'
-  gem 'factory_bot_rails', '~> 5.0.1'
+  gem 'factory_bot_rails', '~> 5.1.1'
   gem 'rails-controller-testing', '~> 1.0.4'
 end
 
@@ -52,5 +52,3 @@ group :production do
   gem 'mysql2', '~> 0.5.2'
   gem 'rails_12factor', '~> 0.0.3'
 end
-
-gem 'yaml_db', '~> 0.7.0'

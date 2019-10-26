@@ -31,7 +31,7 @@ RSpec.describe Unit, type: :model do
 
   describe 'scope' do
     describe 'owned_by' do
-      subject(:units) { Unit.owned_by(user1) }
+      subject(:units) { described_class.owned_by(user1) }
 
       it { is_expected.to eq([unit1]) }
     end

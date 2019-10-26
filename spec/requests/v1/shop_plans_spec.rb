@@ -18,7 +18,7 @@ RSpec.describe 'ShopPlans', type: :request do
       before { get v1_shop_plans_path }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authnetication' do
@@ -29,7 +29,7 @@ RSpec.describe 'ShopPlans', type: :request do
       before { get v1_shop_plans_path, headers: headers }
 
       it { is_expected.to eq(200) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
   end
 
@@ -46,7 +46,7 @@ RSpec.describe 'ShopPlans', type: :request do
       before { get v1_shop_plan_path(plan) }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authnetication' do
@@ -58,7 +58,7 @@ RSpec.describe 'ShopPlans', type: :request do
         before { get v1_shop_plan_path(plan), headers: headers }
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with shop plans of other\'s foods' do
@@ -70,7 +70,7 @@ RSpec.describe 'ShopPlans', type: :request do
         before { get v1_shop_plan_path(plan), headers: headers }
 
         it { is_expected.to eq(404) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with shop plans of foods in invited box' do
@@ -84,7 +84,7 @@ RSpec.describe 'ShopPlans', type: :request do
         before { get v1_shop_plan_path(plan), headers: headers }
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
@@ -102,7 +102,7 @@ RSpec.describe 'ShopPlans', type: :request do
       before { post v1_shop_plans_path }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authnetication' do
@@ -115,7 +115,7 @@ RSpec.describe 'ShopPlans', type: :request do
         before { post v1_shop_plans_path, headers: headers, params: params }
 
         it { is_expected.to eq(201) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with other\'s food' do
@@ -128,7 +128,7 @@ RSpec.describe 'ShopPlans', type: :request do
         before { post v1_shop_plans_path, headers: headers, params: params }
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with food in invited box' do
@@ -143,7 +143,7 @@ RSpec.describe 'ShopPlans', type: :request do
         before { post v1_shop_plans_path, headers: headers, params: params }
 
         it { is_expected.to eq(201) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
@@ -161,7 +161,7 @@ RSpec.describe 'ShopPlans', type: :request do
       before { put v1_shop_plan_path(plan) }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authnetication' do
@@ -174,7 +174,7 @@ RSpec.describe 'ShopPlans', type: :request do
         before { put v1_shop_plan_path(plan), headers: headers, params: params }
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with other\'s food' do
@@ -187,7 +187,7 @@ RSpec.describe 'ShopPlans', type: :request do
         before { put v1_shop_plan_path(plan), headers: headers, params: params }
 
         it { is_expected.to eq(404) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with food in invited box' do
@@ -202,7 +202,7 @@ RSpec.describe 'ShopPlans', type: :request do
         before { put v1_shop_plan_path(plan), headers: headers, params: params }
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
@@ -220,7 +220,7 @@ RSpec.describe 'ShopPlans', type: :request do
       before { put complete_v1_shop_plan_path(plan) }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authnetication' do
@@ -232,7 +232,7 @@ RSpec.describe 'ShopPlans', type: :request do
         before { put complete_v1_shop_plan_path(plan), headers: headers }
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with other\'s food' do
@@ -244,7 +244,7 @@ RSpec.describe 'ShopPlans', type: :request do
         before { put complete_v1_shop_plan_path(plan), headers: headers }
 
         it { is_expected.to eq(404) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with food in invited box' do
@@ -258,7 +258,7 @@ RSpec.describe 'ShopPlans', type: :request do
         before { put complete_v1_shop_plan_path(plan), headers: headers }
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
@@ -276,7 +276,7 @@ RSpec.describe 'ShopPlans', type: :request do
       before { delete v1_shop_plan_path(plan) }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authnetication' do
@@ -288,7 +288,7 @@ RSpec.describe 'ShopPlans', type: :request do
         before { delete v1_shop_plan_path(plan), headers: headers }
 
         it { is_expected.to eq(204) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with other\'s food' do
@@ -300,7 +300,7 @@ RSpec.describe 'ShopPlans', type: :request do
         before { delete v1_shop_plan_path(plan), headers: headers }
 
         it { is_expected.to eq(404) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with food in invited box' do
@@ -314,7 +314,7 @@ RSpec.describe 'ShopPlans', type: :request do
         before { delete v1_shop_plan_path(plan), headers: headers }
 
         it { is_expected.to eq(204) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end

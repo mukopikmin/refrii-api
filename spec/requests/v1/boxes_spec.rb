@@ -20,7 +20,7 @@ RSpec.describe 'Boxes', type: :request do
       before { get v1_boxes_path }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -29,7 +29,7 @@ RSpec.describe 'Boxes', type: :request do
       before {  get v1_boxes_path, headers: { authorization: "Bearer #{token(user1)}" } }
 
       it { is_expected.to eq(200) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
   end
 
@@ -40,7 +40,7 @@ RSpec.describe 'Boxes', type: :request do
       before { get owns_v1_boxes_path }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -49,7 +49,7 @@ RSpec.describe 'Boxes', type: :request do
       before { get owns_v1_boxes_path, headers: { authorization: "Bearer #{token(user1)}" } }
 
       it { is_expected.to eq(200) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
   end
 
@@ -60,7 +60,7 @@ RSpec.describe 'Boxes', type: :request do
       before { get invited_v1_boxes_path }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -69,7 +69,7 @@ RSpec.describe 'Boxes', type: :request do
       before { get invited_v1_boxes_path, headers: { authorization: "Bearer #{token(user1)}" } }
 
       it { is_expected.to eq(200) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
   end
 
@@ -80,7 +80,7 @@ RSpec.describe 'Boxes', type: :request do
       before { get v1_box_path(box1) }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -90,7 +90,7 @@ RSpec.describe 'Boxes', type: :request do
         before { get v1_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with other\'s box' do
@@ -101,7 +101,7 @@ RSpec.describe 'Boxes', type: :request do
         end
 
         it { is_expected.to eq(404) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
@@ -113,7 +113,7 @@ RSpec.describe 'Boxes', type: :request do
       before { get versions_v1_box_path(box1) }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -122,7 +122,7 @@ RSpec.describe 'Boxes', type: :request do
       before { get versions_v1_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" } }
 
       it { is_expected.to eq(200) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
   end
 
@@ -133,7 +133,7 @@ RSpec.describe 'Boxes', type: :request do
       before { get units_v1_box_path(box1) }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -143,7 +143,7 @@ RSpec.describe 'Boxes', type: :request do
         before { get units_v1_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with other\'s box' do
@@ -154,7 +154,7 @@ RSpec.describe 'Boxes', type: :request do
         end
 
         it { is_expected.to eq(404) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
@@ -169,7 +169,7 @@ RSpec.describe 'Boxes', type: :request do
       before { post v1_boxes_path, params: params }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -178,7 +178,7 @@ RSpec.describe 'Boxes', type: :request do
       before { post v1_boxes_path, params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
       it { is_expected.to eq(201) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with no name params' do
@@ -189,7 +189,7 @@ RSpec.describe 'Boxes', type: :request do
       end
 
       it { is_expected.to eq(400) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
   end
 
@@ -202,7 +202,7 @@ RSpec.describe 'Boxes', type: :request do
       before { put v1_box_path(box1), params: params }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -212,7 +212,7 @@ RSpec.describe 'Boxes', type: :request do
         before { put v1_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with other\'s box' do
@@ -223,7 +223,7 @@ RSpec.describe 'Boxes', type: :request do
         end
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with no name params' do
@@ -234,7 +234,7 @@ RSpec.describe 'Boxes', type: :request do
         before { put v1_box_path(box1), params: no_name_box, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
@@ -246,7 +246,7 @@ RSpec.describe 'Boxes', type: :request do
       before { delete v1_box_path(box1) }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -256,7 +256,7 @@ RSpec.describe 'Boxes', type: :request do
         before { delete v1_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(204) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with other\'s box' do
@@ -267,7 +267,7 @@ RSpec.describe 'Boxes', type: :request do
         end
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with invited box' do
@@ -278,7 +278,7 @@ RSpec.describe 'Boxes', type: :request do
         end
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
@@ -293,7 +293,7 @@ RSpec.describe 'Boxes', type: :request do
       before { post invite_v1_box_path(box1), params: params }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -303,7 +303,7 @@ RSpec.describe 'Boxes', type: :request do
         before { post invite_v1_box_path(box1), params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(201) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with other\'s box' do
@@ -314,7 +314,7 @@ RSpec.describe 'Boxes', type: :request do
         end
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with unpersisted user' do
@@ -325,7 +325,7 @@ RSpec.describe 'Boxes', type: :request do
         end
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
@@ -339,7 +339,7 @@ RSpec.describe 'Boxes', type: :request do
       before { delete invite_v1_box_path(box3), params: params }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -351,7 +351,7 @@ RSpec.describe 'Boxes', type: :request do
         before { delete invite_v1_box_path(box3), params: params, headers: { authorization: "Bearer #{token(user2)}" } }
 
         it { is_expected.to eq(204) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with other\'s box' do
@@ -364,7 +364,7 @@ RSpec.describe 'Boxes', type: :request do
         end
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with unpersisted user' do
@@ -378,7 +378,7 @@ RSpec.describe 'Boxes', type: :request do
         end
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end

@@ -15,7 +15,7 @@ RSpec.describe 'Users', type: :request do
       before { get v1_users_path }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -27,7 +27,7 @@ RSpec.describe 'Users', type: :request do
         before { get v1_users_path, headers: { authorization: "Bearer #{token(admin)}" } }
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with non-admin user' do
@@ -36,7 +36,7 @@ RSpec.describe 'Users', type: :request do
         before { get v1_users_path, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(403) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
@@ -49,7 +49,7 @@ RSpec.describe 'Users', type: :request do
         before { get verify_v1_users_path }
 
         it { is_expected.to eq(401) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with non existing user' do
@@ -65,7 +65,7 @@ RSpec.describe 'Users', type: :request do
         end
 
         it { is_expected.to eq(404) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
 
@@ -75,7 +75,7 @@ RSpec.describe 'Users', type: :request do
       before { get verify_v1_users_path, headers: { authorization: "Bearer #{token(user1)}" } }
 
       it { is_expected.to eq(200) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
   end
 
@@ -88,7 +88,7 @@ RSpec.describe 'Users', type: :request do
       before { get search_v1_users_path, params: params }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -97,7 +97,7 @@ RSpec.describe 'Users', type: :request do
       before { get search_v1_users_path, params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
       it { is_expected.to eq(200) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
   end
 
@@ -108,7 +108,7 @@ RSpec.describe 'Users', type: :request do
       before { get v1_user_path(user1) }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -117,7 +117,7 @@ RSpec.describe 'Users', type: :request do
       before { get v1_user_path(user1), headers: { authorization: "Bearer #{token(user1)}" } }
 
       it { is_expected.to eq(200) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
   end
 
@@ -141,7 +141,7 @@ RSpec.describe 'Users', type: :request do
       end
 
       it { is_expected.to eq(201) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with no email user' do
@@ -163,7 +163,7 @@ RSpec.describe 'Users', type: :request do
       end
 
       it { is_expected.to eq(400) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with no name user' do
@@ -185,7 +185,7 @@ RSpec.describe 'Users', type: :request do
       end
 
       it { is_expected.to eq(400) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with existing user' do
@@ -212,7 +212,7 @@ RSpec.describe 'Users', type: :request do
       end
 
       it { is_expected.to eq(400) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
   end
 
@@ -233,7 +233,7 @@ RSpec.describe 'Users', type: :request do
       before { put v1_user_path(user1), params: params }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -245,7 +245,7 @@ RSpec.describe 'Users', type: :request do
         end
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with no name user' do
@@ -254,7 +254,7 @@ RSpec.describe 'Users', type: :request do
         before { put v1_user_path(user1), params: no_name_user, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
@@ -268,7 +268,7 @@ RSpec.describe 'Users', type: :request do
       before { post push_token_v1_user_path(user) }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -281,7 +281,7 @@ RSpec.describe 'Users', type: :request do
         before { post push_token_v1_user_path(user), params: params, headers: { authorization: "Bearer #{token(user)}" } }
 
         it { is_expected.to eq(201) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with other user' do
@@ -294,7 +294,7 @@ RSpec.describe 'Users', type: :request do
         before { post push_token_v1_user_path(other), params: params, headers: { authorization: "Bearer #{token(user)}" } }
 
         it { is_expected.to eq(403) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with existing token' do
@@ -309,7 +309,7 @@ RSpec.describe 'Users', type: :request do
         end
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with multiple tokens for a user' do
@@ -325,7 +325,7 @@ RSpec.describe 'Users', type: :request do
         end
 
         it { is_expected.to eq(201) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end

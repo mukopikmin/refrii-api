@@ -22,4 +22,8 @@ class HttpError
   def self.numeric_status(status)
     status.class == Symbol ? Rack::Utils::SYMBOL_TO_STATUS_CODE[status] : status
   end
+
+  def self.model_name
+    self.class
+  end
 end

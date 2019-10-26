@@ -16,13 +16,13 @@ RSpec.describe ShopPlan, type: :model do
 
   describe '.all_with_invited' do
     context 'without invitation' do
-      subject { ShopPlan.all_with_invited(user1) }
+      subject { described_class.all_with_invited(user1) }
 
       it { is_expected.to eq([plan1]) }
     end
 
     context 'with invitations' do
-      subject { ShopPlan.all_with_invited(user1) }
+      subject { described_class.all_with_invited(user1) }
 
       before { Invitation.create(box: box2, user: user1) }
 

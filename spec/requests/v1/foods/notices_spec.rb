@@ -19,7 +19,7 @@ RSpec.describe 'Foods/Notices', type: :request do
       before { post v1_food_notices_path(food) }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -32,7 +32,7 @@ RSpec.describe 'Foods/Notices', type: :request do
         before { post v1_food_notices_path(food), headers: headers, params: params }
 
         it { is_expected.to eq(201) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with other\'s food' do
@@ -45,7 +45,7 @@ RSpec.describe 'Foods/Notices', type: :request do
         before { post v1_food_notices_path(food), headers: headers, params: params }
 
         it { is_expected.to eq(404) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with food in invited box' do
@@ -60,7 +60,7 @@ RSpec.describe 'Foods/Notices', type: :request do
         before { post v1_food_notices_path(food), headers: headers, params: params }
 
         it { is_expected.to eq(201) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end

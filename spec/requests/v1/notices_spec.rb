@@ -25,7 +25,7 @@ RSpec.describe 'Notices', type: :request do
       before { delete v1_notice_path(id: notice) }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -38,7 +38,7 @@ RSpec.describe 'Notices', type: :request do
         before { delete v1_notice_path(id: notice), headers: headers, params: params }
 
         it { is_expected.to eq(204) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with other\'s food' do
@@ -51,7 +51,7 @@ RSpec.describe 'Notices', type: :request do
         before { delete v1_notice_path(id: notice), headers: headers, params: params }
 
         it { is_expected.to eq(404) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with food in invited box' do
@@ -66,7 +66,7 @@ RSpec.describe 'Notices', type: :request do
         before { delete v1_notice_path(id: notice), headers: headers, params: params }
 
         it { is_expected.to eq(204) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end

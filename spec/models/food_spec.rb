@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Food, type: :model do
   describe '.all_with_invited' do
-    subject { Food.all_with_invited(user1).size }
+    subject { described_class.all_with_invited(user1).size }
 
     let(:user1) { create(:user) }
     let(:user2) { create(:user) }

@@ -12,19 +12,19 @@ RSpec.describe Box, type: :model do
 
   describe 'scope' do
     describe 'owned_by' do
-      subject(:boxes) { Box.owned_by(user1) }
+      subject(:boxes) { described_class.owned_by(user1) }
 
       it { is_expected.to eq([box1]) }
     end
 
     describe 'inviting' do
-      subject(:boxes) { Box.inviting(user2) }
+      subject(:boxes) { described_class.inviting(user2) }
 
       it { is_expected.to eq([box1]) }
     end
 
     describe 'all_with_invited' do
-      subject(:boxes) { Box.all_with_invited(user2) }
+      subject(:boxes) { described_class.all_with_invited(user2) }
 
       it { is_expected.to match_array([box1, box2]) }
     end

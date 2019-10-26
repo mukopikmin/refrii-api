@@ -32,7 +32,7 @@ RSpec.describe 'Foods', type: :request do
       before { get v1_foods_path }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -41,7 +41,7 @@ RSpec.describe 'Foods', type: :request do
       before { get v1_foods_path, headers: { authorization: "Bearer #{token(user1)}" } }
 
       it { is_expected.to eq(200) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
   end
 
@@ -52,7 +52,7 @@ RSpec.describe 'Foods', type: :request do
       before { get v1_food_path(food1) }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -62,7 +62,7 @@ RSpec.describe 'Foods', type: :request do
         before { get v1_food_path(food1), headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with food in other\'s box' do
@@ -71,7 +71,7 @@ RSpec.describe 'Foods', type: :request do
         before { get v1_food_path(food2), headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(404) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
@@ -83,7 +83,7 @@ RSpec.describe 'Foods', type: :request do
       before { get versions_v1_food_path(food1) }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -95,7 +95,7 @@ RSpec.describe 'Foods', type: :request do
         before { get versions_v1_food_path(food1), headers: headers }
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with other\'s food' do
@@ -106,7 +106,7 @@ RSpec.describe 'Foods', type: :request do
         before { get versions_v1_food_path(food2), headers: headers }
 
         it { is_expected.to eq(404) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with food in invited box' do
@@ -120,7 +120,7 @@ RSpec.describe 'Foods', type: :request do
         end
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
@@ -132,7 +132,7 @@ RSpec.describe 'Foods', type: :request do
       before { get shop_plans_v1_food_path(food1) }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -144,7 +144,7 @@ RSpec.describe 'Foods', type: :request do
         before { get shop_plans_v1_food_path(food1), headers: headers }
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with other\'s food' do
@@ -155,7 +155,7 @@ RSpec.describe 'Foods', type: :request do
         before { get shop_plans_v1_food_path(food2), headers: headers }
 
         it { is_expected.to eq(404) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with food in invited box' do
@@ -169,7 +169,7 @@ RSpec.describe 'Foods', type: :request do
         end
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
@@ -183,7 +183,7 @@ RSpec.describe 'Foods', type: :request do
       before { post v1_foods_path, params: params }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -195,7 +195,7 @@ RSpec.describe 'Foods', type: :request do
         before { post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(201) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with food in other\'s box' do
@@ -206,7 +206,7 @@ RSpec.describe 'Foods', type: :request do
         before { post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with no name food' do
@@ -217,7 +217,7 @@ RSpec.describe 'Foods', type: :request do
         before { post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with unit for box owned by other users' do
@@ -228,7 +228,7 @@ RSpec.describe 'Foods', type: :request do
         before { post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
@@ -242,7 +242,7 @@ RSpec.describe 'Foods', type: :request do
       before { put v1_food_path(food1), params: params }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -252,7 +252,7 @@ RSpec.describe 'Foods', type: :request do
         before { put v1_food_path(food1), params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with food in other\'s box' do
@@ -261,7 +261,7 @@ RSpec.describe 'Foods', type: :request do
         before { put v1_food_path(food2), params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with no name food' do
@@ -272,7 +272,7 @@ RSpec.describe 'Foods', type: :request do
         before { put v1_food_path(food1), params: no_name_params, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with unit for box owned by other users' do
@@ -283,7 +283,7 @@ RSpec.describe 'Foods', type: :request do
         before { put v1_food_path(food1), params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
@@ -295,7 +295,7 @@ RSpec.describe 'Foods', type: :request do
       before { delete v1_food_path(food1) }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -305,7 +305,7 @@ RSpec.describe 'Foods', type: :request do
         before { delete v1_food_path(food1), headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(204) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with food in other\'s box' do
@@ -314,7 +314,7 @@ RSpec.describe 'Foods', type: :request do
         before { delete v1_food_path(food2), headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end

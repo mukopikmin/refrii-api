@@ -17,7 +17,7 @@ RSpec.describe 'Units', type: :request do
       before { get v1_units_path }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -26,7 +26,7 @@ RSpec.describe 'Units', type: :request do
       before { get v1_units_path, headers: { authorization: "Bearer #{token(user1)}" } }
 
       it { is_expected.to eq(200) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
   end
 
@@ -37,7 +37,7 @@ RSpec.describe 'Units', type: :request do
       before { get v1_unit_path(unit1) }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -47,7 +47,7 @@ RSpec.describe 'Units', type: :request do
         before { get v1_unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with other\'s unit' do
@@ -56,7 +56,7 @@ RSpec.describe 'Units', type: :request do
         before { get v1_unit_path(unit2), headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(404) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
@@ -70,7 +70,7 @@ RSpec.describe 'Units', type: :request do
       before { post v1_units_path, params: params }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -82,7 +82,7 @@ RSpec.describe 'Units', type: :request do
         before { post v1_units_path, params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(201) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with no label unit' do
@@ -93,7 +93,7 @@ RSpec.describe 'Units', type: :request do
         before { post v1_units_path, params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with existing label unit' do
@@ -107,7 +107,7 @@ RSpec.describe 'Units', type: :request do
         end
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
@@ -121,7 +121,7 @@ RSpec.describe 'Units', type: :request do
       before { put v1_unit_path(unit1), params: params }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -133,7 +133,7 @@ RSpec.describe 'Units', type: :request do
         before { put v1_unit_path(unit1), params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with other\'s unit' do
@@ -144,7 +144,7 @@ RSpec.describe 'Units', type: :request do
         before { put v1_unit_path(unit2), params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with no label unit' do
@@ -155,7 +155,7 @@ RSpec.describe 'Units', type: :request do
         before { put v1_unit_path(unit2), params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'with existing label unit' do
@@ -169,7 +169,7 @@ RSpec.describe 'Units', type: :request do
         end
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
 
       context 'without renaming label of unit' do
@@ -180,7 +180,7 @@ RSpec.describe 'Units', type: :request do
         before { put v1_unit_path(unit1), params: params, headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(200) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
@@ -192,7 +192,7 @@ RSpec.describe 'Units', type: :request do
       before { delete v1_unit_path(unit1) }
 
       it { is_expected.to eq(401) }
-      it { assert_schema_conform }
+      it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
@@ -203,7 +203,7 @@ RSpec.describe 'Units', type: :request do
           before { delete v1_unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" } }
 
           it { is_expected.to eq(204) }
-          it { assert_schema_conform }
+          it { assert_response_schema_confirm }
         end
 
         context 'with unit referenced by foods' do
@@ -220,7 +220,7 @@ RSpec.describe 'Units', type: :request do
           end
 
           it { is_expected.to eq(400) }
-          it { assert_schema_conform }
+          it { assert_response_schema_confirm }
         end
       end
 
@@ -230,7 +230,7 @@ RSpec.describe 'Units', type: :request do
         before { delete v1_unit_path(unit2), headers: { authorization: "Bearer #{token(user1)}" } }
 
         it { is_expected.to eq(400) }
-        it { assert_schema_conform }
+        it { assert_response_schema_confirm }
       end
     end
   end
