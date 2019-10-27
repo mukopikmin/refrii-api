@@ -45,38 +45,6 @@ RSpec.describe V1::FoodsController, type: :controller do
     end
   end
 
-  describe 'GET #versions' do
-    let(:user) { create(:user) }
-    let(:box) { create(:box, owner: user) }
-    let(:unit) { create(:unit, user: user) }
-    let(:food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user) }
-
-    before do
-      request.headers['Authorization'] = "Bearer #{token(user)}"
-    end
-
-    it 'assigns the requested food as @food' do
-      get :versions, params: { id: food.to_param }
-      expect(assigns(:food)).to eq(food)
-    end
-  end
-
-  describe 'GET #shop_plans' do
-    let(:user) { create(:user) }
-    let(:box) { create(:box, owner: user) }
-    let(:unit) { create(:unit, user: user) }
-    let(:food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user) }
-
-    before do
-      request.headers['Authorization'] = "Bearer #{token(user)}"
-    end
-
-    it 'assigns the requested food as @food' do
-      get :shop_plans, params: { id: food.to_param }
-      expect(assigns(:food)).to eq(food)
-    end
-  end
-
   describe 'POST #create' do
     let(:user) { create(:user) }
     let(:box) { create(:box, owner: user) }
@@ -139,37 +107,6 @@ RSpec.describe V1::FoodsController, type: :controller do
 
     it 'assigns the requested food as @food' do
       put :update, params: { id: food.to_param }.merge!(attributes_for(:another_food))
-      expect(assigns(:food)).to eq(food)
-    end
-  end
-
-  describe 'PUT #revert' do
-    let(:user) { create(:user) }
-    let(:box) { create(:box, owner: user) }
-    let(:unit) { create(:unit, user: user) }
-    let(:food) do
-      create(:food, name: name_before,
-                    box: box,
-                    unit: unit,
-                    created_user: box.owner,
-                    updated_user: box.owner)
-    end
-    let(:name_before) { 'before changed' }
-    let(:name_after) { 'after changed' }
-
-    before do
-      request.headers['Authorization'] = "Bearer #{token(user)}"
-      put :update, params: { id: food.to_param, name: name_after }
-    end
-
-    it 'revert the requested food' do
-      put :revert, params: { id: food.to_param }
-      food.reload
-      expect(food.name).to eq(name_before)
-    end
-
-    it 'assigns the reverted food as @food' do
-      put :revert, params: { id: food.to_param }
       expect(assigns(:food)).to eq(food)
     end
   end

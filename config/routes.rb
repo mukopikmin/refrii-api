@@ -23,14 +23,10 @@ Rails.application.routes.draw do
     resources :units
 
     resources :foods do
-      member do
-        get :versions
-        get :shop_plans
-        put :revert
-      end
-
       scope module: :foods do
         resources :notices, only: %i[create]
+        resources :shop_plans, only: %i[index]
+        resources :versions, only: %i[index create]
       end
     end
 

@@ -22,24 +22,6 @@ module V1
       end
     end
 
-    # GET /foods/1/versions
-    def versions
-      if !box_accessible?
-        not_found
-      else
-        render json: @food.versions
-      end
-    end
-
-    # GET /foods/1/shop_plans
-    def shop_plans
-      if !box_accessible?
-        not_found
-      else
-        render json: @food.shop_plans
-      end
-    end
-
     # POST /foods
     def create
       @food = Food.new(food_params)
@@ -67,17 +49,6 @@ module V1
       elsif @food.update(food_params)
         @food.image.attach(attachment_param(params[:image])) if image_in_params?
 
-        render json: @food
-      else
-        bad_request
-      end
-    end
-
-    # PUT /boxes/1/revert
-    def revert
-      if !box_accessible?
-        bad_request('You can not revert the food.')
-      elsif @food.revert
         render json: @food
       else
         bad_request
