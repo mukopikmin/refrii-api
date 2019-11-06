@@ -19,7 +19,7 @@ class V1::Foods::VersionsController < V1::ApplicationController
     if !accessible?
       bad_request('You can not revert the food.')
     elsif @food.revert
-      render json: @food
+      render json: @food, status: :created
     else
       bad_request
     end
