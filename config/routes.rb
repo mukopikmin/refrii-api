@@ -42,11 +42,15 @@ Rails.application.routes.draw do
         get :versions
         get :foods
         get :units
-        post :invite
         put :revert
-        delete 'invite' => :uninvite
+      end
+
+      scope module: :boxes do
+        resources :invitations, only: %i[create]
       end
     end
+
+    resources :invitations, only: %i[destroy]
 
     resources :users do
       collection do

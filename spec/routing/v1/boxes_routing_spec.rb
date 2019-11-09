@@ -51,13 +51,5 @@ RSpec.describe V1::BoxesController, type: :routing do
     it 'routes to #destroy' do
       expect(delete: '/v1/boxes/1').to route_to('v1/boxes#destroy', id: '1')
     end
-
-    it 'routes to #invite' do
-      expect(post: '/v1/boxes/1/invite').to route_to('v1/boxes#invite', id: '1')
-    end
-
-    it 'routes to #uninvite' do
-      expect(delete: '/v1/boxes/1/invite').to route_to('v1/boxes#uninvite', id: '1')
-    end
   end
 end
