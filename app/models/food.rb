@@ -35,9 +35,12 @@ class Food < ApplicationRecord
 
   def revert
     previous = paper_trail.previous_version
+    params = {
+      name: previous.name,
+      amount: previous.amount,
+      expiration_date: previous.expiration_date
+    }
 
-    !previous.nil? && update(name: previous.name,
-                             amount: previous.amount,
-                             expiration_date: previous.expiration_date)
+    !previous.nil? && update(params)
   end
 end

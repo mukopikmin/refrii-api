@@ -37,9 +37,9 @@ class V1::BoxesController < V1::ApplicationController
   end
 
   # GET /boxes/1/versions
-  def versions
-    render json: @box.versions
-  end
+  # def versions
+  #   render json: @box.versions
+  # end
 
   # GET /boxes/1/foods
   def foods
@@ -85,15 +85,15 @@ class V1::BoxesController < V1::ApplicationController
   end
 
   # PUT /boxes/1/revert
-  def revert
-    if !owner_of_box?
-      bad_request('You can not revert the box.')
-    elsif @box.revert
-      render json: @box
-    else
-      bad_request
-    end
-  end
+  # def revert
+  #   if !owner_of_box?
+  #     bad_request('You can not revert the box.')
+  #   elsif @box.revert
+  #     render json: @box
+  #   else
+  #     bad_request
+  #   end
+  # end
 
   # DELETE /boxes/1
   def destroy

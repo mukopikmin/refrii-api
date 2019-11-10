@@ -39,14 +39,15 @@ Rails.application.routes.draw do
       end
 
       member do
-        get :versions
+        # get :versions
         get :foods
         get :units
-        put :revert
+        # put :revert
       end
 
       scope module: :boxes do
         resources :invitations, only: %i[create]
+        resources :versions, only: %i[index, create]
       end
     end
 

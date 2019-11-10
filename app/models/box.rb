@@ -35,10 +35,11 @@ class Box < ApplicationRecord
 
   def revert
     previous = paper_trail.previous_version
-    unless previous.nil?
-      update(name: previous.name,
-             notice: previous.notice)
-    end
-    previous
+    params = {
+      name: previous.name,
+                             notice: previous.notice
+    }
+
+    !previous.nil? && update(params)
   end
 end
