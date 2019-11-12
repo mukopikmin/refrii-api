@@ -39,8 +39,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'brakeman', '~> 4.5.0', require: false
-  gem 'codeclimate-test-reporter', '~> 1.0.9', require: false
+  gem "simplecov", "~> 0.13.0"
   gem 'committee', '~> 3.0.1'
   gem 'committee-rails', '~> 0.4.0'
   gem 'database_cleaner', '~> 1.7.0'
@@ -53,4 +52,3 @@ group :production do
   gem 'rails_12factor', '~> 0.0.3'
 end
 
-gem 'yaml_db', '~> 0.7.0'
