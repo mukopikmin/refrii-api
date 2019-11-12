@@ -3,8 +3,7 @@
 class V1::BoxesController < V1::ApplicationController
   before_action :authenticate_request!
   before_action :set_paper_trail_whodunnit
-  before_action :set_box, only: %i[show versions foods image units update revert destroy invite uninvite]
-  before_action :set_invitation, only: [:uninvite]
+  before_action :set_box, only: %i[show foods image units update destroy]
 
   # GET /boxes
   def index
@@ -35,11 +34,6 @@ class V1::BoxesController < V1::ApplicationController
       render json: @box
     end
   end
-
-  # GET /boxes/1/versions
-  # def versions
-  #   render json: @box.versions
-  # end
 
   # GET /boxes/1/foods
   def foods
@@ -104,32 +98,6 @@ class V1::BoxesController < V1::ApplicationController
     end
   end
 
-  # # POST /boxes/1/invite
-  # def invite
-  #   @invitation = Invitation.new(invitatation_params)
-
-  #   if invited?
-  #     bad_request('The invitation already exists.')
-  #   elsif !owner_of_box?
-  #     bad_request('You can not invite to the box.')
-  #   elsif @invitation.save
-  #     render json: @invitation, status: :created
-  #   else
-  #     bad_request
-  #   end
-  # end
-
-  # # DELETE /boxes/1/invite
-  # def uninvite
-  #   if !owner_of_box?
-  #     bad_request('You can not delete the invitation.')
-  #   elsif @invitation.nil?
-  #     bad_request('Specified invitation does not exist.')
-  #   else
-  #     @invitation.destroy
-  #   end
-  # end
-
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -148,12 +116,6 @@ class V1::BoxesController < V1::ApplicationController
                   :image_size,
                   :image,
                   :image_content_type)
-  end
-
-  def set_invitation
-    user = User.where(email: params[:email]).first
-
-    @invitation = Invitation.find_by(user: user, box: @box)
   end
 
   def accessible?

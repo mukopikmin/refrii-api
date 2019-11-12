@@ -20,10 +20,6 @@ RSpec.describe V1::BoxesController, type: :routing do
       expect(get: '/v1/boxes/1').to route_to('v1/boxes#show', id: '1')
     end
 
-    it 'routes to #versions' do
-      expect(get: '/v1/boxes/1/versions').to route_to('v1/boxes#versions', id: '1')
-    end
-
     it 'routes to #foods' do
       expect(get: '/v1/boxes/1/foods').to route_to('v1/boxes#foods', id: '1')
     end
@@ -42,10 +38,6 @@ RSpec.describe V1::BoxesController, type: :routing do
 
     it 'routes to #update via PATCH' do
       expect(patch: '/v1/boxes/1').to route_to('v1/boxes#update', id: '1')
-    end
-
-    it 'routes to #revert via PUT' do
-      expect(put: '/v1/boxes/1/revert').to route_to('v1/boxes#revert', id: '1')
     end
 
     it 'routes to #destroy' do

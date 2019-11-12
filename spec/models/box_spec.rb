@@ -86,22 +86,21 @@ RSpec.describe Box, type: :model do
 
   describe '#revert' do
     let(:user) { create(:user) }
-    let(:box) { create(:box, name: name_before, owner: user) }
-    let(:name_before) { 'before box' }
+    let(:box) { create(:box, owner: user) }
     let(:name_after) { 'after box' }
 
     context 'with versions' do
+      subject { box.revert }
+
       before { box.update(name: name_after) }
 
-      it 'returns previous version' do
-        expect(box.revert.name).to eq(name_before)
-      end
+      it { is_expected.to be_truthy }
     end
 
     context 'with no versions' do
-      it 'returns nil' do
-        expect(box.revert).to be_nil
-      end
+      subject { box.revert }
+
+      it { is_expected.to be_falsey }
     end
   end
 end

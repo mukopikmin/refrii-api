@@ -106,26 +106,6 @@ RSpec.describe 'Boxes', type: :request do
     end
   end
 
-  describe 'GET /boxes/:id/versions' do
-    context 'without authentication' do
-      subject { response.status }
-
-      before { get versions_v1_box_path(box1) }
-
-      it { is_expected.to eq(401) }
-      it { assert_schema_conform }
-    end
-
-    context 'with authentication' do
-      subject { response.status }
-
-      before { get versions_v1_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" } }
-
-      it { is_expected.to eq(200) }
-      it { assert_schema_conform }
-    end
-  end
-
   describe 'GET /boxes/:id/units' do
     context 'without authentication' do
       subject { response.status }
