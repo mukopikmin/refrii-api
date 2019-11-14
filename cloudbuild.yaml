@@ -6,11 +6,36 @@ steps:
       - gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
       - .
   - name: gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
+    dir: /app
+    entrypoint: sh
+    args:
+      - scripts/test_report.sh
+      - before-build
+  - name: gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
+    dir: /app
     args: 
       - bundle
       - exec
       - rake
       - spec
+    volumes:
+      - name: coverage
+        path: /app/coverage
+  - name: gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
+    entrypoint: sh
+    dir: /app
+    args:
+      - scripts/test_report.sh
+      - after-build
+      - -t
+      - simplecov
+    env:
+      - CC_TEST_REPORTER_ID=0bef4d157d44f20ce4fef62d2618e8e0b3bbc2d4c7ae9c862e1a83f461d3e64b
+      - GIT_COMMIT_SHA=$COMMIT_SHA
+      - GIT_BRANCH=$BRANCH_NAME
+    volumes:
+      - name: coverage
+        path: /app/coverage
   - name: gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
     args: 
       - bundle

@@ -1,6 +1,5 @@
 .bundle
 .env*
-.git
 coverage
 credentials/*.json
 db/data

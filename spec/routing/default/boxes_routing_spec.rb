@@ -22,10 +22,6 @@ RSpec.describe "#{version.upcase}::BoxesController", type: :routing do
       expect(get: '/boxes/1').to route_to("#{version}/boxes#show", id: '1')
     end
 
-    it 'routes to #versions' do
-      expect(get: '/boxes/1/versions').to route_to("#{version}/boxes#versions", id: '1')
-    end
-
     it 'routes to #foods' do
       expect(get: '/boxes/1/foods').to route_to("#{version}/boxes#foods", id: '1')
     end
@@ -46,20 +42,8 @@ RSpec.describe "#{version.upcase}::BoxesController", type: :routing do
       expect(patch: '/boxes/1').to route_to("#{version}/boxes#update", id: '1')
     end
 
-    it 'routes to #revert via PUT' do
-      expect(put: '/v1/boxes/1/revert').to route_to('v1/boxes#revert', id: '1')
-    end
-
     it 'routes to #destroy' do
       expect(delete: '/boxes/1').to route_to("#{version}/boxes#destroy", id: '1')
-    end
-
-    it 'routes to #invite' do
-      expect(post: '/boxes/1/invite').to route_to("#{version}/boxes#invite", id: '1')
-    end
-
-    it 'routes to #uninvite' do
-      expect(delete: '/boxes/1/invite').to route_to("#{version}/boxes#uninvite", id: '1')
     end
   end
 end

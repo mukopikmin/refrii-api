@@ -497,6 +497,33 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Error"
+  "/invitations/{id}":
+    delete:
+      tags:
+      - Invitations
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: List of box
+        '400':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      security:
+      - BearerAuth: []
   "/notices/{id}":
     delete:
       tags:
@@ -713,6 +740,39 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Error"
+    post:
+      tags: Foods
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '201':
+          description: Past versions of the food
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Food"
+        '400':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '404':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '401':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
   "/foods/{id}/shop_plans":
     get:
       tags:
@@ -747,7 +807,7 @@ paths:
   "/foods/{food_id}/notices":
     post:
       tags:
-      - Food
+      - Foods
       parameters:
       - in: path
         name: food_id
@@ -1054,7 +1114,7 @@ paths:
                 "$ref": "#/components/schemas/Error"
       security:
       - BearerAuth: []
-  "/boxes/{id}/invite":
+  "/boxes/{id}/invitations":
     post:
       tags:
       - Boxes
@@ -1071,32 +1131,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Invitation"
-        '400':
-          description: Error message
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-        '401':
-          description: Error message
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-      security:
-      - BearerAuth: []
-    delete:
-      tags:
-      - Boxes
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        '204':
-          description: List of box
         '400':
           description: Error message
           content:

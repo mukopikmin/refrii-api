@@ -12,14 +12,6 @@ RSpec.describe V1::FoodsController, type: :routing do
       expect(get: '/v1/foods/1').to route_to('v1/foods#show', id: '1')
     end
 
-    it 'routes to #versions' do
-      expect(get: '/foods/1/versions').to route_to('v1/foods#versions', id: '1')
-    end
-
-    it 'routes to #shop_plans' do
-      expect(get: '/foods/1/shop_plans').to route_to('v1/foods#shop_plans', id: '1')
-    end
-
     it 'routes to #create' do
       expect(post: '/v1/foods').to route_to('v1/foods#create')
     end
@@ -30,10 +22,6 @@ RSpec.describe V1::FoodsController, type: :routing do
 
     it 'routes to #update via PATCH' do
       expect(patch: '/v1/foods/1').to route_to('v1/foods#update', id: '1')
-    end
-
-    it 'routes to #revert via PUT' do
-      expect(put: '/v1/foods/1/revert').to route_to('v1/foods#revert', id: '1')
     end
 
     it 'routes to #destroy' do

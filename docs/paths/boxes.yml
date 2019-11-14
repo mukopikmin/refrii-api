@@ -290,7 +290,7 @@ paths:
       security:
         - BearerAuth:
             []
-  /boxes/{id}/invite:
+  /boxes/{id}/invitations:
     post:
       tags:
         - Boxes
@@ -307,33 +307,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Invitation"
-        "400":
-          description: Error message
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "401":
-          description: Error message
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-      security:
-        - BearerAuth:
-            []
-    delete:
-      tags:
-        - Boxes
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      responses:
-        "204":
-          description: List of box
         "400":
           description: Error message
           content:

@@ -1,0 +1,29 @@
+paths:
+  /invitations/{id}:
+    delete:
+      tags:
+        - Invitations
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: List of box
+        "400":
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Error message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - BearerAuth:
+            []
