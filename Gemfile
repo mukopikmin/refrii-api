@@ -18,7 +18,7 @@ gem 'mini_magick', '~> 4.9'
 gem 'paper_trail', '~> 10.3.0'
 gem 'paper_trail-association_tracking', '~> 2.0.0'
 gem 'puma', '~> 3.12.1'
-gem 'rack-cors', '~> 1.0.3'
+gem 'rack-cors', '~> 1.0.5'
 gem 'rails', '~> 5.2.3'
 gem 'rest-client', '~> 2.0.2'
 gem 'rubocop', '~> 0.67.2', require: false
