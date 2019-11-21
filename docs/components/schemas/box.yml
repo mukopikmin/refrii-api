@@ -23,10 +23,10 @@ components:
           format: date-time
         owner:
           $ref: "#/components/schemas/User"
-        invited_users:
+        invitations:
           type: array
           items:
-            $ref: "#/components/schemas/User"
+            $ref: "#/components/schemas/Invitation"
       required:
         - id
         - name
@@ -36,4 +36,4 @@ components:
         - created_at
         - updated_at
         - owner
-        - invited_users
+        - invitations

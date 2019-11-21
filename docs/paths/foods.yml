@@ -191,7 +191,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
     post:
-      tags: Foods
+      tags:
+      - Foods
       parameters:
         - in: path
           name: id

@@ -1244,7 +1244,9 @@
         }
       },
       "post": {
-        "tags": "Foods",
+        "tags": [
+          "Foods"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2143,10 +2145,10 @@
           "owner": {
             "$ref": "#/components/schemas/User"
           },
-          "invited_users": {
+          "invitations": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/User"
+              "$ref": "#/components/schemas/Invitation"
             }
           }
         },
@@ -2159,7 +2161,7 @@
           "created_at",
           "updated_at",
           "owner",
-          "invited_users"
+          "invitations"
         ]
       },
       "Food": {
