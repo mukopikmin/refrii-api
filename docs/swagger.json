@@ -2049,9 +2049,6 @@
           "id": {
             "type": "integer"
           },
-          "box": {
-            "$ref": "#/components/schemas/Box"
-          },
           "user": {
             "$ref": "#/components/schemas/User"
           },
@@ -2066,7 +2063,6 @@
         },
         "required": [
           "id",
-          "box",
           "user",
           "created_at",
           "updated_at"

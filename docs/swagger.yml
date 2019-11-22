@@ -1203,8 +1203,6 @@ components:
       properties:
         id:
           type: integer
-        box:
-          "$ref": "#/components/schemas/Box"
         user:
           "$ref": "#/components/schemas/User"
         created_at:
@@ -1215,7 +1213,6 @@ components:
           format: date-time
       required:
       - id
-      - box
       - user
       - created_at
       - updated_at
