@@ -8,7 +8,7 @@ class BoxSerializer < ApplicationRecordSerializer
              :created_at,
              :updated_at,
              :is_invited,
-             :invited_users
+             :invitations
 
   belongs_to :owner
 
@@ -17,12 +17,6 @@ class BoxSerializer < ApplicationRecordSerializer
     current_user != object.owner
   end
   # rubocop:enable Naming/PredicateName
-
-  def invited_users
-    object.invitations
-          .map(&:user)
-          .map { |user| UserSerializer.new(user) }
-  end
 
   def image_url
     object.image.attached? ? url_for(object.image) : nil
