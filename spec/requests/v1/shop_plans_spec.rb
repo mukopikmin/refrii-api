@@ -258,10 +258,7 @@ RSpec.describe 'ShopPlans', type: :request do
         before { put complete_v1_shop_plan_path(plan), headers: headers }
 
         it { is_expected.to eq(200) }
-        it { 
-          require 'pp'
-          pp response.body
-          assert_response_schema_confirm }
+        it { assert_response_schema_confirm }
       end
     end
   end

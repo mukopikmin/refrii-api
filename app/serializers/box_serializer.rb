@@ -7,10 +7,10 @@ class BoxSerializer < ApplicationRecordSerializer
              :image_url,
              :created_at,
              :updated_at,
-             :is_invited,
-             :invitations
+             :is_invited
 
   belongs_to :owner
+  has_many :invitations
 
   # rubocop:disable Naming/PredicateName
   def is_invited

@@ -1308,8 +1308,6 @@ components:
         updated_at:
           type: string
           format: date-time
-        box:
-          "$ref": "#/components/schemas/Box"
         unit:
           "$ref": "#/components/schemas/Unit"
         notices:
@@ -1328,7 +1326,6 @@ components:
       - expiration_date
       - created_at
       - updated_at
-      - box
       - unit
       - notices
       - created_user
