@@ -9,6 +9,7 @@ class FoodSerializer < ApplicationRecordSerializer
              :created_at,
              :updated_at
 
+  belongs_to :box
   belongs_to :unit
   belongs_to :created_user
   belongs_to :updated_user
