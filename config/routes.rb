@@ -38,14 +38,11 @@ Rails.application.routes.draw do
         get :invited
       end
 
-      member do
-        get :foods
-        get :units
-      end
-
       scope module: :boxes do
         resources :invitations, only: %i[create]
         resources :versions, only: %i[index create]
+        resources :foods, only: %i[index]
+        resources :units, only: %i[index]
       end
     end
 

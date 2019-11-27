@@ -35,26 +35,6 @@ class V1::BoxesController < V1::ApplicationController
     end
   end
 
-  # GET /boxes/1/foods
-  def foods
-    if !accessible?
-      not_found('Specified box does not exist.')
-    else
-      render json: @box.foods
-    end
-  end
-
-  # GET /boxes/1/units
-  def units
-    @units = @box.owner.units
-
-    if !accessible?
-      not_found('Specified box does not exist.')
-    else
-      render json: @units
-    end
-  end
-
   # POST /boxes
   def create
     @box = Box.new(box_params)
