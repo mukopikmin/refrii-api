@@ -3,7 +3,7 @@
 class V1::FoodsController < V1::ApplicationController
   before_action :authenticate_request!
   before_action :set_paper_trail_whodunnit
-  before_action :set_food, only: %i[show versions shop_plans image update revert destroy]
+  before_action :set_food, only: %i[show update destroy]
 
   # GET /foods
   def index

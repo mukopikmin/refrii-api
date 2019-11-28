@@ -3,7 +3,7 @@
 class V1::BoxesController < V1::ApplicationController
   before_action :authenticate_request!
   before_action :set_paper_trail_whodunnit
-  before_action :set_box, only: %i[show foods image units update destroy]
+  before_action :set_box, only: %i[show update destroy]
 
   # GET /boxes
   def index

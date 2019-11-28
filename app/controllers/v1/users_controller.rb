@@ -3,7 +3,7 @@
 module V1
   class UsersController < V1::ApplicationController
     before_action :set_user, only: %i[show avatar update destroy push_token]
-    before_action :authenticate_request!, only: %i[index avatar verify show search update push_token]
+    before_action :authenticate_request!, only: %i[index verify show search update push_token]
 
     # GET /users
     def index
@@ -83,6 +83,7 @@ module V1
       end
     end
 
+    # TODO: remove on future release
     # POST /users/1/push_token
     def push_token
       @push_token = PushToken.new(push_token_params)
@@ -133,10 +134,6 @@ module V1
 
     def accessible?
       @user.id == current_user.id
-    end
-
-    def requested_base64?
-      params[:base64] == 'true'
     end
   end
 end

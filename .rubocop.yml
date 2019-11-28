@@ -1,17 +1,17 @@
 require: rubocop-rspec
 
 AllCops:
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 2.6
   Exclude:
     - db/schema.rb
     - vendor/**/*
-ClassLength:
+Metrics/ClassLength:
   Enabled: false
-LineLength:
+Metrics/LineLength:
   Enabled: false
-MethodLength:
+Metrics/MethodLength:
   Enabled: false
-BlockLength:
+Metrics/BlockLength:
   Enabled: false
 Metrics/AbcSize:
   Max: 30
@@ -23,4 +23,5 @@ RSpec/MultipleExpectations:
   Max: 3
 RSpec/ScatteredSetup:
   Enabled: false
-  
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
