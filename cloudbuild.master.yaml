@@ -9,13 +9,14 @@ steps:
     args:
       - push
       - gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
-  - name: gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
+  - name: gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
     dir: /app
     entrypoint: sh
     args:
       - scripts/test_report.sh
       - before-build
   - name: gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
+    dir: /app
     args: 
       - bundle
       - exec
