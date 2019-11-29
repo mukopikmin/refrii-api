@@ -133,10 +133,10 @@ GEM
     factory_bot_rails (5.1.1)
       factory_bot (~> 5.1.0)
       railties (>= 4.2.0)
-    faraday (0.17.0)
+    faraday (0.17.1)
       multipart-post (>= 1.2, < 3)
     ffaker (2.13.0)
-    ffi (1.11.2)
+    ffi (1.11.3)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     google-api-client (0.34.1)
@@ -179,7 +179,7 @@ GEM
     listen (3.2.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    loofah (2.3.1)
+    loofah (2.4.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -198,7 +198,7 @@ GEM
     minitest (5.13.0)
     multi_json (1.14.1)
     multipart-post (2.1.1)
-    mysql2 (0.5.2)
+    mysql2 (0.5.3)
     netrc (0.11.0)
     nio4r (2.5.2)
     nokogiri (1.10.5)
@@ -209,7 +209,7 @@ GEM
       activerecord (>= 4.2)
       request_store (~> 1.1)
     paper_trail-association_tracking (2.0.0)
-    parallel (1.19.0)
+    parallel (1.19.1)
     parser (2.6.5.0)
       ast (~> 2.4.0)
     public_suffix (4.0.1)
@@ -378,4 +378,4 @@ DEPENDENCIES
   versionist (~> 2.0.1)
 
 BUNDLED WITH
-   1.17.3
+   2.0.2
