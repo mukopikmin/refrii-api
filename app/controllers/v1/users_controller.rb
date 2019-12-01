@@ -83,22 +83,6 @@ module V1
       end
     end
 
-    # TODO: remove on future release
-    # POST /users/1/push_token
-    def push_token
-      @push_token = PushToken.new(push_token_params)
-
-      if !accessible?
-        forbidden('You can only update self.')
-      elsif @push_token.exists?
-        bad_request('The token already exists.')
-      elsif @push_token.save
-        render json: current_user, status: :created
-      else
-        bad_request
-      end
-    end
-
     private
 
     def set_user

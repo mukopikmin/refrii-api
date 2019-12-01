@@ -58,11 +58,6 @@ Rails.application.routes.draw do
       scope module: :users do
         resources :push_tokens, only: %i[create]
       end
-
-      # TODO: remove on future release
-      member do
-        post :push_token
-      end
     end
 
     resources :shop_plans do
