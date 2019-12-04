@@ -66,40 +66,6 @@ RSpec.describe V1::BoxesController, type: :controller do
     end
   end
 
-  describe 'GET #foods' do
-    let(:user) { create(:user) }
-    let(:box) { create(:box, owner: user) }
-
-    before do
-      request.headers['Authorization'] = "Bearer #{token(user)}"
-    end
-
-    it 'assigns the requested food as @food' do
-      get :foods, params: { id: box.to_param }
-      expect(assigns(:box)).to eq(box)
-    end
-  end
-
-  describe 'GET #units' do
-    let(:user) { create(:user) }
-    let(:box) { create(:box, owner: user) }
-    let!(:unit) { create(:unit, user: user) }
-
-    before do
-      request.headers['Authorization'] = "Bearer #{token(user)}"
-    end
-
-    context 'with own boxes' do
-      it 'assigns the requested units as @units' do
-        get :units, params: { id: box.to_param }
-        expect(assigns(:units)).to eq([unit])
-      end
-    end
-
-    # context 'with invited boxes' do
-    # end
-  end
-
   describe 'POST #create' do
     let!(:user) { create(:user) }
 

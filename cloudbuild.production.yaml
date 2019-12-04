@@ -4,7 +4,7 @@ steps:
       - pull
       - gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
   - name: gcr.io/cloud-builders/docker
-    aargs:
+    args:
       - tag
       - gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
       - gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME
@@ -41,7 +41,7 @@ steps:
     entrypoint: sh
     args: 
       - scripts/deploy.sh
-      - refrii-api
+      - $_CLOUD_RUN_SERVICE
       - gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
     env:
       - RAILS_ENV=production

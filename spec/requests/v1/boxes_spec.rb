@@ -106,39 +106,6 @@ RSpec.describe 'Boxes', type: :request do
     end
   end
 
-  describe 'GET /boxes/:id/units' do
-    context 'without authentication' do
-      subject { response.status }
-
-      before { get units_v1_box_path(box1) }
-
-      it { is_expected.to eq(401) }
-      it { assert_response_schema_confirm }
-    end
-
-    context 'with authentication' do
-      context 'with own box' do
-        subject { response.status }
-
-        before { get units_v1_box_path(box1), headers: { authorization: "Bearer #{token(user1)}" } }
-
-        it { is_expected.to eq(200) }
-        it { assert_response_schema_confirm }
-      end
-
-      context 'with other\'s box' do
-        subject { response.status }
-
-        before do
-          get units_v1_box_path(box2), headers: { authorization: "Bearer #{token(user1)}" }
-        end
-
-        it { is_expected.to eq(404) }
-        it { assert_response_schema_confirm }
-      end
-    end
-  end
-
   describe 'POST /boxes' do
     let(:params) { attributes_for(:box) }
     let(:no_name_box) { attributes_for(:no_name_box) }
