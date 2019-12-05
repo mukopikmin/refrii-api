@@ -1,5 +1,10 @@
 steps:
   - name: gcr.io/cloud-builders/docker
+    entrypoint: bash
+    args:
+      - -c
+      - if [ $BRANCH_NAME = "master" ] ; then exit(0) ; else exit(1) ; fi
+  - name: gcr.io/cloud-builders/docker
     args:
       - pull
       - gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
