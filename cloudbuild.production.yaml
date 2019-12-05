@@ -1,68 +1,30 @@
 steps:
   - name: gcr.io/cloud-builders/docker
-    args: 
-      - build
-      - -t
-      - gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
-      - .
+    args:
+      - pull
+      - gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
   - name: gcr.io/cloud-builders/docker
     args:
-      - push
-      - gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
-  - name: gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
-    dir: /app
-    entrypoint: sh
-    args:
-      - scripts/test_report.sh
-      - before-build
-  - name: gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
-    dir: /app
-    args: 
-      - bundle
-      - exec
-      - rails
-      - spec
-    volumes:
-      - name: coverage
-        path: /app/coverage
-  - name: gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
-    entrypoint: sh
-    dir: /app
-    args:
-      - scripts/test_report.sh
-      - after-build
-      - -t
-      - simplecov
-    env:
-      - CC_TEST_REPORTER_ID=0bef4d157d44f20ce4fef62d2618e8e0b3bbc2d4c7ae9c862e1a83f461d3e64b
-      - GIT_COMMIT_SHA=$COMMIT_SHA
-      - GIT_BRANCH=$BRANCH_NAME
-    volumes:
-      - name: coverage
-        path: /app/coverage
-  - name: gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
-    args: 
-      - bundle
-      - exec
-      - rails
-      - rubocop
+      - tag
+      - gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
+      - gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME
   - name: gcr.io/cloud-builders/gcloud
     args:
       - kms
       - decrypt
-      - --ciphertext-file=credentials/credentials.master.json.enc
-      - --plaintext-file=/kms/credentials.master.json
+      - --ciphertext-file=credentials/credentials.production.json.enc
+      - --plaintext-file=/kms/credentials.production.json
       - --location=global
       - --keyring=refrii-api
       - --key=production
     volumes:
       - name: kms
         path: /kms
-  - name: gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
+  - name: gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
     entrypoint: sh
     args:
       - scripts/migrate.sh
-      - $BRANCH_NAME
+      - production
     volumes:
       - name: kms
         path: /kms
@@ -79,8 +41,8 @@ steps:
     entrypoint: sh
     args: 
       - scripts/deploy.sh
-      - refrii-api
-      - gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
+      - $_CLOUD_RUN_SERVICE
+      - gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
     env:
       - RAILS_ENV=production
       - RACK_ENV=production
@@ -93,4 +55,4 @@ secrets:
       MYSQL_PASSWORD: CiQAupArwxhw0KP3agRoCkFMuXK55d8gsytV0A+sPgTowEs31bcSOgD/p2US/YBBjkqIEa/Sl9d0lkmOdz2nT4X7j7Fisoprm1ZvQDXGxqJ1t9kQtMZZGnjptw21Vzt6Ei0=
       SECRET_KEY_BASE: CiQAupArwxsqiomrEZgs2xtkDWukISTDtbQhMIxg7RxTttlyacISqwEA/6dlEsgU5E85nezRz8srm5QsIaqkaY9VwgzarutfKXy6huDey6K4tmGmdRoB4wY0W1TpC9vd5ncoPCEFRn+c6fGNnyBj3ldWeFDzx6MK/Onaobti7db7odnREtlc5OzM7p+py1p8vcq6paMBCGO8vjxWAVqPJD7I9zKjedT3aBhArQmNU4m34uMU8T17XdLAKXQZbyLs2tFBHDcNNtytQV7BiAVgiN3WJlY=
 images:
-  - gcr.io/$PROJECT_ID/$REPO_NAME:$BRANCH_NAME
+  - gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME
