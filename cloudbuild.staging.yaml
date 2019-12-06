@@ -12,11 +12,11 @@ steps:
     args:
       - kms
       - decrypt
-      - --ciphertext-file=credentials/credentials.staging.json.enc
-      - --plaintext-file=/kms/credentials.staging.json
+      - --ciphertext-file=credentials/credentials.${_ENVIRONMENT}.json.enc
+      - --plaintext-file=/kms/credentials.${_ENVIRONMENT}.json
       - --location=global
-      - --keyring=refrii-api
-      - --key=staging
+      - --keyring=$_KEY_RING
+      - --key=$_ENVIRONMENT
     volumes:
       - name: kms
         path: /kms
@@ -24,19 +24,18 @@ steps:
     entrypoint: sh
     args:
       - scripts/migrate.sh
-      - staging
+      - $_ENVIRONMENT
     volumes:
       - name: kms
         path: /kms
     env:
       - RAILS_ENV=production
       - RACK_ENV=production
-    secretEnv:
-      - MYSQL_SOCKET
-      - MYSQL_DATABASE
-      - MYSQL_USERNAME
-      - MYSQL_PASSWORD
-      - SECRET_KEY_BASE
+      - MYSQL_SOCKET=$_MYSQL_SOCKET
+      - MYSQL_DATABASE=$_MYSQL_DATABASE
+      - MYSQL_USERNAME=$_MYSQL_USERNAME
+      - MYSQL_PASSWORD=$_MYSQL_PASSWORD
+      - SECRET_KEY_BASE=$_SECRET_KEY_BASE
   - name: gcr.io/cloud-builders/gcloud
     entrypoint: sh
     args: 
@@ -46,13 +45,5 @@ steps:
     env:
       - RAILS_ENV=production
       - RACK_ENV=production
-secrets:
-  - kmsKeyName: projects/refrii-169906/locations/global/keyRings/refrii-api/cryptoKeys/staging
-    secretEnv:
-      MYSQL_SOCKET: CiQAeSpaesRexHmBTFqOEHYO1gVi7YCGgkwElT60gOnGTXVsMHkSYgCCQeAUFrAYQXzxmgh5d/aLPttvBiNskXjQSTfpCooWwfqRgJmoVDaBQq7dRxA6zGKubJfpSf6kvGmmb1jy97qUzF/IKfZC57tMR3AEK7G+W9TnMTx5vTUWv3l23zlbgv/t
-      MYSQL_DATABASE: CiQAeSpaemhUl7vdoBsX9xlh6Nf2aBtHp/N/WumG+pGjjmp0oLcSOACCQeAUaYAknChNUAR2VjXq/lzyEam52weg7DRvK2nDhxXf+Ef0q+N6l4KC4F+jVxZLjBRps4pw
-      MYSQL_USERNAME: CiQAeSpaeonbfVojGnVEig7fcpG9mKFoQPWgKwy4CUGhrHdnEqcSLgCCQeAU4YJ4F4/60VRZapaZDwgvnUSAKfAkOLZwLWvJN5LOtx1CbocCbum+4Ms=
-      MYSQL_PASSWORD: CiQAeSpaenAHW71CUv9/5gxpOnkT7+wRr/UrjknKH/9DAUADRw0SOgCCQeAUnGOk1xKyndnMwUKenc7xDr35mUzISPI8wTRdFYLGQXsJo2lt/iS5bzaPz6vyX3gP07Bn2fc=
-      SECRET_KEY_BASE: CiQAeSpaeuQSN0XCV/GZ1hJWrpk/wjN4317zIp12GPM/EJadfjUSqwEAgkHgFFYKdlRsNxhuByQVPUurwu6JkooXV4CGUngsbdJisBdfgwbMRm+byg1KZR6hAYIBFX9gW0MeG1vGEqtvb1gmzhUv8Jjn3ibv2+r1LhYOXEFewKFxirw4gOzVXEuZ7Kf7wM2vuCS8VcHBUSSmYdJ6zqVAybmcGyjvLnB6oDTwY3fMD0zRaDtK17F4j+i8kZTbnfstQ30bdgNiyaYYtDZdFO1AF1UkBuE=
 images:
   - gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME
