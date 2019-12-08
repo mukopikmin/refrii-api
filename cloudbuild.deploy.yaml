@@ -45,5 +45,7 @@ steps:
     env:
       - RAILS_ENV=production
       - RACK_ENV=production
+      - RELEASE_TAG=$TAG_NAME
+      - RELEASE_HASH=$COMMIT_SHA
 images:
   - gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME

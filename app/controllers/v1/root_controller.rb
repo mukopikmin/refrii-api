@@ -5,7 +5,9 @@ module V1
     # GET /
     def index
       @content = {
-        name: 'Refrii API'
+        name: 'Refrii API',
+        version: ENV['RELEASE_TAG'],
+        hash: ENV['RELEASE_HASH']
       }
       render json: @content
     end
