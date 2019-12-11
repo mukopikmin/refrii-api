@@ -17,17 +17,17 @@ gem 'jwt', '~> 2.2.1'
 gem 'mini_magick', '~> 4.9.5'
 gem 'paper_trail', '~> 10.3.1'
 gem 'paper_trail-association_tracking', '~> 2.0.0'
-gem 'puma', '~> 4.3.0'
+gem 'puma', '~> 4.3.1'
 gem 'rack-cors', '~> 1.1.0'
 gem 'rails', '~> 6.0.1'
 gem 'rest-client', '~> 2.1.0'
-gem 'rubocop', '~> 0.76.0', require: false
-gem 'rubocop-rspec', '~> 1.36.0'
+gem 'rubocop', '~> 0.77.0', require: false
+gem 'rubocop-rspec', '~> 1.37.0'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'versionist', '~> 2.0.1'
 
 group :development do
-  gem 'listen', '~> 3.2.0'
+  gem 'listen', '~> 3.2.1'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.1'
 end
@@ -39,7 +39,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'committee', '~> 3.2.1'
+  gem 'committee', '~> 3.3.0'
   gem 'committee-rails', '~> 0.4.0'
   gem 'database_cleaner', '~> 1.7.0'
   gem 'factory_bot_rails', '~> 5.1.1'
@@ -48,6 +48,6 @@ group :test do
 end
 
 group :production do
-  gem 'mysql2', '~> 0.5.2'
+  gem 'mysql2', '~> 0.5.3'
   gem 'rails_12factor', '~> 0.0.3'
 end
