@@ -6,7 +6,7 @@ FactoryBot.define do
     amount { 10.5 }
     expiration_date { '2017-01-01' }
 
-    factory :another_food, class: Food do
+    factory :another_food, class: 'Food' do
       name { 'another food' }
     end
 
@@ -23,7 +23,7 @@ FactoryBot.define do
     end
   end
 
-  factory :no_name_food, class: Food do
+  factory :no_name_food, class: 'Food' do
     name { '' }
     amount { 10 }
     expiration_date { '2017-01-01' }
