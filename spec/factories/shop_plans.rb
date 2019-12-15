@@ -8,7 +8,7 @@ FactoryBot.define do
     amount { rand(0.0..100.0) }
   end
 
-  factory :no_amount_shop_plan, class: 'ShopPlan' do
+  factory :no_amount_shop_plan, class: ShopPlan do
     sequence(:notice) { |n| "no amount comment #{n}" }
     done { false }
     date { Date.today }

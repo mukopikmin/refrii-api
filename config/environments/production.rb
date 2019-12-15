@@ -78,7 +78,4 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.active_storage.service = :google
-
-  config.google_cloud.project_id = ENV['FIREBASE_PROJECT_ID']
-  config.google_cloud.keyfile = "/kms/credentials.#{ENV['STAGING_ENABLED'] ? 'staging' : 'production'}.json"
 end
