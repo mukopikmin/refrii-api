@@ -10,5 +10,6 @@ gcloud beta run deploy $service \
   --allow-unauthenticated \
   --region asia-northeast1 \
   --platform managed \
-  --memory 512Mi \
+  --memory 1Gi \
   --update-env-vars RELEASE_TAG=$RELEASE_TAG,RELEASE_HASH=$RELEASE_HASH
+
