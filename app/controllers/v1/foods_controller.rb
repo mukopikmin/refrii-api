@@ -79,8 +79,7 @@ class V1::FoodsController < V1::ApplicationController
                   :expiration_date,
                   :box_id,
                   :unit_id,
-                  :updated_user_id,
-                  :image)
+                  :updated_user_id)
   end
 
   def image_in_params?
