@@ -7,7 +7,7 @@ module V1
       @content = {
         name: 'Refrii API',
         version: ENV['RELEASE_TAG'],
-        hash: ENV['RELEASE_HASH']
+        build_hash: ENV['RELEASE_HASH']
       }
       render json: @content
     end
