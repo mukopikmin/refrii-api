@@ -80,11 +80,7 @@ class V1::BoxesController < V1::ApplicationController
 
     params.permit(:name,
                   :notice,
-                  :owner_id,
-                  :image_file,
-                  :image_size,
-                  :image,
-                  :image_content_type)
+                  :owner_id)
   end
 
   def accessible?
