@@ -5,11 +5,11 @@ FactoryBot.define do
     sequence(:label) { |n| "label #{n}" }
   end
 
-  factory :updated_unit, class: Unit do
+  factory :updated_unit, class: 'Unit' do
     label { 'pack' }
   end
 
-  factory :no_label_unit, class: Unit do
+  factory :no_label_unit, class: 'Unit' do
     label { '' }
   end
 
