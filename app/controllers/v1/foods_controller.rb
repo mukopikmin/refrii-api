@@ -31,8 +31,6 @@ class V1::FoodsController < V1::ApplicationController
     elsif !unit_assignable?
       bad_request('The unit is not assignable to the food.')
     elsif @food.save
-      @food.image.attach(attachment_param(params[:image])) if image_in_params?
-
       render json: @food, status: :created, location: v1_foods_path(@food)
     else
       bad_request
@@ -46,8 +44,6 @@ class V1::FoodsController < V1::ApplicationController
     elsif !unit_assignable?
       bad_request('The unit is not assignable to the food.')
     elsif @food.update(food_params)
-      @food.image.attach(attachment_param(params[:image])) if image_in_params?
-
       render json: @food
     else
       bad_request
@@ -77,6 +73,7 @@ class V1::FoodsController < V1::ApplicationController
     params.permit(:name,
                   :amount,
                   :expiration_date,
+                  :image,
                   :box_id,
                   :unit_id,
                   :updated_user_id)

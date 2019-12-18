@@ -5,7 +5,7 @@ module V1
     before_action :authenticate_request!
     before_action :set_user
 
-    # POST /users/1/push_token
+    # POST /users/1/push_tokens
     def create
       @push_token = PushToken.new(push_token_params)
 
