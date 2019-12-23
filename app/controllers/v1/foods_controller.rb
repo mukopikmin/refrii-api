@@ -88,12 +88,20 @@ class V1::FoodsController < V1::ApplicationController
   end
 
   def unit_assignable?
-    unit_id = params[:unit_id].nil? ? nil : params[:unit_id].to_i
-
-    if unit_id.nil?
+    if params[:unit_id].nil?
       true
     else
-      @food.assignable_units.map(&:id).include?(unit_id)
+      @food.assignable_units
+        .map(&:id)
+        .include?(params[:unit_id].to_i)
     end
+
+    # unit_id = params[:unit_id].nil? ? nil : params[:unit_id].to_i
+
+    # if unit_id.nil?
+    #   true
+    # else
+    #   @food.assignable_units.map(&:id).include?(unit_id)
+    # end
   end
 end
