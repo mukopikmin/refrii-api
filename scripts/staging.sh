@@ -2,12 +2,13 @@
 
 set -ex
 
-if [ "$1" = "" ] ; then
-  echo "Argment is required as service name."
-  exit 1
+if [[ ! $BRANCH_NAME =~ staging ]] ; then
+  echo "Skip creating staging environment."
+  exit 0
 fi
 
 base=refrii-api-staging2
+service=${BRANCH_NAME}-${SHORT_SHA}
 region=asia-northeast1
 image=gcr.io/refrii-169906/refrii.api:$(git rev-parse --short HEAD)
 
@@ -30,7 +31,7 @@ for i in $(seq 0 $(($size - 1))); do
   env_str=$env_str,$key=$value
 done
 
-gcloud beta run deploy $1 \
+gcloud beta run deploy $service \
   --image $image \
   --allow-unauthenticated \
   --memory 1Gi \

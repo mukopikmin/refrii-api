@@ -42,5 +42,9 @@ steps:
       - exec
       - rake
       - rubocop
+  - name: gcr.io/cloud-builders/gcloud
+    entrypoint: bash
+    args:
+      - scripts/staging.sh
 images:
   - gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
