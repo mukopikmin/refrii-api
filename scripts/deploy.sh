@@ -12,4 +12,3 @@ gcloud beta run deploy $service \
   --platform managed \
   --memory 1Gi \
   --update-env-vars RELEASE_TAG=$RELEASE_TAG,RELEASE_HASH=$RELEASE_HASH
-

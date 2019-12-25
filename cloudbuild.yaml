@@ -46,5 +46,8 @@ steps:
     entrypoint: bash
     args:
       - scripts/staging.sh
+    env:
+      - BRANCH_NAME=$BRANCH_NAME
+      - SHORT_SHA=$SHORT_SHA
 images:
   - gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA

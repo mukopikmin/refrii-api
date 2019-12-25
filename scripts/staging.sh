@@ -1,6 +1,6 @@
 #! /bin/bash
 
-set -ex
+set -e
 
 if [[ ! $BRANCH_NAME =~ staging ]] ; then
   echo "Skip creating staging environment."
@@ -10,14 +10,15 @@ fi
 base=refrii-api-staging2
 service=${BRANCH_NAME}-${SHORT_SHA}
 region=asia-northeast1
-image=gcr.io/refrii-169906/refrii.api:$(git rev-parse --short HEAD)
+image=gcr.io/refrii-169906/refrii-api:$SHORT_SHA
 
 envs=$(gcloud beta run services describe $base \
   --region $region \
+  --platform managed \
   --format json |
   jq .spec.template.spec.containers[0].env)
 size=$(echo $envs | jq length)
-env_str="RELEASE_HASH=$(git rev-parse HEAD),RELEASE_TAG=staging-$(git symbolic-ref --short HEAD)"
+env_str="RELEASE_HASH=$COMMIT_SHA,RELEASE_TAG=staging-$SHORT_SHA"
 
 for i in $(seq 0 $(($size - 1))); do
   key=$(echo $envs | jq -r .[$i].name)
@@ -35,5 +36,7 @@ gcloud beta run deploy $service \
   --image $image \
   --allow-unauthenticated \
   --memory 1Gi \
+  --platform managed \
   --region $region \
-  --set-env-vars $env_str
+  --set-env-vars $env_str \
+  --update-labels env=staging
