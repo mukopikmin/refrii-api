@@ -1,8 +1,8 @@
 #! /bin/bash
 
-set -e
+set -ex
 
-if [[ ! $BRANCH_NAME =~ staging ]] ; then
+if [[ ! $(cat /git/message) =~ "[staging]" ]] ; then
   echo "Skip creating staging environment."
   exit 0
 fi
@@ -12,25 +12,13 @@ service=${BRANCH_NAME}-${SHORT_SHA}
 region=asia-northeast1
 image=gcr.io/refrii-169906/refrii-api:$SHORT_SHA
 
-envs=$(gcloud beta run services describe $base \
-  --region $region \
+envs=$(gcloud beta run services describe refrii-api-staging2 \
   --platform managed \
-  --format json |
-  jq .spec.template.spec.containers[0].env)
-size=$(echo $envs | jq length)
-env_str="RELEASE_HASH=$COMMIT_SHA,RELEASE_TAG=staging-$SHORT_SHA"
-
-for i in $(seq 0 $(($size - 1))); do
-  key=$(echo $envs | jq -r .[$i].name)
-  value=$(echo $envs | jq -r .[$i].value)
-
-  # Remove line ending
-  if [ "$key" = "GOOGLE_PRIVATE_KEY" ]; then
-    value=$(echo $value | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ /g')
-  fi
-
-  env_str=$env_str,$key=$value
-done
+  --region asia-northeast1 \
+  --format \
+    "csv[no-heading, separator='=', terminator=','](spec.template.spec.containers[0].env.name, spec.template.spec.containers[0].env.value)" \
+  --flatten "spec.template.spec.containers[0].env" \
+  | sed "s/\"//g")
 
 gcloud beta run deploy $service \
   --image $image \
@@ -38,5 +26,5 @@ gcloud beta run deploy $service \
   --memory 1Gi \
   --platform managed \
   --region $region \
-  --set-env-vars $env_str \
+  --update-env-vars "$envs" \
   --update-labels env=staging
