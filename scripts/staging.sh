@@ -2,17 +2,22 @@
 
 set -ex
 
+if [ "$BRANCH_NAME" = "master" ] ; then
+  echo "Not creating staging release from master branch."
+  exit 0
+fi
+
 if [[ ! $(cat /git/message) =~ "[staging]" ]] ; then
   echo "Skip creating staging environment."
   exit 0
 fi
 
 base=refrii-api-staging2
-service=${BRANCH_NAME}-${SHORT_SHA}
+service=staging-${BRANCH_NAME}-${SHORT_SHA}
 region=asia-northeast1
 image=gcr.io/refrii-169906/refrii-api:$SHORT_SHA
 
-envs=$(gcloud beta run services describe refrii-api-staging2 \
+envs=$(gcloud beta run services describe $base \
   --platform managed \
   --region asia-northeast1 \
   --format \

@@ -7,5 +7,6 @@ gcloud kms decrypt \
   --plaintext-file=/kms/credentials.$environment.json \
   --location=global \
   --keyring=refrii-api \
-  --key=$environment
+  --key=$environment \
+  --update-labels env=prod
   

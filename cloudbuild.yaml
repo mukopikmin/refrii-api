@@ -17,6 +17,15 @@ steps:
     volumes:
       - name: git
         path: /git
+  - name: gcr.io/cloud-builders/git
+    entrypoint: sh
+    dir: /git
+    args:
+      - -c
+      - "git show -s --format=%ct $COMMIT_SHA > /git/timestamp"
+    volumes:
+      - name: git
+        path: /git
   - name: gcr.io/cloud-builders/docker
     args: 
       - build
@@ -33,6 +42,9 @@ steps:
     args:
       - scripts/test_report.sh
       - before-build
+    volumes:
+      - name: git
+        path: /git
   - name: gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
     dir: /app
     args: 
@@ -58,6 +70,8 @@ steps:
     volumes:
       - name: coverage
         path: /app/coverage
+      - name: git
+        path: /git
   - name: gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
     args: 
       - bundle

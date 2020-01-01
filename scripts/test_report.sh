@@ -7,4 +7,4 @@ curl \
   > ./cc-test-reporter
 chmod +x ./cc-test-reporter
 
-GIT_COMMITTED_AT="2020-01-01 23:29:37 +0900" ./cc-test-reporter $@
+GIT_COMMITTED_AT=$(cat /git/timestamp) ./cc-test-reporter $@
