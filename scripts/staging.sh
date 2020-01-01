@@ -13,7 +13,7 @@ if [[ ! $(cat /git/message) =~ "[staging]" ]] ; then
 fi
 
 base=refrii-api-staging2
-service=staging-${BRANCH_NAME}-${SHORT_SHA}
+service=staging-${BRANCH_NAME}
 region=asia-northeast1
 image=gcr.io/refrii-169906/refrii-api:$SHORT_SHA
 
