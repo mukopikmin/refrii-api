@@ -73,7 +73,7 @@ module FirebaseUtils
       end
 
       def validate_jwt(json)
-        project_id = Rails.application.secrets.firebase_project_id
+        project_id = ENV['FIREBASE_PROJECT_ID']
         payload = json[:payload]
         header = json[:header]
 
