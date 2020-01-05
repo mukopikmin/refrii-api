@@ -48,6 +48,9 @@ class V1::FoodsController < V1::ApplicationController
     else
       bad_request
     end
+
+  rescue StandardError => e
+    p e
   end
 
   # DELETE /foods/1
