@@ -60,10 +60,6 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :shop_plans do
-      member do
-        put :complete
-      end
-    end
+    resources :shop_plans
   end
 end

@@ -48,9 +48,6 @@ class V1::FoodsController < V1::ApplicationController
     else
       bad_request
     end
-
-  rescue StandardError => e
-    p e
   end
 
   # DELETE /foods/1
@@ -95,8 +92,8 @@ class V1::FoodsController < V1::ApplicationController
       true
     else
       @food.assignable_units
-        .map(&:id)
-        .include?(params[:unit_id].to_i)
+           .map(&:id)
+           .include?(params[:unit_id].to_i)
     end
 
     # unit_id = params[:unit_id].nil? ? nil : params[:unit_id].to_i

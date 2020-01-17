@@ -52,17 +52,30 @@ RSpec.describe ShopPlan, type: :model do
     end
   end
 
-  describe '#complete' do
-    let!(:amount) { plan1.food.amount + plan1.amount }
+  describe '#update_or_complete' do
+    context 'without change of done status' do
+      subject { plan1.attributes.symbolize_keys }
 
-    before { plan1.complete }
+      let(:params) { attributes_for(:shop_plan) }
 
-    it 'changes done to true' do
-      expect(plan1.done).to be_truthy
+      before { plan1.update_or_complete(params) }
+
+      it { is_expected.to include(params) }
     end
 
-    it 'updates amount of referenced food' do
-      expect(plan1.food.amount).to eq(amount)
+    context 'with change of done status' do
+      subject { plan1.attributes.symbolize_keys }
+
+      let!(:amount) { food1.amount }
+      let(:params) { attributes_for(:completed_shop_plan) }
+
+      before { plan1.update_or_complete(params) }
+
+      it { is_expected.to include(params) }
+
+      it 'updates amount of food' do
+        expect(amount + params[:amount]).to eq(food1.amount)
+      end
     end
   end
 end

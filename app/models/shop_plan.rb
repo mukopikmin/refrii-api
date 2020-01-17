@@ -12,22 +12,18 @@ class ShopPlan < ApplicationRecord
     Food.all_with_invited(user).map(&:shop_plans).flatten
   end
 
-  # def self.done(user)
-  #   all_with_invited(user).select(&:done)
-  # end
-
-  # def self.undone(user)
-  #   all_with_invited(user).select { |p| !p.done }
-  # end
+  def update_or_complete(params)
+    if !params[:done].nil? && params[:done] && !done
+      ActiveRecord::Base.transaction do
+        update(params)
+        food.update(amount: food.amount + amount)
+      end
+    else
+      update(params)
+    end
+  end
 
   def accessible_for?(user)
     food.box.accessible_for?(user)
-  end
-
-  def complete
-    ActiveRecord::Base.transaction do
-      update(done: true)
-      food.update(amount: food.amount + amount)
-    end
   end
 end

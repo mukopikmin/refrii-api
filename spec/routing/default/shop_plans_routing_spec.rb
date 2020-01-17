@@ -26,10 +26,6 @@ RSpec.describe "#{version.upcase}::ShopPlansController", type: :routing do
       expect(patch: '/shop_plans/1').to route_to("#{version}/shop_plans#update", id: '1')
     end
 
-    it 'routes to #complete via PUT' do
-      expect(put: '/shop_plans/1/complete').to route_to("#{version}/shop_plans#complete", id: '1')
-    end
-
     it 'routes to #destroy' do
       expect(delete: '/shop_plans/1').to route_to("#{version}/shop_plans#destroy", id: '1')
     end

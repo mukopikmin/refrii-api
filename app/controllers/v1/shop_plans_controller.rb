@@ -38,23 +38,23 @@ module V1
     def update
       if !accessible?
         not_found
-      elsif !@shop_plan.update(shop_plan_params)
+      elsif !@shop_plan.update_or_complete(shop_plan_params)
         bad_request
       else
         render json: @shop_plan
       end
     end
 
-    # PATCH/PUT /shop_plans/1/complete
-    def complete
-      if !accessible?
-        not_found
-      elsif !@shop_plan.complete
-        bad_request
-      else
-        render json: @shop_plan
-      end
-    end
+    # # PATCH/PUT /shop_plans/1/complete
+    # def complete
+    #   if !accessible?
+    #     not_found
+    #   elsif !@shop_plan.complete
+    #     bad_request
+    #   else
+    #     render json: @shop_plan
+    #   end
+    # end
 
     # DELETE /shop_plans/1
     def destroy

@@ -207,62 +207,6 @@ RSpec.describe 'ShopPlans', type: :request do
     end
   end
 
-  describe 'PUT /shop_plans/:id/complete' do
-    let(:user) { create(:user) }
-    let(:box) { create(:box, owner: user) }
-    let(:unit) { create(:unit, user: user) }
-    let(:food) { create(:food, unit: unit, box: box, created_user: user, updated_user: user) }
-    let(:plan) { create(:shop_plan, food: food) }
-
-    context 'without authentication' do
-      subject { response.status }
-
-      before { put complete_v1_shop_plan_path(plan) }
-
-      it { is_expected.to eq(401) }
-      it { assert_response_schema_confirm }
-    end
-
-    context 'with authnetication' do
-      context 'with own food' do
-        subject { response.status }
-
-        let(:headers) { { authorization: "Bearer #{token(user)}" } }
-
-        before { put complete_v1_shop_plan_path(plan), headers: headers }
-
-        it { is_expected.to eq(200) }
-        it { assert_response_schema_confirm }
-      end
-
-      context 'with other\'s food' do
-        subject { response.status }
-
-        let(:other_user) { create(:user) }
-        let(:headers) { { authorization: "Bearer #{token(other_user)}" } }
-
-        before { put complete_v1_shop_plan_path(plan), headers: headers }
-
-        it { is_expected.to eq(404) }
-        it { assert_response_schema_confirm }
-      end
-
-      context 'with food in invited box' do
-        subject { response.status }
-
-        let(:other_user) { create(:user) }
-        let(:headers) { { authorization: "Bearer #{token(other_user)}" } }
-
-        before { Invitation.create(box: box, user: other_user) }
-
-        before { put complete_v1_shop_plan_path(plan), headers: headers }
-
-        it { is_expected.to eq(200) }
-        it { assert_response_schema_confirm }
-      end
-    end
-  end
-
   describe 'DELETE /shop_plans/:id' do
     let(:user) { create(:user) }
     let(:box) { create(:box, owner: user) }
