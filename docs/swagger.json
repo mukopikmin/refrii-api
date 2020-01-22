@@ -1466,6 +1466,16 @@
         "tags": [
           "Boxes"
         ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "List of box",

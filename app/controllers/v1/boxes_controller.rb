@@ -7,21 +7,16 @@ class V1::BoxesController < V1::ApplicationController
 
   # GET /boxes
   def index
-    @boxes = Box.all_with_invited(current_user)
+    # current_user=User.all.first
 
-    render json: @boxes
-  end
-
-  # GET /boxes/owns
-  def owns
-    @boxes = Box.owned_by(current_user)
-
-    render json: @boxes
-  end
-
-  # GET /boxes/invited
-  def invited
-    @boxes = Box.inviting(current_user)
+    case filter_option
+    when :all
+      @boxes = Box.all_with_invited(current_user)
+    when :owns
+      @boxes = Box.owned_by(current_user)
+    when :invited
+      @boxes = Box.inviting(current_user)
+    end
 
     render json: @boxes
   end
@@ -89,5 +84,16 @@ class V1::BoxesController < V1::ApplicationController
 
   def owner_of_box?
     @box.owned_by?(current_user)
+  end
+
+  def filter_option
+    option = params['filter']
+
+    case option
+    when 'owns', 'invited'
+      option.to_sym
+    else
+      :all
+    end
   end
 end

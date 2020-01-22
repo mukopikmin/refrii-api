@@ -8,14 +8,6 @@ RSpec.describe V1::BoxesController, type: :routing do
       expect(get: '/v1/boxes').to route_to('v1/boxes#index')
     end
 
-    it 'routes to #owns' do
-      expect(get: '/v1/boxes/owns').to route_to('v1/boxes#owns')
-    end
-
-    it 'routes to #invited' do
-      expect(get: '/v1/boxes/invited').to route_to('v1/boxes#invited')
-    end
-
     it 'routes to #show' do
       expect(get: '/v1/boxes/1').to route_to('v1/boxes#show', id: '1')
     end

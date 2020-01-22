@@ -33,11 +33,6 @@ Rails.application.routes.draw do
     resources :notices, only: %i[destroy]
 
     resources :boxes do
-      collection do
-        get :owns
-        get :invited
-      end
-
       scope module: :boxes do
         resources :invitations, only: %i[create]
         resources :versions, only: %i[index create]

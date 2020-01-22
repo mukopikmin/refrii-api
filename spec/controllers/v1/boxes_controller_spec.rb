@@ -17,41 +17,6 @@ RSpec.describe V1::BoxesController, type: :controller do
     end
   end
 
-  describe 'GET #owns' do
-    let(:user1) { create(:user) }
-    let(:user2) { create(:user) }
-    let!(:box1) { create(:box, owner: user1) }
-
-    before { create(:box, owner: user2) }
-
-    before do
-      request.headers['Authorization'] = "Bearer #{token(user1)}"
-    end
-
-    it 'assigns own boxes as @boxes' do
-      get :owns
-      expect(assigns(:boxes)).to eq([box1])
-    end
-  end
-
-  describe 'GET #invited' do
-    let(:user1) { create(:user) }
-    let(:user2) { create(:user) }
-    let(:box1) { create(:box, owner: user1) }
-    let(:box2) { create(:box, owner: user2) }
-
-    before { Invitation.create(box: box1, user: user2) }
-
-    before do
-      request.headers['Authorization'] = "Bearer #{token(user2)}"
-    end
-
-    it 'assigns all boxes as @boxes' do
-      get :invited
-      expect(assigns(:boxes)).to eq([box1])
-    end
-  end
-
   describe 'GET #show' do
     let(:user) { create(:user) }
     let(:box) { create(:box, owner: user) }

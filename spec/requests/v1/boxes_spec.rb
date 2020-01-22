@@ -30,46 +30,40 @@ RSpec.describe 'Boxes', type: :request do
 
       it { is_expected.to eq(200) }
       it { assert_response_schema_confirm }
-    end
-  end
 
-  describe 'GET /boxes/owns' do
-    context 'without authentication' do
-      subject { response.status }
+      context 'with owns filter option' do
+        subject { response.status }
 
-      before { get owns_v1_boxes_path }
+        let(:body) { JSON.parse(response.body) }
+        let(:result) { body.map { |box| box['is_invited'] } }
+        let(:params) { { filter: 'owns' } }
 
-      it { is_expected.to eq(401) }
-      it { assert_response_schema_confirm }
-    end
+        before { get v1_boxes_path, headers: { authorization: "Bearer #{token(user1)}" }, params: params }
 
-    context 'with authentication' do
-      subject { response.status }
+        it { is_expected.to eq(200) }
+        it { assert_response_schema_confirm }
 
-      before { get owns_v1_boxes_path, headers: { authorization: "Bearer #{token(user1)}" } }
+        it 'returns only own boxes' do
+          expect(result).to all(be_falsey)
+        end
+      end
 
-      it { is_expected.to eq(200) }
-      it { assert_response_schema_confirm }
-    end
-  end
+      context 'with invited filter option' do
+        subject { response.status }
 
-  describe 'GET /boxes/invited' do
-    context 'without authentication' do
-      subject { response.status }
+        let(:body) { JSON.parse(response.body) }
+        let(:result) { body.map { |box| box['is_invited'] } }
+        let(:params) { { filter: 'invited' } }
 
-      before { get invited_v1_boxes_path }
+        before { get v1_boxes_path, headers: { authorization: "Bearer #{token(user1)}" }, params: params }
 
-      it { is_expected.to eq(401) }
-      it { assert_response_schema_confirm }
-    end
+        it { is_expected.to eq(200) }
+        it { assert_response_schema_confirm }
 
-    context 'with authentication' do
-      subject { response.status }
-
-      before { get invited_v1_boxes_path, headers: { authorization: "Bearer #{token(user1)}" } }
-
-      it { is_expected.to eq(200) }
-      it { assert_response_schema_confirm }
+        it 'returns only invited boxes' do
+          expect(result).to all(be_truthy)
+        end
+      end
     end
   end
 

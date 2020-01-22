@@ -10,14 +10,6 @@ RSpec.describe "#{version.upcase}::BoxesController", type: :routing do
       expect(get: '/boxes').to route_to("#{version}/boxes#index")
     end
 
-    it 'routes to #owns' do
-      expect(get: '/boxes/owns').to route_to("#{version}/boxes#owns")
-    end
-
-    it 'routes to #invited' do
-      expect(get: '/boxes/invited').to route_to("#{version}/boxes#invited")
-    end
-
     it 'routes to #show' do
       expect(get: '/boxes/1').to route_to("#{version}/boxes#show", id: '1')
     end
