@@ -48,7 +48,6 @@ class V1::BoxesController < V1::ApplicationController
     elsif @box.update(box_params)
       render json: @box
     else
-      p box_params
       bad_request
     end
   end
