@@ -7,8 +7,6 @@ class V1::BoxesController < V1::ApplicationController
 
   # GET /boxes
   def index
-    # current_user=User.all.first
-
     case filter_option
     when :all
       @boxes = Box.all_with_invited(current_user)
