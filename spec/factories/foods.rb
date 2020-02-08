@@ -6,21 +6,16 @@ FactoryBot.define do
     amount { 10.5 }
     expiration_date { '2017-01-01' }
 
-    factory :another_food, class: 'Food' do
-      name { 'another food' }
+    trait :with_box_user_unit do
+      box { create(:box, :with_owner) }
+      unit { create(:unit, user: box.owner) }
+      created_user { box.owner }
+      updated_user { box.owner }
     end
+  end
 
-    trait :with_image do
-      path = File.join('spec', 'resources', 'eggs.jpg')
-
-      image do
-        {
-          io: File.open(path, 'rb'),
-          filename: File.basename(path),
-          content_type: 'image/jpeg'
-        }
-      end
-    end
+  factory :another_food, class: 'Food' do
+    name { 'another food' }
   end
 
   factory :no_name_food, class: 'Food' do

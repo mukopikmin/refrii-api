@@ -5,10 +5,8 @@ FactoryBot.define do
     sequence(:name) { |n| "box #{n}" }
     notice { 'this is box for test' }
 
-    trait :with_image do
-      file = File.new(File.join('spec', 'resources', 'eggs.jpg'), 'rb')
-
-      image { file }
+    trait :with_owner do
+      owner { create(:user) }
     end
   end
 

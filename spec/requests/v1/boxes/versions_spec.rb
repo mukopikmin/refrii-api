@@ -5,13 +5,11 @@ require 'rails_helper'
 RSpec.describe 'Boxes/Versions', type: :request do
   include Committee::Rails::Test::Methods
 
-  let(:user1) { create(:user) }
-  let(:user2) { create(:user) }
-  let!(:box1) { create(:box, owner: user1) }
-  let!(:box2) { create(:box, owner: user2) }
-  let!(:box3) { create(:box, owner: user2) }
+  let!(:box1) { create(:box, :with_owner) }
+  let!(:box2) { create(:box, :with_owner) }
+  let!(:box3) { create(:box, :with_owner) }
 
-  before { Invitation.create(box: box3, user: user1) }
+  before { Invitation.create(box: box3, user: box1.owner) }
 
   describe 'GET /boxes/:id/versions' do
     context 'without authentication' do
@@ -26,7 +24,7 @@ RSpec.describe 'Boxes/Versions', type: :request do
     context 'with authentication' do
       subject { response.status }
 
-      let(:headers) { { authorization: "Bearer #{token(user1)}" } }
+      let(:headers) { { authorization: "Bearer #{token(box1.owner)}" } }
 
       before { get v1_box_versions_path(box_id: box1.id), headers: headers }
 

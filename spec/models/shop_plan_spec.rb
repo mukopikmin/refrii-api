@@ -3,16 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe ShopPlan, type: :model do
-  let(:user1) { create(:user) }
-  let(:user2) { create(:user) }
-  let(:box1) { create(:box, owner: user1) }
-  let(:box2) { create(:box, owner: user2) }
-  let(:unit1) { create(:unit, user: user1) }
-  let(:unit2) { create(:unit, user: user2) }
-  let(:food1) { create(:food, unit: unit1, box: box1, created_user: user1, updated_user: user1) }
-  let(:food2) { create(:food, unit: unit2, box: box2, created_user: user2, updated_user: user2) }
+  let(:food1) { create(:food, :with_box_user_unit) }
+  let(:food2) { create(:food, :with_box_user_unit) }
   let!(:plan1) { create(:shop_plan, food: food1) }
   let!(:plan2) { create(:shop_plan, food: food2) }
+  let(:user1) { food1.box.owner }
+  let(:user2) { food2.box.owner }
 
   describe '.all_with_invited' do
     context 'without invitation' do
@@ -24,7 +20,7 @@ RSpec.describe ShopPlan, type: :model do
     context 'with invitations' do
       subject { described_class.all_with_invited(user1) }
 
-      before { Invitation.create(box: box2, user: user1) }
+      before { Invitation.create(box: food2.box, user: user1) }
 
       it { is_expected.to eq([plan1, plan2]) }
     end
@@ -46,7 +42,7 @@ RSpec.describe ShopPlan, type: :model do
     context 'with shop plans for foods in invited box' do
       subject { plan2.accessible_for?(user1) }
 
-      before { Invitation.create(box: box2, user: user1) }
+      before { Invitation.create(box: food2.box, user: user1) }
 
       it { is_expected.to be_truthy }
     end
@@ -67,7 +63,7 @@ RSpec.describe ShopPlan, type: :model do
       subject { plan1.attributes.symbolize_keys }
 
       let!(:amount) { food1.amount }
-      let(:params) { attributes_for(:completed_shop_plan) }
+      let(:params) { attributes_for(:shop_plan, :completed) }
 
       before { plan1.update_or_complete(params) }
 

@@ -5,24 +5,9 @@ require 'rails_helper'
 RSpec.describe 'Foods/ShopPlans', type: :request do
   include Committee::Rails::Test::Methods
 
-  let(:user1) { create(:user) }
-  let(:user2) { create(:user) }
-  let(:box1) { create(:box, owner: user1) }
-  let(:box2) { create(:box, owner: user2) }
-  let(:unit1) { create(:unit, user: user1) }
-  let(:unit2) { create(:unit, user: user2) }
-  let(:food1) do
-    create(:food, box: box1,
-                  unit: unit1,
-                  created_user: box1.owner,
-                  updated_user: box1.owner)
-  end
-  let(:food2) do
-    create(:food, box: box2,
-                  unit: unit2,
-                  created_user: box2.owner,
-                  updated_user: box2.owner)
-  end
+  let(:food1) { create(:food, :with_box_user_unit) }
+  let(:food2) { create(:food, :with_box_user_unit) }
+  let(:user1) { food1.box.owner }
 
   describe 'GET /foods/:id/shop_plans' do
     context 'without authentication' do
@@ -63,7 +48,7 @@ RSpec.describe 'Foods/ShopPlans', type: :request do
         let(:headers) { { authorization: "Bearer #{token(user1)}" } }
 
         before do
-          Invitation.create(box: box2, user: user1)
+          Invitation.create(box: food2.box, user: user1)
           get v1_food_shop_plans_path(food2), headers: headers
         end
 

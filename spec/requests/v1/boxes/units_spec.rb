@@ -2,16 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Boxes', type: :request do
+RSpec.describe 'Boxes/Units', type: :request do
   include Committee::Rails::Test::Methods
 
-  let(:user1) { create(:user) }
-  let(:user2) { create(:user) }
-  let!(:box1) { create(:box, owner: user1) }
-  let!(:box2) { create(:box, owner: user2) }
-  let!(:box3) { create(:box, owner: user2) }
+  let!(:box1) { create(:box, :with_owner) }
+  let!(:box2) { create(:box, :with_owner) }
+  let!(:box3) { create(:box, :with_owner) }
 
-  before { Invitation.create(box: box3, user: user1) }
+  before { Invitation.create(box: box3, user: box1.owner) }
 
   describe 'GET /boxes/:id/units' do
     context 'without authentication' do
@@ -27,7 +25,7 @@ RSpec.describe 'Boxes', type: :request do
       context 'with own box' do
         subject { response.status }
 
-        before { get v1_box_units_path(box1), headers: { authorization: "Bearer #{token(user1)}" } }
+        before { get v1_box_units_path(box1), headers: { authorization: "Bearer #{token(box1.owner)}" } }
 
         it { is_expected.to eq(200) }
         it { assert_response_schema_confirm }
@@ -37,7 +35,7 @@ RSpec.describe 'Boxes', type: :request do
         subject { response.status }
 
         before do
-          get v1_box_units_path(box2), headers: { authorization: "Bearer #{token(user1)}" }
+          get v1_box_units_path(box2), headers: { authorization: "Bearer #{token(box1.owner)}" }
         end
 
         it { is_expected.to eq(404) }

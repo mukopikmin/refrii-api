@@ -5,12 +5,10 @@ require 'rails_helper'
 RSpec.describe 'Foods/Notices', type: :request do
   include Committee::Rails::Test::Methods
 
-  describe 'POST /foods/:food_id/notices' do
-    let(:user) { create(:user) }
-    let(:box) { create(:box, owner: user) }
-    let(:unit) { create(:unit, user: user) }
-    let(:food) { create(:food, unit: unit, box: box, created_user: user, updated_user: user) }
+  let(:food) { create(:food, :with_box_user_unit) }
+  let(:user) { food.box.owner }
 
+  describe 'POST /foods/:food_id/notices' do
     context 'without authentication' do
       subject { response.status }
 
@@ -55,7 +53,7 @@ RSpec.describe 'Foods/Notices', type: :request do
         let(:headers) { { authorization: "Bearer #{token(other_user)}" } }
         let(:params) { attributes_for(:notice).merge(food_id: food.to_param) }
 
-        before { Invitation.create(box: box, user: other_user) }
+        before { Invitation.create(box: food.box, user: other_user) }
 
         before { post v1_food_notices_path(food), headers: headers, params: params }
 
