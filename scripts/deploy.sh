@@ -11,4 +11,6 @@ gcloud beta run deploy $service \
   --region asia-northeast1 \
   --platform managed \
   --memory 1Gi \
+  --cpu 2 \
+  --labels env=production \
   --update-env-vars RELEASE_TAG=$RELEASE_TAG,RELEASE_HASH=$RELEASE_HASH
