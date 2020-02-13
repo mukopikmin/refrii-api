@@ -5,10 +5,9 @@ require 'rails_helper'
 RSpec.describe 'Units', type: :request do
   include Committee::Rails::Test::Methods
 
-  let(:user1) { create(:user) }
-  let(:user2) { create(:user) }
-  let(:unit1) { create(:unit, user: user1) }
-  let(:unit2) { create(:unit, user: user2) }
+  let(:unit1) { create(:unit, :with_user) }
+  let(:unit2) { create(:unit, :with_user) }
+  let(:user1) { unit1.user }
 
   describe 'GET /units' do
     context 'without authentication' do

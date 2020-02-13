@@ -3,6 +3,10 @@
 FactoryBot.define do
   factory :unit do
     sequence(:label) { |n| "label #{n}" }
+
+    trait :with_user do
+      user { create(:user) }
+    end
   end
 
   factory :updated_unit, class: 'Unit' do
@@ -11,9 +15,5 @@ FactoryBot.define do
 
   factory :no_label_unit, class: 'Unit' do
     label { '' }
-  end
-
-  trait :with_user do
-    user
   end
 end

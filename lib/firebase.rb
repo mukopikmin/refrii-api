@@ -19,7 +19,7 @@ module FirebaseUtils
         err_msg = validate_jwt(full_decoded_token)
         raise err_msg if err_msg
 
-        public_key = fetch_public_keys[full_decoded_token[:header]['kid']]
+        public_key = fetch_public_keys[full_decoded_token['header']['kid']]
         unless public_key
           raise 'Firebase ID token has "kid" claim which does not correspond to ' \
                 'a known public key. Most likely the ID token is expired, so get a fresh token from your client ' \
@@ -30,7 +30,7 @@ module FirebaseUtils
         decoded_token = decode_token(token, certificate.public_key, true, algorithm: ALGORITHM, verify_iat: true)
 
         {
-          'uid' => decoded_token[:payload]['sub'],
+          'uid' => decoded_token['payload']['sub'],
           'decoded_token' => decoded_token
         }
       end
@@ -47,8 +47,8 @@ module FirebaseUtils
         end
 
         {
-          payload: decoded_token[0],
-          header: decoded_token[1]
+          'payload' => decoded_token[0],
+          'header' => decoded_token[1]
         }
       end
 
@@ -74,8 +74,8 @@ module FirebaseUtils
 
       def validate_jwt(json)
         project_id = ENV['FIREBASE_PROJECT_ID']
-        payload = json[:payload]
-        header = json[:header]
+        payload = json['payload']
+        header = json['header']
 
         return 'Firebase ID token has no "kid" claim.' unless header['kid']
         return "Firebase ID token has incorrect algorithm. Expected \"#{ALGORITHM}\" but got \"#{header['alg']}\"." unless header['alg'] == ALGORITHM

@@ -5,13 +5,11 @@ require 'rails_helper'
 RSpec.describe 'ShopPlans', type: :request do
   include Committee::Rails::Test::Methods
 
-  describe 'GET /shop_plans' do
-    let(:user) { create(:user) }
-    let(:box) { create(:box, owner: user) }
-    let(:unit) { create(:unit, user: user) }
-    let(:food) { create(:food, unit: unit, box: box, created_user: user, updated_user: user) }
-    let(:plan) { create(:shop_plan, food: food) }
+  let(:food) { create(:food, :with_box_user_unit) }
+  let(:plan) { create(:shop_plan, food: food) }
+  let(:user) { food.box.owner }
 
+  describe 'GET /shop_plans' do
     context 'without authentication' do
       subject { response.status }
 
@@ -34,12 +32,6 @@ RSpec.describe 'ShopPlans', type: :request do
   end
 
   describe 'GET /shop_plans/:id' do
-    let(:user) { create(:user) }
-    let(:box) { create(:box, owner: user) }
-    let(:unit) { create(:unit, user: user) }
-    let(:food) { create(:food, unit: unit, box: box, created_user: user, updated_user: user) }
-    let(:plan) { create(:shop_plan, food: food) }
-
     context 'without authentication' do
       subject { response.status }
 
@@ -76,7 +68,7 @@ RSpec.describe 'ShopPlans', type: :request do
       context 'with shop plans of foods in invited box' do
         subject { response.status }
 
-        before { Invitation.create(box: box, user: other_user) }
+        before { Invitation.create(box: food.box, user: other_user) }
 
         let(:other_user) { create(:user) }
         let(:headers) { { authorization: "Bearer #{token(other_user)}" } }
@@ -90,12 +82,6 @@ RSpec.describe 'ShopPlans', type: :request do
   end
 
   describe 'POST /shop_plans' do
-    let(:user) { create(:user) }
-    let(:box) { create(:box, owner: user) }
-    let(:unit) { create(:unit, user: user) }
-    let(:food) { create(:food, unit: unit, box: box, created_user: user, updated_user: user) }
-    let(:plan) { create(:shop_plan, food: food) }
-
     context 'without authentication' do
       subject { response.status }
 
@@ -138,7 +124,7 @@ RSpec.describe 'ShopPlans', type: :request do
         let(:headers) { { authorization: "Bearer #{token(other_user)}" } }
         let(:params) { attributes_for(:shop_plan).merge(food_id: food.to_param) }
 
-        before { Invitation.create(box: box, user: other_user) }
+        before { Invitation.create(box: food.box, user: other_user) }
 
         before { post v1_shop_plans_path, headers: headers, params: params }
 
@@ -149,12 +135,6 @@ RSpec.describe 'ShopPlans', type: :request do
   end
 
   describe 'PUT /shop_plans/:id' do
-    let(:user) { create(:user) }
-    let(:box) { create(:box, owner: user) }
-    let(:unit) { create(:unit, user: user) }
-    let(:food) { create(:food, unit: unit, box: box, created_user: user, updated_user: user) }
-    let(:plan) { create(:shop_plan, food: food) }
-
     context 'without authentication' do
       subject { response.status }
 
@@ -197,7 +177,7 @@ RSpec.describe 'ShopPlans', type: :request do
         let(:headers) { { authorization: "Bearer #{token(other_user)}" } }
         let(:params) { attributes_for(:shop_plan).merge(food_id: food.to_param) }
 
-        before { Invitation.create(box: box, user: other_user) }
+        before { Invitation.create(box: food.box, user: other_user) }
 
         before { put v1_shop_plan_path(plan), headers: headers, params: params }
 
@@ -208,12 +188,6 @@ RSpec.describe 'ShopPlans', type: :request do
   end
 
   describe 'DELETE /shop_plans/:id' do
-    let(:user) { create(:user) }
-    let(:box) { create(:box, owner: user) }
-    let(:unit) { create(:unit, user: user) }
-    let(:food) { create(:food, unit: unit, box: box, created_user: user, updated_user: user) }
-    let(:plan) { create(:shop_plan, food: food) }
-
     context 'without authentication' do
       subject { response.status }
 
@@ -253,7 +227,7 @@ RSpec.describe 'ShopPlans', type: :request do
         let(:other_user) { create(:user) }
         let(:headers) { { authorization: "Bearer #{token(other_user)}" } }
 
-        before { Invitation.create(box: box, user: other_user) }
+        before { Invitation.create(box: food.box, user: other_user) }
 
         before { delete v1_shop_plan_path(plan), headers: headers }
 

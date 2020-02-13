@@ -6,40 +6,28 @@ RSpec.describe Food, type: :model do
   describe '.all_with_invited' do
     subject { described_class.all_with_invited(user1).size }
 
-    let(:user1) { create(:user) }
-    let(:user2) { create(:user) }
-    let(:box1) { create(:box, owner: user1) }
-    let(:box2) { create(:box, owner: user2) }
-    let(:unit1) { create(:unit, user: user1) }
-    let(:unit2) { create(:unit, user: user2) }
+    let(:food1) { create(:food, :with_box_user_unit) }
+    let(:food2) { create(:food, :with_box_user_unit) }
+    let(:user1) { food1.box.owner }
 
-    before do
-      create(:food, box: box1, unit: unit1, created_user: user1, updated_user: user1)
-      create(:food, box: box2, unit: unit2, created_user: user2, updated_user: user2)
-    end
-
-    before { Invitation.create(box: box2, user: user1) }
+    before { Invitation.create(box: food2.box, user: user1) }
 
     it { is_expected.to eq(2) }
   end
 
   describe '#assignable_units' do
-    subject { food.assignable_units }
+    subject { food.assignable_units.size }
 
-    let(:user) { create(:user) }
-    let(:box) { create(:box, owner: user) }
-    let(:unit1) { create(:unit, user: user) }
-    let(:unit2) { create(:unit, user: user) }
-    let(:food) { create(:food, :with_image, box: box, unit: unit1, created_user: user, updated_user: user) }
+    let(:food) { create(:food, :with_box_user_unit) }
+    let(:user) { food.box.owner }
 
-    it { is_expected.to eq([unit1, unit2]) }
+    before { create(:unit, user: user) }
+
+    it { is_expected.to eq(2) }
   end
 
   describe '#revert' do
-    let(:user) { create(:user) }
-    let(:box) { create(:box, owner: user) }
-    let(:unit) { create(:unit, user: user) }
-    let(:food) { create(:food, box: box, unit: unit, created_user: user, updated_user: user) }
+    let(:food) { create(:food, :with_box_user_unit) }
 
     context 'with versions' do
       subject { food.revert }

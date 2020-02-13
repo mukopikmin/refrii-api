@@ -6,16 +6,9 @@ RSpec.describe 'Notices', type: :request do
   include Committee::Rails::Test::Methods
 
   describe 'DELETE /notices/:id' do
-    let(:user) { create(:user) }
-    let(:box) { create(:box, owner: user) }
-    let(:unit) { create(:unit, user: user) }
-    let(:notice) { create(:notice, food: food, created_user: user, updated_user: user) }
-    let(:food) do
-      create(:food, unit: unit,
-                    box: box,
-                    created_user: user,
-                    updated_user: user)
-    end
+    let(:notice) { create(:notice, :with_food) }
+    let(:user) { notice.created_user }
+    let(:box) { notice.food.box }
 
     context 'without authentication' do
       subject { response.status }
@@ -33,7 +26,7 @@ RSpec.describe 'Notices', type: :request do
         subject { response.status }
 
         let(:headers) { { authorization: "Bearer #{token(user)}" } }
-        let(:params) { attributes_for(:notice).merge(food_id: food.to_param) }
+        let(:params) { attributes_for(:notice).merge(food_id: notice.food.to_param) }
 
         before { delete v1_notice_path(id: notice), headers: headers, params: params }
 
@@ -46,7 +39,7 @@ RSpec.describe 'Notices', type: :request do
 
         let(:other_user) { create(:user) }
         let(:headers) { { authorization: "Bearer #{token(other_user)}" } }
-        let(:params) { attributes_for(:notice).merge(food_id: food.to_param) }
+        let(:params) { attributes_for(:notice).merge(food_id: notice.food.to_param) }
 
         before { delete v1_notice_path(id: notice), headers: headers, params: params }
 
@@ -59,7 +52,7 @@ RSpec.describe 'Notices', type: :request do
 
         let(:other_user) { create(:user) }
         let(:headers) { { authorization: "Bearer #{token(other_user)}" } }
-        let(:params) { attributes_for(:notice).merge(food_id: food.to_param) }
+        let(:params) { attributes_for(:notice).merge(food_id: notice.food.to_param) }
 
         before { Invitation.create(box: box, user: other_user) }
 
