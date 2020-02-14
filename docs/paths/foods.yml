@@ -178,13 +178,13 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Version"
-        "404":
+        "401":
           description: Error message
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "401":
+        "404":
           description: Error message
           content:
             application/json:
@@ -212,13 +212,13 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "404":
+        "401":
           description: Error message
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "401":
+        "403":
           description: Error message
           content:
             application/json:

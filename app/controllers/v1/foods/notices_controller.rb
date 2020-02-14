@@ -2,9 +2,9 @@
 
 class V1::Foods::NoticesController < V1::ApplicationController
   before_action :authenticate_request!
-  before_action :set_food, only: %i[create destroy]
+  before_action :set_food
 
-  # POST /foods/:food_id/notices
+  # POST /foods/1/notices
   def create
     @notice = Notice.new(notice_params)
     @notice.created_user = current_user

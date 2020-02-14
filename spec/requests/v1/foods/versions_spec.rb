@@ -5,15 +5,18 @@ require 'rails_helper'
 RSpec.describe 'Foods/Versions', type: :request do
   include Committee::Rails::Test::Methods
 
-  let(:food1) { create(:food, :with_box_user_unit) }
-  let(:food2) { create(:food, :with_box_user_unit) }
-  let(:user1) { food1.box.owner }
+  let(:food) { create(:food, :with_box_user_unit) }
+  let(:invited_food) { create(:food, :with_box_user_unit) }
+  let(:invisible_food) { create(:food, :with_box_user_unit) }
+  let(:user) { food.box.owner }
+
+  before { Invitation.create(box: invited_food.box, user: user) }
 
   describe 'GET /foods/:id/versions' do
     context 'without authentication' do
       subject { response.status }
 
-      before { get v1_food_versions_path(food1) }
+      before { get v1_food_versions_path(food) }
 
       it { is_expected.to eq(401) }
       it { assert_response_schema_confirm }
@@ -23,9 +26,9 @@ RSpec.describe 'Foods/Versions', type: :request do
       context 'with own foods' do
         subject { response.status }
 
-        let(:headers) { { authorization: "Bearer #{token(user1)}" } }
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
 
-        before { get v1_food_versions_path(food1), headers: headers }
+        before { get v1_food_versions_path(food), headers: headers }
 
         it { is_expected.to eq(200) }
         it { assert_response_schema_confirm }
@@ -34,9 +37,9 @@ RSpec.describe 'Foods/Versions', type: :request do
       context 'with other\'s food' do
         subject { response.status }
 
-        let(:headers) { { authorization: "Bearer #{token(user1)}" } }
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
 
-        before { get v1_food_versions_path(food2), headers: headers }
+        before { get v1_food_versions_path(invisible_food), headers: headers }
 
         it { is_expected.to eq(404) }
         it { assert_response_schema_confirm }
@@ -45,11 +48,10 @@ RSpec.describe 'Foods/Versions', type: :request do
       context 'with food in invited box' do
         subject { response.status }
 
-        let(:headers) { { authorization: "Bearer #{token(user1)}" } }
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
 
         before do
-          Invitation.create(box: food2.box, user: user1)
-          get v1_food_versions_path(food2), headers: headers
+          get v1_food_versions_path(invited_food), headers: headers
         end
 
         it { is_expected.to eq(200) }
@@ -115,37 +117,90 @@ RSpec.describe 'Foods/Versions', type: :request do
     end
 
     context 'with authentication' do
-      context 'with previous vesions' do
-        subject { response.status }
+      context 'with food in own box' do
+        context 'with previous vesions' do
+          subject { response.status }
 
-        let(:headers) { { authorization: "Bearer #{token(user1)}" } }
-        let(:name) { JSON.parse(response.body)['name'] }
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
+          let(:name) { JSON.parse(response.body)['name'] }
 
-        before do
-          food1.update(name: 'with history')
-          post v1_food_versions_path(food1), headers: headers
+          before do
+            food.update(name: 'with history')
+            post v1_food_versions_path(food), headers: headers
+          end
+
+          it { is_expected.to eq(201) }
+          it { assert_response_schema_confirm }
+
+          it 'reverts to the previous version' do
+            expect(name).not_to eq('updated')
+          end
         end
 
-        it { is_expected.to eq(201) }
-        it { assert_response_schema_confirm }
+        context 'without previous versions' do
+          subject { response.status }
 
-        it 'reverts to the previous version' do
-          expect(name).not_to eq('updated')
+          let(:food) { create(:food, :with_box_user_unit) }
+          let(:user) { food.box.owner }
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+          before do
+            post v1_food_versions_path(food), headers: headers
+          end
+
+          it { is_expected.to eq(400) }
+          it { assert_response_schema_confirm }
         end
       end
 
-      context 'without previous versions' do
+      context 'with food in invited box' do
+        context 'with previous vesions' do
+          subject { response.status }
+
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
+          let(:name) { JSON.parse(response.body)['name'] }
+
+          before do
+            invited_food.update(name: 'with history')
+            post v1_food_versions_path(invited_food), headers: headers
+          end
+
+          it { is_expected.to eq(201) }
+          it { assert_response_schema_confirm }
+
+          it 'reverts to the previous version' do
+            expect(name).not_to eq('updated')
+          end
+        end
+
+        context 'without previous versions' do
+          subject { response.status }
+
+          let(:food) { create(:food, :with_box_user_unit) }
+          let(:invited_food) { create(:food, :with_box_user_unit) }
+          let(:user) { food.box.owner }
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+          before do
+            Invitation.create(box: invisible_food.box, user: user)
+            post v1_food_versions_path(invited_food), headers: headers
+          end
+
+          it { is_expected.to eq(400) }
+          it { assert_response_schema_confirm }
+        end
+      end
+
+      context 'with food in other\'s box' do
         subject { response.status }
 
-        let(:food) { create(:food, :with_box_user_unit) }
-        let(:user) { food.box.owner }
         let(:headers) { { authorization: "Bearer #{token(user)}" } }
 
         before do
-          post v1_food_versions_path(food), headers: headers
+          post v1_food_versions_path(invisible_food), headers: headers
         end
 
-        it { is_expected.to eq(400) }
+        it { is_expected.to eq(403) }
         it { assert_response_schema_confirm }
       end
     end

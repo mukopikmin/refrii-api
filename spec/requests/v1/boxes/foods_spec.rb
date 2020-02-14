@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Boxes/Foods', type: :request do
   include Committee::Rails::Test::Methods
 
-  let!(:box) { create(:box, :with_owner) }
+  let(:box) { create(:box, :with_owner) }
   let(:user) { box.owner }
   let(:invited_box) { create(:box, :with_owner) }
   let(:invisible_box) { create(:box, :with_owner) }

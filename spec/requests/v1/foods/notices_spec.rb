@@ -21,7 +21,7 @@ RSpec.describe 'Foods/Notices', type: :request do
     end
 
     context 'with authentication' do
-      context 'with  own food' do
+      context 'with own food' do
         subject { response.status }
 
         let(:headers) { { authorization: "Bearer #{token(user)}" } }

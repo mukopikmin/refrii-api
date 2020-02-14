@@ -11,7 +11,7 @@ class V1::Boxes::InvitationsController < V1::ApplicationController
     if invited?
       bad_request('The invitation already exists.')
     elsif !owner_of_box?
-      bad_request('You can not invite to the box.')
+      forbidden('You can not invite to the box.')
     elsif @invitation.save
       render json: @invitation, status: :created
     else
