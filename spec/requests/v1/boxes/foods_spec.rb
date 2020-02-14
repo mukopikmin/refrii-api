@@ -5,11 +5,51 @@ require 'rails_helper'
 RSpec.describe 'Boxes/Foods', type: :request do
   include Committee::Rails::Test::Methods
 
-  let!(:box1) { create(:box, :with_owner) }
-  let!(:box2) { create(:box, :with_owner) }
-  let!(:box3) { create(:box, :with_owner) }
+  let!(:box) { create(:box, :with_owner) }
+  let(:user) { box.owner }
+  let(:invited_box) { create(:box, :with_owner) }
+  let(:invisible_box) { create(:box, :with_owner) }
+  let(:headers) { { authorization: "Bearer #{token(user)}" } }
 
-  before { Invitation.create(box: box3, user: user1) }
+  before { Invitation.create(box: invited_box, user: user) }
 
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'GET /boxes/:id/foods' do
+    context 'without authentication' do
+      subject { response.status }
+
+      before { get v1_box_foods_path(box) }
+
+      it { is_expected.to eq(401) }
+      it { assert_response_schema_confirm }
+    end
+
+    context 'with authentication' do
+      context 'with own box' do
+        subject { response.status }
+
+        before { get v1_box_foods_path(box), headers: headers }
+
+        it { is_expected.to eq(200) }
+        it { assert_response_schema_confirm }
+      end
+
+      context 'with invited box' do
+        subject { response.status }
+
+        before { get v1_box_foods_path(invited_box), headers: headers }
+
+        it { is_expected.to eq(200) }
+        it { assert_response_schema_confirm }
+      end
+
+      context 'with other\'s box' do
+        subject { response.status }
+
+        before { get v1_box_foods_path(invisible_box), headers: headers }
+
+        it { is_expected.to eq(404) }
+        it { assert_response_schema_confirm }
+      end
+    end
+  end
 end

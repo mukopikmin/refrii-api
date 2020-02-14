@@ -54,62 +54,6 @@ paths:
       security:
         - BearerAuth:
             []
-  /boxes/owns:
-    get:
-      tags:
-        - Boxes
-      responses:
-        "200":
-          description: List of box
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Box"
-        "400":
-          description: Error message
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "401":
-          description: Error message
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-      security:
-        - BearerAuth:
-            []
-  /boxes/invited:
-    get:
-      tags:
-        - Boxes
-      responses:
-        "200":
-          description: List of box
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Box"
-        "400":
-          description: Error message
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "401":
-          description: Error message
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-      security:
-        - BearerAuth:
-            []
   /boxes/{id}:
     get:
       tags:
@@ -206,6 +150,25 @@ paths:
       security:
         - BearerAuth:
             []
+  /boxes/{id}/foods:
+    get:
+      tags:
+        - Boxes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      reponse:
+        "200":
+          description: List of food
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Food"
   /boxes/{id}/versions:
     get:
       tags:
@@ -240,6 +203,37 @@ paths:
       security:
         - BearerAuth:
             []
+    post:
+        tags:
+          - Boxes
+        parameters:
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: integer
+        responses:
+          "201":
+            description: List of box
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Box"
+          "400":
+            description: Error message
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Error"
+          "401":
+            description: Error message
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Error"
+        security:
+          - BearerAuth:
+              []
   /boxes/{id}/image:
     get:
       tags:
