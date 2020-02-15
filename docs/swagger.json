@@ -1490,6 +1490,16 @@
               }
             }
           },
+          "400": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Error message",
             "content": {
@@ -1583,16 +1593,6 @@
               }
             }
           },
-          "400": {
-            "description": "Error message",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
           "401": {
             "description": "Error message",
             "content": {
@@ -1666,6 +1666,16 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -1694,7 +1704,7 @@
           "204": {
             "description": "Invalid username supplied"
           },
-          "400": {
+          "401": {
             "description": "Error message",
             "content": {
               "application/json": {
@@ -1704,7 +1714,7 @@
               }
             }
           },
-          "401": {
+          "403": {
             "description": "Error message",
             "content": {
               "application/json": {

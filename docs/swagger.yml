@@ -888,6 +888,12 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Box"
+        '400':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
         '401':
           description: Error message
           content:
@@ -939,12 +945,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Box"
-        '400':
-          description: Error message
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
         '401':
           description: Error message
           content:
@@ -987,6 +987,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Error"
+        '403':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
       security:
       - BearerAuth: []
     delete:
@@ -1001,13 +1007,13 @@ paths:
       responses:
         '204':
           description: Invalid username supplied
-        '400':
+        '401':
           description: Error message
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Error"
-        '401':
+        '403':
           description: Error message
           content:
             application/json:
