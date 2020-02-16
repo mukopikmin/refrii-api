@@ -276,7 +276,7 @@ RSpec.describe 'Boxes', type: :request do
 
         let(:headers) { { authorization: "Bearer #{token(user)}" } }
 
-        before { delete v1_box_path(invited_box), headers: headers}
+        before { delete v1_box_path(invited_box), headers: headers }
 
         it { is_expected.to eq(403) }
         it { assert_response_schema_confirm }
