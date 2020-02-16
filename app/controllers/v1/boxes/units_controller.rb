@@ -17,7 +17,6 @@ class V1::Boxes::UnitsController < V1::ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_box
     @box = Box.find(params[:box_id])
   end

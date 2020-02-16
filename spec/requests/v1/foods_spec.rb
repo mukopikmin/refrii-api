@@ -5,10 +5,17 @@ require 'rails_helper'
 RSpec.describe 'Foods', type: :request do
   include Committee::Rails::Test::Methods
 
-  let(:food1) { create(:food, :with_box_user_unit) }
-  let(:food2) { create(:food, :with_box_user_unit) }
+  let(:food) { create(:food, :with_box_user_unit) }
+  let(:invited_food) { create(:food, :with_box_user_unit) }
+  let(:invisible_food) { create(:food, :with_box_user_unit) }
+  let(:user) { food.box.owner }
 
-  before { create(:notice, food: food1, created_user: food1.box.owner, updated_user: food1.box.owner) }
+  before do
+    Invitation.create(box: invited_food.box, user: user)
+    create(:notice, food: food,
+                    created_user: user,
+                    updated_user: user)
+  end
 
   describe 'GET /foods' do
     context 'without authentication' do
@@ -23,10 +30,19 @@ RSpec.describe 'Foods', type: :request do
     context 'with authentication' do
       subject { response.status }
 
-      before { get v1_foods_path, headers: { authorization: "Bearer #{token(food1.box.owner)}" } }
+      let(:headers) { { authorization: "Bearer #{token(user)}" } }
+      let(:body) { JSON.parse(response.body) }
+      let(:result) { body.map { |food| food['box']['is_invited'] } }
+
+      before { get v1_foods_path, headers: headers }
 
       it { is_expected.to eq(200) }
       it { assert_response_schema_confirm }
+
+      it 'returns all foods' do
+        expect(result).to include(be_truthy)
+        expect(result).to include(be_falsey)
+      end
     end
   end
 
@@ -34,7 +50,7 @@ RSpec.describe 'Foods', type: :request do
     context 'without authentication' do
       subject { response.status }
 
-      before { get v1_food_path(food1) }
+      before { get v1_food_path(food) }
 
       it { is_expected.to eq(401) }
       it { assert_response_schema_confirm }
@@ -44,7 +60,20 @@ RSpec.describe 'Foods', type: :request do
       context 'with food in own box' do
         subject { response.status }
 
-        before { get v1_food_path(food1), headers: { authorization: "Bearer #{token(food1.box.owner)}" } }
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+        before { get v1_food_path(food), headers: headers }
+
+        it { is_expected.to eq(200) }
+        it { assert_response_schema_confirm }
+      end
+
+      context 'with food in invited box' do
+        subject { response.status }
+
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+        before { get v1_food_path(invited_food), headers: headers }
 
         it { is_expected.to eq(200) }
         it { assert_response_schema_confirm }
@@ -53,7 +82,9 @@ RSpec.describe 'Foods', type: :request do
       context 'with food in other\'s box' do
         subject { response.status }
 
-        before { get v1_food_path(food2), headers: { authorization: "Bearer #{token(food1.box.owner)}" } }
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+        before { get v1_food_path(invisible_food), headers: headers }
 
         it { is_expected.to eq(404) }
         it { assert_response_schema_confirm }
@@ -65,9 +96,12 @@ RSpec.describe 'Foods', type: :request do
     context 'without authentication' do
       subject { response.status }
 
-      let(:params) { attributes_for(:food).merge!(box_id: food1.box.to_param, unit_id: food1.unit.to_param) }
+      let(:valid_params) do
+        attributes_for(:food).merge(box_id: food.box.to_param,
+                                    unit_id: food.unit.to_param)
+      end
 
-      before { post v1_foods_path, params: params }
+      before { post v1_foods_path, params: valid_params }
 
       it { is_expected.to eq(401) }
       it { assert_response_schema_confirm }
@@ -75,44 +109,109 @@ RSpec.describe 'Foods', type: :request do
 
     context 'with authentication' do
       context 'with food in own box' do
-        subject { response.status }
+        context 'with valid params' do
+          subject { response.status }
 
-        let(:params) { attributes_for(:food).merge!(box_id: food1.box.to_param, unit_id: food1.unit.to_param) }
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
+          let(:valid_params) do
+            attributes_for(:food).merge(box_id: food.box.to_param,
+                                        unit_id: food.unit.to_param)
+          end
 
-        before { post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(food1.box.owner)}" } }
+          before { post v1_foods_path, params: valid_params, headers: headers }
 
-        it { is_expected.to eq(201) }
-        it { assert_response_schema_confirm }
+          it { is_expected.to eq(201) }
+          it { assert_response_schema_confirm }
+        end
+
+        context 'with invalid params' do
+          context 'with no name food' do
+            subject { response.status }
+
+            let(:params) { attributes_for(:no_name_food).merge(box_id: food.box.to_param, unit_id: food.unit.to_param) }
+            let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+            before { post v1_foods_path, params: params, headers: headers }
+
+            it { is_expected.to eq(400) }
+            it { assert_response_schema_confirm }
+          end
+
+          context 'with unit for box owned by other users' do
+            subject { response.status }
+
+            let(:params) { { box_id: food.box.to_param, unit_id: invisible_food.unit.to_param } }
+            let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+            before { post v1_foods_path, params: params, headers: headers }
+
+            it { is_expected.to eq(400) }
+            it { assert_response_schema_confirm }
+          end
+        end
+      end
+
+      context 'with food in invited box' do
+        context 'with valid params' do
+          subject { response.status }
+
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
+          let(:valid_params) do
+            attributes_for(:food).merge(box_id: invited_food.box.to_param,
+                                        unit_id: invited_food.unit.to_param)
+          end
+
+          before { post v1_foods_path, params: valid_params, headers: headers }
+
+          it { is_expected.to eq(201) }
+          it { assert_response_schema_confirm }
+        end
+
+        context 'with invalid params' do
+          context 'with no name food' do
+            subject { response.status }
+
+            let(:params) do
+              attributes_for(:no_name_food).merge(box_id: invited_food.box.to_param,
+                                                  unit_id: invited_food.unit.to_param)
+            end
+            let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+            before { post v1_foods_path, params: params, headers: headers }
+
+            it { is_expected.to eq(400) }
+            it { assert_response_schema_confirm }
+          end
+
+          context 'with unit for box owned by other users' do
+            subject { response.status }
+
+            let(:params) do
+              {
+                box_id: invited_food.box.to_param,
+                unit_id: invisible_food.unit.to_param
+              }
+            end
+            let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+            before { post v1_foods_path, params: params, headers: headers }
+
+            it { is_expected.to eq(400) }
+            it { assert_response_schema_confirm }
+          end
+        end
       end
 
       context 'with food in other\'s box' do
         subject { response.status }
 
-        let(:params) { attributes_for(:food).merge!(box_id: food2.box.to_param, unit_id: food2.unit.to_param) }
+        let(:params) do
+          attributes_for(:food).merge(box_id: invisible_food.box.to_param,
+                                      unit_id: invisible_food.unit.to_param)
+        end
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
 
-        before { post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(food1.box.owner)}" } }
-
-        it { is_expected.to eq(400) }
-        it { assert_response_schema_confirm }
-      end
-
-      context 'with no name food' do
-        subject { response.status }
-
-        let(:params) { attributes_for(:no_name_food).merge!(box_id: food1.box.to_param, unit_id: food1.unit.to_param) }
-
-        before { post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(food1.box.owner)}" } }
-
-        it { is_expected.to eq(400) }
-        it { assert_response_schema_confirm }
-      end
-
-      context 'with unit for box owned by other users' do
-        subject { response.status }
-
-        let(:params) { { box_id: food1.box.to_param, unit_id: food2.unit.to_param } }
-
-        before { post v1_foods_path, params: params, headers: { authorization: "Bearer #{token(food1.box.owner)}" } }
+        before { post v1_foods_path, params: params, headers: headers }
 
         it { is_expected.to eq(400) }
         it { assert_response_schema_confirm }
@@ -126,7 +225,7 @@ RSpec.describe 'Foods', type: :request do
     context 'without authentication' do
       subject { response.status }
 
-      before { put v1_food_path(food1), params: params }
+      before { put v1_food_path(food), params: params }
 
       it { is_expected.to eq(401) }
       it { assert_response_schema_confirm }
@@ -134,42 +233,91 @@ RSpec.describe 'Foods', type: :request do
 
     context 'with authentication' do
       context 'with food in own box' do
-        subject { response.status }
+        context 'with valid params' do
+          subject { response.status }
 
-        before { put v1_food_path(food1), params: params, headers: { authorization: "Bearer #{token(food1.box.owner)}" } }
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
 
-        it { is_expected.to eq(200) }
-        it { assert_response_schema_confirm }
+          before { put v1_food_path(food), params: params, headers: headers }
+
+          it { is_expected.to eq(200) }
+          it { assert_response_schema_confirm }
+        end
+
+        context 'with invalid params' do
+          context 'with no name food' do
+            subject { response.status }
+
+            let(:no_name_params) { attributes_for(:no_name_food) }
+
+            let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+            before { put v1_food_path(food), params: no_name_params, headers: headers }
+
+            it { is_expected.to eq(400) }
+            it { assert_response_schema_confirm }
+          end
+
+          context 'with unit for box owned by other users' do
+            subject { response.status }
+
+            let(:params) { { unit_id: invisible_food.unit.to_param } }
+            let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+            before { put v1_food_path(food), params: params, headers: headers }
+
+            it { is_expected.to eq(400) }
+            it { assert_response_schema_confirm }
+          end
+        end
+      end
+
+      context 'with food in invited box' do
+        context 'with valid params' do
+          subject { response.status }
+
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+          before { put v1_food_path(invited_food), params: params, headers: headers }
+
+          it { is_expected.to eq(200) }
+          it { assert_response_schema_confirm }
+        end
+
+        context 'with invalid params' do
+          context 'with no name food' do
+            subject { response.status }
+
+            let(:no_name_params) { attributes_for(:no_name_food) }
+
+            let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+            before { put v1_food_path(invited_food), params: no_name_params, headers: headers }
+
+            it { is_expected.to eq(400) }
+            it { assert_response_schema_confirm }
+          end
+
+          context 'with unit for box owned by other users' do
+            subject { response.status }
+
+            let(:params) { { unit_id: invisible_food.unit.to_param } }
+            let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+            before { put v1_food_path(invited_food), params: params, headers: headers }
+
+            it { is_expected.to eq(400) }
+            it { assert_response_schema_confirm }
+          end
+        end
       end
 
       context 'with food in other\'s box' do
         subject { response.status }
 
-        before do
-          put v1_food_path(food2), params: params, headers: { authorization: "Bearer #{token(food1.box.owner)}" }
-        end
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
 
-        it { is_expected.to eq(400) }
-        it { assert_response_schema_confirm }
-      end
-
-      context 'with no name food' do
-        subject { response.status }
-
-        let(:no_name_params) { attributes_for(:no_name_food) }
-
-        before { put v1_food_path(food1), params: no_name_params, headers: { authorization: "Bearer #{token(food1.box.owner)}" } }
-
-        it { is_expected.to eq(400) }
-        it { assert_response_schema_confirm }
-      end
-
-      context 'with unit for box owned by other users' do
-        subject { response.status }
-
-        let(:params) { { unit_id: food2.unit.to_param } }
-
-        before { put v1_food_path(food1), params: params, headers: { authorization: "Bearer #{token(food1.box.owner)}" } }
+        before { put v1_food_path(invisible_food), params: params, headers: headers }
 
         it { is_expected.to eq(400) }
         it { assert_response_schema_confirm }
@@ -181,7 +329,7 @@ RSpec.describe 'Foods', type: :request do
     context 'without authentication' do
       subject { response.status }
 
-      before { delete v1_food_path(food1) }
+      before { delete v1_food_path(food) }
 
       it { is_expected.to eq(401) }
       it { assert_response_schema_confirm }
@@ -191,7 +339,20 @@ RSpec.describe 'Foods', type: :request do
       context 'with food in own box' do
         subject { response.status }
 
-        before { delete v1_food_path(food1), headers: { authorization: "Bearer #{token(food1.box.owner)}" } }
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+        before { delete v1_food_path(food), headers: headers }
+
+        it { is_expected.to eq(204) }
+        it { assert_response_schema_confirm }
+      end
+
+      context 'with food in invited box' do
+        subject { response.status }
+
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+        before { delete v1_food_path(invited_food), headers: headers }
 
         it { is_expected.to eq(204) }
         it { assert_response_schema_confirm }
@@ -200,7 +361,9 @@ RSpec.describe 'Foods', type: :request do
       context 'with food in other\'s box' do
         subject { response.status }
 
-        before { delete v1_food_path(food2), headers: { authorization: "Bearer #{token(food1.box.owner)}" } }
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+        before { delete v1_food_path(invisible_food), headers: headers }
 
         it { is_expected.to eq(400) }
         it { assert_response_schema_confirm }

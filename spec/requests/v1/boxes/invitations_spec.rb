@@ -5,20 +5,21 @@ require 'rails_helper'
 RSpec.describe 'Boxes/Invitations', type: :request do
   include Committee::Rails::Test::Methods
 
-  let!(:box1) { create(:box, :with_owner) }
-  let!(:box2) { create(:box, :with_owner) }
-  let!(:box3) { create(:box, :with_owner) }
+  let(:box) { create(:box, :with_owner) }
+  let(:invited_box) { create(:box, :with_owner) }
+  let(:invisible_box) { create(:box, :with_owner) }
+  let(:user) { box.owner }
+  let(:other_user) { create(:user) }
 
-  before { Invitation.create(box: box3, user: box1.owner) }
+  before { Invitation.create(box: invited_box, user: user) }
 
   describe 'POST /boxes/:id/invitations' do
-    let(:params) { { email: box2.owner.email } }
-    let(:unpersisted_user) { attributes_for(:user) }
+    let(:params) { { email: other_user.email } }
 
     context 'without authentication' do
       subject { response.status }
 
-      before { post v1_box_invitations_path(box_id: box1.id), params: params }
+      before { post v1_box_invitations_path(box_id: box.id), params: params }
 
       it { is_expected.to eq(401) }
       it { assert_response_schema_confirm }
@@ -28,28 +29,58 @@ RSpec.describe 'Boxes/Invitations', type: :request do
       context 'with own box' do
         subject { response.status }
 
-        before { post v1_box_invitations_path(box_id: box1.id), params: params, headers: { authorization: "Bearer #{token(box1.owner)}" } }
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+        before { post v1_box_invitations_path(box_id: box.id), params: params, headers: headers }
 
         it { is_expected.to eq(201) }
+        it { assert_response_schema_confirm }
+      end
+
+      context 'with invited box' do
+        subject { response.status }
+
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+        before { post v1_box_invitations_path(box_id: invited_box.id), params: params, headers: headers }
+
+        it { is_expected.to eq(403) }
+        it { assert_response_schema_confirm }
+      end
+
+      context 'with already invited box' do
+        subject { response.status }
+
+        let(:params) { { email: user.email } }
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+        before { post v1_box_invitations_path(box_id: invited_box.id), params: params, headers: headers }
+
+        it { is_expected.to eq(400) }
         it { assert_response_schema_confirm }
       end
 
       context 'with other\'s box' do
         subject { response.status }
 
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
         before do
-          post v1_box_invitations_path(box_id: box2.id), params: params, headers: { authorization: "Bearer #{token(box1.owner)}" }
+          post v1_box_invitations_path(box_id: invisible_box.id), params: params, headers: headers
         end
 
-        it { is_expected.to eq(400) }
+        it { is_expected.to eq(403) }
         it { assert_response_schema_confirm }
       end
 
       context 'with unpersisted user' do
         subject { response.status }
 
+        let(:unpersisted_user) { attributes_for(:user) }
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
         before do
-          post v1_box_invitations_path(box1), params: unpersisted_user, headers: { authorization: "Bearer #{token(box1.owner)}" }
+          post v1_box_invitations_path(box), params: unpersisted_user, headers: headers
         end
 
         it { is_expected.to eq(400) }

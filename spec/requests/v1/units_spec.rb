@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# TODO: Refactoring
+
 require 'rails_helper'
 
 RSpec.describe 'Units', type: :request do

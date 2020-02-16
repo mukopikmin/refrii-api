@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# TODO: Refactoring
+
 require 'rails_helper'
 
 RSpec.describe 'Notices', type: :request do

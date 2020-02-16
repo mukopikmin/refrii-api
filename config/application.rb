@@ -21,7 +21,7 @@ Bundler.require(*Rails.groups)
 
 Dotenv::Railtie.load
 
-module RefriiApi
+module RefriiApi # rubocop:disable Style/ClassAndModuleChildren
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

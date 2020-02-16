@@ -7,9 +7,7 @@ class V1::FoodsController < V1::ApplicationController
 
   # GET /foods
   def index
-    @foods = Food.all_with_invited(current_user)
-
-    render json: @foods
+    render json: Food.all_with_invited(current_user)
   end
 
   # GET /foods/1
@@ -61,12 +59,10 @@ class V1::FoodsController < V1::ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_food
     @food = Food.find(params[:id])
   end
 
-  # Only allow a trusted parameter "white list" through.
   def food_params
     params[:updated_user_id] = current_user.id
 
@@ -95,13 +91,5 @@ class V1::FoodsController < V1::ApplicationController
            .map(&:id)
            .include?(params[:unit_id].to_i)
     end
-
-    # unit_id = params[:unit_id].nil? ? nil : params[:unit_id].to_i
-
-    # if unit_id.nil?
-    #   true
-    # else
-    #   @food.assignable_units.map(&:id).include?(unit_id)
-    # end
   end
 end

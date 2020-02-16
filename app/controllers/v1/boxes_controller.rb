@@ -9,14 +9,14 @@ class V1::BoxesController < V1::ApplicationController
   def index
     case filter_option
     when :all
-      @boxes = Box.all_with_invited(current_user)
+      render json: Box.all_with_invited(current_user)
     when :owns
-      @boxes = Box.owned_by(current_user)
+      render json: Box.owned_by(current_user)
     when :invited
-      @boxes = Box.inviting(current_user)
+      render json: Box.inviting(current_user)
+    else
+      bad_request('Unknown option is specified')
     end
-
-    render json: @boxes
   end
 
   # GET /boxes/1
@@ -33,7 +33,7 @@ class V1::BoxesController < V1::ApplicationController
     @box = Box.new(box_params)
 
     if @box.save
-      render json: @box, status: :created, location: v1_boxes_path(@box)
+      render json: @box, status: :created
     else
       bad_request
     end
@@ -42,7 +42,7 @@ class V1::BoxesController < V1::ApplicationController
   # PATCH/PUT /boxes/1
   def update
     if !owner_of_box?
-      bad_request('You can not update the box.')
+      forbidden('You can not update the box.')
     elsif @box.update(box_params)
       render json: @box
     else
@@ -53,7 +53,7 @@ class V1::BoxesController < V1::ApplicationController
   # DELETE /boxes/1
   def destroy
     if !owner_of_box?
-      bad_request('You can not destroy the box.')
+      forbidden('You can not destroy the box.')
     else
       @box.destroy
     end
@@ -61,12 +61,10 @@ class V1::BoxesController < V1::ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_box
     @box = Box.find(params[:id])
   end
 
-  # Only allow a trusted parameter "white list" through.
   def box_params
     params[:owner_id] = current_user.id
 
@@ -87,10 +85,10 @@ class V1::BoxesController < V1::ApplicationController
     option = params['filter']
 
     case option
+    when nil
+      :all
     when 'owns', 'invited'
       option.to_sym
-    else
-      :all
     end
   end
 end

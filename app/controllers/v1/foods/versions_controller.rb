@@ -17,7 +17,7 @@ class V1::Foods::VersionsController < V1::ApplicationController
   # Create new versions from previous version as current version
   def create
     if !accessible?
-      bad_request('You can not revert the food.')
+      forbidden('You can not revert the food.')
     elsif @food.revert
       render json: @food, status: :created
     else
