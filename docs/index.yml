@@ -19,4 +19,3 @@ tags:
   - name: Users
 servers:
   - url: https://api.refrii.com/v1
-  - url: http://api.refrii.com/v1

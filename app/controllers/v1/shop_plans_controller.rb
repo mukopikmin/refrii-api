@@ -7,9 +7,7 @@ class V1::ShopPlansController < V1::ApplicationController
 
   # GET /shop_plans
   def index
-    @shop_plans = ShopPlan.all_with_invited(current_user)
-
-    render json: @shop_plans
+    render json: @ShopPlan.all_with_invited(current_user)
   end
 
   # GET /shop_plans/1
@@ -24,6 +22,7 @@ class V1::ShopPlansController < V1::ApplicationController
   # POST /shop_plans
   def create
     @shop_plan = ShopPlan.new(shop_plan_params)
+
     if !accessible_food?
       bad_request
     elsif @shop_plan.save
@@ -43,17 +42,6 @@ class V1::ShopPlansController < V1::ApplicationController
       render json: @shop_plan
     end
   end
-
-  # # PATCH/PUT /shop_plans/1/complete
-  # def complete
-  #   if !accessible?
-  #     not_found
-  #   elsif !@shop_plan.complete
-  #     bad_request
-  #   else
-  #     render json: @shop_plan
-  #   end
-  # end
 
   # DELETE /shop_plans/1
   def destroy

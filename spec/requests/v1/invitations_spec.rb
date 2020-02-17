@@ -1,66 +1,54 @@
 # frozen_string_literal: true
 
-# TODO: Refactoring
-
 require 'rails_helper'
 
 RSpec.describe 'Invitations', type: :request do
   include Committee::Rails::Test::Methods
 
-  let(:box1) { create(:box, :with_owner) }
-  let(:box2) { create(:box, :with_owner) }
-  let(:box3) { create(:box, owner: box2.owner) }
-  let(:invitation) { Invitation.create(box: box3, user: box1.owner) }
+  let(:box) { create(:box, :with_owner) }
+  let(:invited_user) { create(:user) }
+  let(:not_invited_user) { create(:user) }
+  let(:invitation) { Invitation.create(box: box, user: invited_user) }
 
   describe 'DELETE /invitations/:id' do
     context 'without authentication' do
       subject { response.status }
 
-      let(:params) { { user_id: box2.owner.to_param } }
-
-      before { delete v1_invitation_path(invitation), params: params }
+      before { delete v1_invitation_path(invitation) }
 
       it { is_expected.to eq(401) }
       it { assert_response_schema_confirm }
     end
 
     context 'with authentication' do
-      context 'with own box' do
+      context 'with box owner' do
         subject { response.status }
 
-        let(:params) { { email: box1.owner.email } }
-        let(:headers) { { authorization: "Bearer #{token(box2.owner)}" } }
+        let(:headers) { { authorization: "Bearer #{token(box.owner)}" } }
 
-        before { delete v1_invitation_path(invitation), params: params, headers: headers }
+        before { delete v1_invitation_path(invitation), headers: headers }
 
         it { is_expected.to eq(204) }
         it { assert_response_schema_confirm }
       end
 
-      context 'with other\'s box' do
+      context 'with invited user' do
         subject { response.status }
 
-        let(:params) { { email: box1.owner.email } }
-        let(:headers) { { authorization: "Bearer #{token(box1.owner)}" } }
+        let(:headers) { { authorization: "Bearer #{token(invited_user)}" } }
 
-        before do
-          delete v1_invitation_path(invitation), params: params, headers: headers
-        end
+        before { delete v1_invitation_path(invitation), headers: headers }
 
         it { is_expected.to eq(400) }
         it { assert_response_schema_confirm }
       end
 
-      context 'with unpersisted user' do
+      context 'with not invited user' do
         subject { response.status }
 
-        let(:params) { { email: box1.owner.email } }
-        let(:headers) { { authorization: "Bearer #{token(box1.owner)}" } }
-        let(:unpersisted_user) { attributes_for(:user) }
+        let(:headers) { { authorization: "Bearer #{token(not_invited_user)}" } }
 
-        before do
-          delete v1_invitation_path(invitation), params: unpersisted_user, headers: headers
-        end
+        before { delete v1_invitation_path(invitation), headers: headers }
 
         it { is_expected.to eq(400) }
         it { assert_response_schema_confirm }
