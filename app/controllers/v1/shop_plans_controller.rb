@@ -19,6 +19,7 @@ class V1::ShopPlansController < V1::ApplicationController
     end
   end
 
+  # TODO: Remove
   # POST /shop_plans
   def create
     @shop_plan = ShopPlan.new(shop_plan_params)

@@ -13,6 +13,20 @@ class V1::Foods::ShopPlansController < V1::ApplicationController
     end
   end
 
+  # TODO: Add spec
+  # POST /foods/1/shop_plans
+  def create
+    @shop_plan = ShopPlan.new(shop_plan_params)
+  
+    if !accessible?
+      bad_request
+    elsif @shop_plan.save
+      render json: @shop_plan, status: :created
+    else
+      bad_request
+    end
+  end
+
   private
 
   def set_food
