@@ -17,7 +17,7 @@ class V1::Foods::ShopPlansController < V1::ApplicationController
   # POST /foods/1/shop_plans
   def create
     @shop_plan = ShopPlan.new(shop_plan_params)
-  
+
     if !accessible?
       bad_request
     elsif @shop_plan.save

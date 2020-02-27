@@ -13,7 +13,7 @@ RSpec.describe 'ShopPlans', type: :request do
   let(:invisible_plan) { create(:shop_plan, food: invited_food) }
   let(:user) { food.box.owner }
 
-  before { Invitation.create(box: invited_food.box, user: user)}
+  before { Invitation.create(box: invited_food.box, user: user) }
 
   describe 'GET /shop_plans' do
     context 'without authentication' do

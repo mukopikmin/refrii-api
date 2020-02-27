@@ -1,15 +1,17 @@
 # frozen_string_literal: true
 
-# TODO: Refactoring
-
 require 'rails_helper'
 
 RSpec.describe 'Units', type: :request do
   include Committee::Rails::Test::Methods
 
-  let(:unit1) { create(:unit, :with_user) }
-  let(:unit2) { create(:unit, :with_user) }
-  let(:user1) { unit1.user }
+  let(:unit) { create(:unit, :with_user) }
+  let(:invited_box) { create(:box, :with_owner) }
+  let(:invited_unit) { create(:unit, user: invited_box.owner) }
+  let(:invisible_unit) { create(:unit, :with_user) }
+  let(:user) { unit.user }
+
+  before { Invitation.create(box: invited_box, user: user) }
 
   describe 'GET /units' do
     context 'without authentication' do
@@ -24,7 +26,9 @@ RSpec.describe 'Units', type: :request do
     context 'with authentication' do
       subject { response.status }
 
-      before { get v1_units_path, headers: { authorization: "Bearer #{token(user1)}" } }
+      let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+      before { get v1_units_path, headers: headers }
 
       it { is_expected.to eq(200) }
       it { assert_response_schema_confirm }
@@ -35,7 +39,7 @@ RSpec.describe 'Units', type: :request do
     context 'without authentication' do
       subject { response.status }
 
-      before { get v1_unit_path(unit1) }
+      before { get v1_unit_path(unit) }
 
       it { is_expected.to eq(401) }
       it { assert_response_schema_confirm }
@@ -45,16 +49,31 @@ RSpec.describe 'Units', type: :request do
       context 'with own unit' do
         subject { response.status }
 
-        before { get v1_unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" } }
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+        before { get v1_unit_path(unit), headers: headers }
 
         it { is_expected.to eq(200) }
+        it { assert_response_schema_confirm }
+      end
+
+      context 'with invited unit' do
+        subject { response.status }
+
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+        before { get v1_unit_path(invited_unit), headers: headers }
+
+        it { is_expected.to eq(404) }
         it { assert_response_schema_confirm }
       end
 
       context 'with other\'s unit' do
         subject { response.status }
 
-        before { get v1_unit_path(unit2), headers: { authorization: "Bearer #{token(user1)}" } }
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+        before { get v1_unit_path(invisible_unit), headers: headers }
 
         it { is_expected.to eq(404) }
         it { assert_response_schema_confirm }
@@ -66,7 +85,7 @@ RSpec.describe 'Units', type: :request do
     context 'without authentication' do
       subject { response.status }
 
-      let(:params) { attributes_for(:unit).merge!(unit_id: unit1.to_param) }
+      let(:params) { attributes_for(:unit).merge!(unit_id: unit.to_param) }
 
       before { post v1_units_path, params: params }
 
@@ -80,35 +99,108 @@ RSpec.describe 'Units', type: :request do
 
         let(:params) { attributes_for(:unit) }
 
-        before { post v1_units_path, params: params, headers: { authorization: "Bearer #{token(user1)}" } }
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+        before { post v1_units_path, params: params, headers: headers }
 
         it { is_expected.to eq(201) }
         it { assert_response_schema_confirm }
       end
 
-      context 'with no label unit' do
-        subject { response.status }
+      context 'with invalid params' do
+        context 'with no label unit' do
+          subject { response.status }
 
-        let(:params) { attributes_for(:no_label_unit) }
+          let(:params) { attributes_for(:no_label_unit) }
 
-        before { post v1_units_path, params: params, headers: { authorization: "Bearer #{token(user1)}" } }
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
 
-        it { is_expected.to eq(400) }
-        it { assert_response_schema_confirm }
-      end
+          before { post v1_units_path, params: params, headers: headers }
 
-      context 'with existing label unit' do
-        subject { response.status }
-
-        let(:params) { attributes_for(:unit).merge!(user_id: user1.id) }
-
-        before do
-          Unit.create(params)
-          post v1_units_path, params: params, headers: { authorization: "Bearer #{token(user1)}" }
+          it { is_expected.to eq(400) }
+          it { assert_response_schema_confirm }
         end
 
-        it { is_expected.to eq(400) }
-        it { assert_response_schema_confirm }
+        context 'with empty label unit' do
+          subject { response.status }
+
+          let(:params) { attributes_for(:unit, :with_empty_label) }
+
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+          before { post v1_units_path, params: params, headers: headers }
+
+          it { is_expected.to eq(400) }
+          it { assert_response_schema_confirm }
+        end
+
+        context 'with existing label unit' do
+          subject { response.status }
+
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
+          let(:params) { unit.attributes.merge!(user_id: user.id) }
+
+          before do
+            post v1_units_path, params: params, headers: headers
+          end
+
+          it { is_expected.to eq(400) }
+          it { assert_response_schema_confirm }
+        end
+
+        context 'with other user' do
+          subject { response.status }
+
+          let(:params) { attributes_for(:unit).merge!(user_id: invisible_unit.user) }
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+          before { post v1_units_path, params: params, headers: headers }
+
+          it { is_expected.to eq(201) }
+          it { assert_response_schema_confirm }
+        end
+
+        context 'with no step' do
+          subject { response.status }
+
+          let(:step) { JSON.parse(response.body)['step'] }
+
+          let(:params) { attributes_for(:no_step_unit) }
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+          before { post v1_units_path, params: params, headers: headers }
+
+          it { is_expected.to eq(201) }
+          it { assert_response_schema_confirm }
+
+          it 'uses default positive value' do
+            expect(step).to be > 0
+          end
+        end
+
+        context 'with negative step' do
+          subject { response.status }
+
+          let(:params) { attributes_for(:unit, :with_negative_step) }
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+          before { post v1_units_path, params: params, headers: headers }
+
+          it { is_expected.to eq(400) }
+          it { assert_response_schema_confirm }
+        end
+
+        context 'with zero step' do
+          subject { response.status }
+
+          let(:params) { attributes_for(:unit, :with_zero_step) }
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+          before { post v1_units_path, params: params, headers: headers }
+
+          it { is_expected.to eq(400) }
+          it { assert_response_schema_confirm }
+        end
       end
     end
   end
@@ -119,7 +211,7 @@ RSpec.describe 'Units', type: :request do
 
       let(:params) { attributes_for(:unit) }
 
-      before { put v1_unit_path(unit1), params: params }
+      before { put v1_unit_path(unit), params: params }
 
       it { is_expected.to eq(401) }
       it { assert_response_schema_confirm }
@@ -127,60 +219,79 @@ RSpec.describe 'Units', type: :request do
 
     context 'with authentication' do
       context 'with own unit' do
-        subject { response.status }
+        context 'with full filled params' do
+          subject { response.status }
 
-        let(:params) { attributes_for(:unit) }
+          let(:params) { attributes_for(:unit) }
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
 
-        before { put v1_unit_path(unit1), params: params, headers: { authorization: "Bearer #{token(user1)}" } }
+          before { put v1_unit_path(unit), params: params, headers: headers }
 
-        it { is_expected.to eq(200) }
-        it { assert_response_schema_confirm }
+          it { is_expected.to eq(200) }
+          it { assert_response_schema_confirm }
+        end
+
+        context 'with no label unit' do
+          subject { response.status }
+
+          let(:params) { attributes_for(:no_label_unit) }
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+          before { put v1_unit_path(unit), params: params, headers: headers }
+
+          it { is_expected.to eq(200) }
+          it { assert_response_schema_confirm }
+        end
+
+        context 'with existing label unit' do
+          subject { response.status }
+
+          let(:params) { attributes_for(:unit).merge!(user_id: user.id) }
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+          before do
+            Unit.create(params)
+            put v1_unit_path(unit), params: params, headers: headers
+          end
+
+          it { is_expected.to eq(400) }
+          it { assert_response_schema_confirm }
+        end
+
+        context 'without renaming label of unit' do
+          subject { response.status }
+
+          let(:params) { attributes_for(:unit).merge!(user_id: user.id) }
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+          before { put v1_unit_path(unit), params: params, headers: headers }
+
+          it { is_expected.to eq(200) }
+          it { assert_response_schema_confirm }
+        end
       end
 
       context 'with other\'s unit' do
         subject { response.status }
 
         let(:params) { attributes_for(:unit) }
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
 
-        before { put v1_unit_path(unit2), params: params, headers: { authorization: "Bearer #{token(user1)}" } }
-
-        it { is_expected.to eq(400) }
-        it { assert_response_schema_confirm }
-      end
-
-      context 'with no label unit' do
-        subject { response.status }
-
-        let(:params) { attributes_for(:no_label_unit) }
-
-        before { put v1_unit_path(unit2), params: params, headers: { authorization: "Bearer #{token(user1)}" } }
+        before { put v1_unit_path(invisible_unit), params: params, headers: headers }
 
         it { is_expected.to eq(400) }
         it { assert_response_schema_confirm }
       end
 
-      context 'with existing label unit' do
+      context 'with invited unit' do
         subject { response.status }
 
-        let(:params) { attributes_for(:unit).merge!(user_id: user1.id) }
+        let(:params) { attributes_for(:unit) }
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
 
-        before do
-          Unit.create(params)
-          put v1_unit_path(unit1), params: params, headers: { authorization: "Bearer #{token(user1)}" }
-        end
+        before { put v1_unit_path(invited_unit), params: params, headers: headers }
 
         it { is_expected.to eq(400) }
-        it { assert_response_schema_confirm }
-      end
-
-      context 'without renaming label of unit' do
-        subject { response.status }
-
-        let(:params) { attributes_for(:unit).merge!(user_id: user1.id) }
-
-        before { put v1_unit_path(unit1), params: params, headers: { authorization: "Bearer #{token(user1)}" } }
-
-        it { is_expected.to eq(200) }
         it { assert_response_schema_confirm }
       end
     end
@@ -190,7 +301,7 @@ RSpec.describe 'Units', type: :request do
     context 'without authentication' do
       subject { response.status }
 
-      before { delete v1_unit_path(unit1) }
+      before { delete v1_unit_path(unit) }
 
       it { is_expected.to eq(401) }
       it { assert_response_schema_confirm }
@@ -201,7 +312,9 @@ RSpec.describe 'Units', type: :request do
         context 'with unit not referenced by foods' do
           subject { response.status }
 
-          before { delete v1_unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" } }
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+          before { delete v1_unit_path(unit), headers: headers }
 
           it { is_expected.to eq(204) }
           it { assert_response_schema_confirm }
@@ -210,14 +323,11 @@ RSpec.describe 'Units', type: :request do
         context 'with unit referenced by foods' do
           subject { response.status }
 
-          let(:box) { create(:box, owner: user1) }
+          let(:headers) { { authorization: "Bearer #{token(user)}" } }
 
           before do
-            create(:food, box: box,
-                          unit: unit1,
-                          created_user: user1,
-                          updated_user: user1)
-            delete v1_unit_path(unit1), headers: { authorization: "Bearer #{token(user1)}" }
+            create(:food, :with_box_user_unit, unit: unit)
+            delete v1_unit_path(unit), headers: headers
           end
 
           it { is_expected.to eq(400) }
@@ -228,7 +338,20 @@ RSpec.describe 'Units', type: :request do
       context 'with other\'s unit' do
         subject { response.status }
 
-        before { delete v1_unit_path(unit2), headers: { authorization: "Bearer #{token(user1)}" } }
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+        before { delete v1_unit_path(invisible_unit), headers: headers }
+
+        it { is_expected.to eq(400) }
+        it { assert_response_schema_confirm }
+      end
+
+      context 'with invited unit' do
+        subject { response.status }
+
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+        before { delete v1_unit_path(invited_unit), headers: headers }
 
         it { is_expected.to eq(400) }
         it { assert_response_schema_confirm }
