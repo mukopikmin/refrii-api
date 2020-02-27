@@ -18,7 +18,6 @@ tags:
 - name: Users
 servers:
 - url: https://api.refrii.com/v1
-- url: http://api.refrii.com/v1
 paths:
   "/shop_plans":
     get:
@@ -83,6 +82,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Error"
+        '403':
+          description: Error message
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
   "/shop_plans/{id}":
     get:
       tags:
@@ -134,7 +139,7 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Error"
-        '404':
+        '403':
           description: Error message
           content:
             application/json:

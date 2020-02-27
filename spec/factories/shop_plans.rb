@@ -10,18 +10,27 @@ FactoryBot.define do
     trait :completed do
       done { true }
     end
-  end
 
-  # factory :completed_shop_plan, class: 'ShopPlan' do
-  #   sequence(:notice) { |n| "sample comment #{n}" }
-  #   done { true }
-  #   date { Date.today }
-  #   amount { rand(0.0..100.0) }
-  # end
+    trait :with_negative_amount do
+      amount { -10 }
+    end
+  end
 
   factory :no_amount_shop_plan, class: 'ShopPlan' do
     sequence(:notice) { |n| "no amount comment #{n}" }
     done { false }
     date { Date.today }
+  end
+
+  factory :no_date_shop_plan, class: 'ShopPlan' do
+    sequence(:notice) { |n| "no amount comment #{n}" }
+    done { false }
+    amount { rand(0.0..100.0) }
+  end
+
+  factory :no_done_shop_plan, class: 'ShopPlan' do
+    sequence(:notice) { |n| "no amount comment #{n}" }
+    date { Date.today }
+    amount { rand(0.0..100.0) }
   end
 end

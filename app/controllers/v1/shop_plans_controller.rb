@@ -7,7 +7,7 @@ class V1::ShopPlansController < V1::ApplicationController
 
   # GET /shop_plans
   def index
-    render json: @ShopPlan.all_with_invited(current_user)
+    render json: ShopPlan.all_with_invited(current_user)
   end
 
   # GET /shop_plans/1
@@ -19,13 +19,13 @@ class V1::ShopPlansController < V1::ApplicationController
     end
   end
 
-  # TODO: Remove
   # POST /shop_plans
   def create
     @shop_plan = ShopPlan.new(shop_plan_params)
+    @shop_plan.food = @food
 
     if !accessible_food?
-      bad_request
+      forbidden
     elsif @shop_plan.save
       render json: @shop_plan, status: :created
     else
@@ -36,11 +36,11 @@ class V1::ShopPlansController < V1::ApplicationController
   # PATCH/PUT /shop_plans/1
   def update
     if !accessible?
-      not_found
-    elsif !@shop_plan.update_or_complete(shop_plan_params)
-      bad_request
-    else
+      forbidden
+    elsif @shop_plan.update_or_complete(shop_plan_params)
       render json: @shop_plan
+    else
+      bad_request
     end
   end
 
@@ -64,11 +64,11 @@ class V1::ShopPlansController < V1::ApplicationController
   end
 
   def shop_plan_params
-    params.permit(:notice, :done, :date, :amount, :food_id)
+    params.permit(:notice, :done, :date, :amount)
   end
 
   def accessible?
-    @shop_plan.accessible_for?(current_user)
+    @shop_plan.food.accessible_for?(current_user)
   end
 
   def accessible_food?

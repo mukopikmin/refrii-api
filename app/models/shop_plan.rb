@@ -7,6 +7,7 @@ class ShopPlan < ApplicationRecord
   validates_presence_of :amount
   validates_presence_of :food
   validates_inclusion_of :done, in: [true, false]
+  validates :amount, numericality: { greater_than_or_equal_to: 0 }
 
   def self.all_with_invited(user)
     Food.all_with_invited(user).map(&:shop_plans).flatten

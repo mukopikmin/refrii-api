@@ -30,9 +30,6 @@
   "servers": [
     {
       "url": "https://api.refrii.com/v1"
-    },
-    {
-      "url": "http://api.refrii.com/v1"
     }
   ],
   "paths": {
@@ -133,6 +130,16 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "Error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -220,7 +227,7 @@
               }
             }
           },
-          "404": {
+          "403": {
             "description": "Error message",
             "content": {
               "application/json": {
