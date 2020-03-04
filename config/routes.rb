@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     resources :foods do
       scope module: :foods do
         resources :notices, only: %i[create]
-        resources :shop_plans, only: %i[index]
+        resources :shop_plans, only: %i[index create]
         resources :versions, only: %i[index create]
       end
     end

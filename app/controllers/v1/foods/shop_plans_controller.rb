@@ -2,7 +2,7 @@
 
 class V1::Foods::ShopPlansController < V1::ApplicationController
   before_action :authenticate_request!
-  before_action :set_food, only: %i[index]
+  before_action :set_food, only: %i[index create]
 
   # GET /foods/1/shop_plans
   def index
@@ -13,13 +13,13 @@ class V1::Foods::ShopPlansController < V1::ApplicationController
     end
   end
 
-  # TODO: Add spec
   # POST /foods/1/shop_plans
   def create
     @shop_plan = ShopPlan.new(shop_plan_params)
+    @shop_plan.food = @food
 
     if !accessible?
-      bad_request
+      forbidden
     elsif @shop_plan.save
       render json: @shop_plan, status: :created
     else
@@ -35,5 +35,9 @@ class V1::Foods::ShopPlansController < V1::ApplicationController
 
   def accessible?
     @food.box.accessible_for?(current_user)
+  end
+
+  def shop_plan_params
+    params.permit(:notice, :done, :date, :amount)
   end
 end

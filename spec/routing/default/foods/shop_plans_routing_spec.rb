@@ -9,5 +9,9 @@ RSpec.describe V1::Foods::ShopPlansController, type: :routing do
     it 'routes to #index' do
       expect(get: '/foods/1/shop_plans').to route_to("#{version}/foods/shop_plans#index", food_id: '1')
     end
+
+    it 'routes to #create' do
+      expect(post: '/foods/1/shop_plans').to route_to("#{version}/foods/shop_plans#create", food_id: '1')
+    end
   end
 end
