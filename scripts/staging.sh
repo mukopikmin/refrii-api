@@ -17,7 +17,7 @@ service=staging-${BRANCH_NAME}
 region=asia-northeast1
 image=gcr.io/refrii-169906/refrii-api:$SHORT_SHA
 
-envs=$(gcloud beta run services describe $base \
+envs=$(gcloud run services describe $base \
   --platform managed \
   --region asia-northeast1 \
   --format \
@@ -25,7 +25,7 @@ envs=$(gcloud beta run services describe $base \
   --flatten "spec.template.spec.containers[0].env" \
   | sed "s/\"//g")
 
-gcloud beta run deploy $service \
+gcloud run deploy $service \
   --image $image \
   --allow-unauthenticated \
   --memory 1Gi \

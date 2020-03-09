@@ -88,5 +88,38 @@ steps:
     volumes:
       - name: git
         path: /git
+  - name: gcr.io/cloud-builders/gcloud
+    entrypoint: bash
+    args:
+      - -c
+      - 'if [ "$BRANCH_NAME" = "master" ] ; then gcloud kms decrypt --ciphertext-file=credentials/credentials.staging.json.enc --plaintext-file=/kms/credentials.staging.json --location=global --keyring=$_KEY_RING --key=staging; fi'
+    volumes:
+      - name: kms
+        path: /kms
+  - name: gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
+    entrypoint: sh
+    args:
+      - -c
+      - 'if [ "$BRANCH_NAME" = "master" ] ; then sh scripts/migrate.sh staging; fi'
+    volumes:
+      - name: kms
+        path: /kms
+    env:
+      - RAILS_ENV=production
+      - RACK_ENV=production
+      - MYSQL_SOCKET=$_MYSQL_SOCKET
+      - MYSQL_DATABASE=$_MYSQL_DATABASE
+      - MYSQL_USERNAME=$_MYSQL_USERNAME
+      - MYSQL_PASSWORD=$_MYSQL_PASSWORD
+      - SECRET_KEY_BASE=$_SECRET_KEY_BASE
+  - name: gcr.io/cloud-builders/gcloud
+    entrypoint: sh
+    args:
+      - -c
+      - 'if [ "$BRANCH_NAME" = "master" ] ; then sh scripts/deploy.sh $_CLOUD_RUN_SERVICE gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA; fi'
+    env:
+      - RAILS_ENV=production
+      - RACK_ENV=production
+      - RELEASE_HASH=$COMMIT_SHA
 images:
   - gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
