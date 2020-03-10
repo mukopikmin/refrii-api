@@ -123,3 +123,4 @@ steps:
       - RELEASE_HASH=$COMMIT_SHA
 images:
   - gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
+  
