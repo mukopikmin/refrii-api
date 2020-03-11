@@ -12,7 +12,7 @@ class V1::ApplicationController < ActionController::API
     end
 
     email = auth_token['decoded_token']['payload']['email']
-    @current_user = User.find(email: email)
+    @current_user = User.find_by(email: email)
   rescue StandardError
     unauthorized
   end
