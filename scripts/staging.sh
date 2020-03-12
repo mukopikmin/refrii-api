@@ -12,7 +12,7 @@ if [[ ! $(cat /git/message) =~ "[staging]" ]] ; then
   exit 0
 fi
 
-base=refrii-api-staging2
+base=refrii-api-staging
 service=staging-${BRANCH_NAME}
 region=asia-northeast1
 image=gcr.io/refrii-169906/refrii-api:$SHORT_SHA
