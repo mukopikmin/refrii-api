@@ -82,9 +82,9 @@ steps:
     entrypoint: bash
     args:
       - scripts/staging.sh
-    env:
-      - BRANCH_NAME=$BRANCH_NAME
-      - SHORT_SHA=$SHORT_SHA
+    # env:
+    #   - BRANCH_NAME=$BRANCH_NAME
+    #   - SHORT_SHA=$SHORT_SHA
     volumes:
       - name: git
         path: /git
@@ -92,7 +92,7 @@ steps:
     entrypoint: bash
     args:
       - -c
-      - 'if [ "$BRANCH_NAME" = "master" ] ; then gcloud kms decrypt --ciphertext-file=credentials/credentials.staging.json.enc --plaintext-file=/kms/credentials.staging.json --location=global --keyring=$_KEY_RING --key=staging; fi'
+      - 'if [ "$BRANCH_NAME" = "master" ] ; then sh scripts/decrypt.sh staging $_KEY_RING; fi'
     volumes:
       - name: kms
         path: /kms

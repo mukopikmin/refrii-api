@@ -9,14 +9,10 @@ steps:
       - gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
       - gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME
   - name: gcr.io/cloud-builders/gcloud
+    entrypoint: bash
     args:
-      - kms
-      - decrypt
-      - --ciphertext-file=credentials/credentials.${_ENVIRONMENT}.json.enc
-      - --plaintext-file=/kms/credentials.${_ENVIRONMENT}.json
-      - --location=global
-      - --keyring=$_KEY_RING
-      - --key=$_ENVIRONMENT
+      - -c
+      - "scripts/decrypt.sh $_ENVIRONMENT $_KEY_RING"
     volumes:
       - name: kms
         path: /kms
