@@ -12,4 +12,4 @@ gcloud run deploy $service \
   --platform managed \
   --memory 1Gi \
   --labels env=production \
-  --update-env-vars RELEASE_TAG=$RELEASE_TAG,RELEASE_HASH=$RELEASE_HASH
+  --update-env-vars RELEASE_HASH=$RELEASE_HASH
