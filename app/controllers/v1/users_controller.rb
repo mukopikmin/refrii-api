@@ -100,7 +100,7 @@ class V1::UsersController < V1::ApplicationController
     token = request.headers['Authorization']
     http_token = token.split(' ').last if token.present?
     auth_token = FirebaseUtils::Auth.verify_id_token(http_token)
-    payload = auth_token['decoded_token'][:payload]
+    payload = auth_token['decoded_token']['payload']
 
     {
       email: payload['email'],
