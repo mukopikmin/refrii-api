@@ -131,8 +131,14 @@ ActiveRecord::Schema.define(version: 2019_10_02_145112) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "boxes", "users", column: "owner_id"
+  add_foreign_key "foods", "boxes"
+  add_foreign_key "foods", "units"
+  add_foreign_key "invitations", "boxes"
+  add_foreign_key "invitations", "users"
   add_foreign_key "notices", "users", column: "created_user_id"
   add_foreign_key "notices", "users", column: "updated_user_id"
   add_foreign_key "push_tokens", "users"
   add_foreign_key "shop_plans", "foods"
+  add_foreign_key "units", "users"
 end

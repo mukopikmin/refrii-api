@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
 10.times do |i|
-  User.create(name: FFaker::Name.name,
-              email: "test#{i}@test.com")
+  user = User.create(name: FFaker::Name.name,
+                     email: "test#{User.all.size + i}@test.com")
+  user.avatar.attach(io: File.open('spec/resources/avatar.jpg'),
+                     filename: 'avatar.jpg',
+                     content_type: 'image/jpg')
+  user.save
 end
 
 20.times do
