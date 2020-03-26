@@ -29,7 +29,7 @@ class V1::FoodsController < V1::ApplicationController
     elsif !unit_assignable?
       bad_request('The unit is not assignable to the food.')
     elsif @food.save
-      render json: @food, status: :created, location: v1_foods_path(@food)
+      render json: @food, status: :created
     else
       bad_request
     end

@@ -27,7 +27,7 @@ class V1::UnitsController < V1::ApplicationController
     if duplicate_unit?
       bad_request('Specified label of unit already exists.')
     elsif @unit.save
-      render json: @unit, status: :created, location: v1_units_path(@unit)
+      render json: @unit, status: :created
     else
       bad_request('Could not persite the unit.')
     end
