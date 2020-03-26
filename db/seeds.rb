@@ -3,8 +3,9 @@
 10.times do |i|
   user = User.create(name: FFaker::Name.name,
                      email: "test#{User.all.size + i}@test.com")
-  user.avatar.attach(io: File.open('spec/resources/avatar.jpg'),
-                     filename: "avatar#{Random.rand(1..6)}.jpg")
+  filename = "avatar#{Random.rand(1..6)}.jpg"
+  user.avatar.attach(io: File.open("spec/resources/#{filename}"),
+                     filename: filename)
   user.save
 end
 
