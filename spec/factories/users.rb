@@ -48,7 +48,7 @@ FactoryBot.define do
   end
 
   trait 'with_avatar' do
-    file = File.new(File.join('spec', 'resources', 'avatar.jpg'), 'rb')
+    file = File.new(File.join('spec', 'resources', 'avatar1.jpg'), 'rb')
 
     avatar { file }
   end
