@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-host = 'localhost:3000'
+host = ENV['HOSTNAME'].nil? ? 'localhost:3000' : ENV['HOSTNAME']
 
 if Rails.env == 'production'
   host = if ENV['STAGING_ENABLED'] == 'true'
