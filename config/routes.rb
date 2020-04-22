@@ -4,9 +4,9 @@ host = ENV['HOSTNAME'].nil? ? 'localhost:3000' : ENV['HOSTNAME']
 
 if Rails.env == 'production'
   host = if ENV['STAGING_ENABLED'] == 'true'
-           'staging.api.refrii.com'
+           'staging.mypantry.muko.app'
          else
-           'api.refrii.com'
+           'mypantry.muko.app'
          end
 end
 

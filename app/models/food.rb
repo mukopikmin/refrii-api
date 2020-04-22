@@ -7,8 +7,8 @@ class Food < ApplicationRecord
   belongs_to :unit
   belongs_to :created_user, class_name: 'User'
   belongs_to :updated_user, class_name: 'User'
-  has_many :notices
-  has_many :shop_plans
+  has_many :notices, dependent: :destroy
+  has_many :shop_plans, dependent: :destroy
   has_one_attached :image
 
   validates_presence_of :name

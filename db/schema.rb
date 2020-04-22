@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_02_145112) do
+ActiveRecord::Schema.define(version: 2020_04_22_143018) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -73,7 +73,7 @@ ActiveRecord::Schema.define(version: 2019_10_02_145112) do
     t.datetime "updated_at", null: false
     t.integer "food_id", null: false
     t.integer "created_user_id", null: false
-    t.bigint "updated_user_id", null: false
+    t.integer "updated_user_id", null: false
     t.index ["created_user_id"], name: "index_notices_on_created_user_id"
     t.index ["food_id"], name: "index_notices_on_food_id"
     t.index ["updated_user_id"], name: "index_notices_on_updated_user_id"
@@ -136,6 +136,7 @@ ActiveRecord::Schema.define(version: 2019_10_02_145112) do
   add_foreign_key "foods", "units"
   add_foreign_key "invitations", "boxes"
   add_foreign_key "invitations", "users"
+  add_foreign_key "notices", "foods"
   add_foreign_key "notices", "users", column: "created_user_id"
   add_foreign_key "notices", "users", column: "updated_user_id"
   add_foreign_key "push_tokens", "users"

@@ -368,6 +368,42 @@ RSpec.describe 'Foods', type: :request do
         it { is_expected.to eq(400) }
         it { assert_response_schema_confirm }
       end
+
+      context 'with food with notices' do
+        subject { response.status }
+
+        let(:food) { create(:food, :with_box_user_unit) }
+
+        let(:user) { food.box.owner }
+
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+        before do
+          create(:notice, created_user: user, updated_user: user, food: food)
+          delete v1_food_path(food), headers: headers
+        end
+
+        it { is_expected.to eq(204) }
+        it { assert_response_schema_confirm }
+      end
+
+      context 'with food with shop plans' do
+        subject { response.status }
+
+        let(:food) { create(:food, :with_box_user_unit) }
+
+        let(:user) { food.box.owner }
+
+        let(:headers) { { authorization: "Bearer #{token(user)}" } }
+
+        before do
+          create(:shop_plan, food: food)
+          delete v1_food_path(food), headers: headers
+        end
+
+        it { is_expected.to eq(204) }
+        it { assert_response_schema_confirm }
+      end
     end
   end
 end

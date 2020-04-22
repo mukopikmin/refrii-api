@@ -5,7 +5,7 @@ class V1::RootController < V1::ApplicationController
   def index
     @content = {
       name: 'Refrii API',
-      version: '1.2.3',
+      version: '1.2.4',
       build_hash: ENV['RELEASE_HASH']
     }
     render json: @content
